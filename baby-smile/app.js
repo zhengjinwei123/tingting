@@ -5,12 +5,20 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const session = require('koa-session')
+const SERVER_CONF = require('./settings/server_config')
+const middlewares = require('./middlewares/index')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
 
+
 // error handler
 onerror(app)
+
+// session settings
+app.keys = ['tt#uiuiaBHt']
+app.use(session(SERVER_CONF.session, app))
 
 // middlewares
 app.use(bodyparser({
@@ -24,13 +32,7 @@ app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
+app.use(middlewares.loginCheck)
 
 // routes
 app.use(index.routes(), index.allowedMethods())
