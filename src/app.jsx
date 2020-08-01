@@ -7,6 +7,7 @@ import Layout from "component/layout/index.jsx";
 import Home from 'page/home/index.jsx';
 import Error from "page/error/index.jsx";
 import Login from "page/login/index.jsx";
+import UserNew from "page/user-new/index.jsx";
 
 import md5 from "js-md5"
 
@@ -41,6 +42,7 @@ class App extends React.Component {
             <Layout>
                 <Switch>
                     <Route exact path="/" component={Home}/>
+                    <Route path="/user-new" component={UserNew} />
                     <Route component={Error}/>
                 </Switch>
             </Layout>

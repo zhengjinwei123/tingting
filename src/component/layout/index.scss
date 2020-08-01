@@ -14,3 +14,16 @@
   z-index: 810;
   background-color: #222d32;
 }
+
+@media (max-width: 768px) {
+  .main-sidebar {
+    position: relative;
+    z-index : 1;
+    width: 100%;
+    top: 0;
+  }
+
+  .top-navbar {
+    position: relative;
+  }
+}
