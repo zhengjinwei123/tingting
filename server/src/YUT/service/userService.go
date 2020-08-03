@@ -1,10 +1,10 @@
 package service
 
 import (
-	"YUT/dbservice"
+	"YUT/dbservice/userservice"
 	"YUT/manager"
 	"YUT/proto"
-	"YUT/utils"
+	"YUT/utils/orm"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 	request := &proto.NetUserLoginRequest{}
 
-	err := utils.UnmarshalHttpValues(request, r.PostForm)
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
 		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
@@ -31,7 +31,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var dbUser proto.DBUserInfo
-	if err := dbservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
+	if err := userservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
 		response.Msg = "user [" +request.UserName + "] not found"
 		response.ResponseError();
 		return
@@ -63,7 +63,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	request := &proto.NetUserRegisterRequest{}
 
 
-	err := utils.UnmarshalHttpValues(request, r.PostForm)
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
 		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
@@ -72,7 +72,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	response := &proto.NetUserRegisterResponse{}
 	response.SetResponseWriter(w)
 
-	err = dbservice.RegisterUser(request.UserName, request.Password, request.Email)
+	err = userservice.RegisterUser(request.UserName, request.Password, request.Email)
 	if err != nil {
 		response.Msg = err.Error();
 		response.ResponseError()

@@ -7,6 +7,8 @@
   width: 33%;
 }
 
-.register-pannel {
-  border-radius: 2px;
+@media (max-width: 768px) {
+  .container {
+    width: 80%;
+  }
 }

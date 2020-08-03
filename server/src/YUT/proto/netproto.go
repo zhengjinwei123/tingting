@@ -39,7 +39,7 @@ func (this *NetResponse) SetResponseWriter(w http.ResponseWriter) {
 }
 
 /*--------------------------------网络response 子类------------------------------------------------*/
-// common
+// NotLogin
 type NetNotLoginResponse struct {
 	NetResponse
 }
