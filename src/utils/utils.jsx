@@ -1,6 +1,6 @@
 import CONST from "proto/consts.jsx";
 
-class Utils {
+class Utils{
     constructor() {
         if (!Utils.instance) {
             Utils.instance = this;
@@ -32,7 +32,7 @@ class Utils {
                     } else if (CONST.STATUS_NOT_LOGIN === res.status) {
                         this.redirectLogin();
                     } else {
-                        typeof reject === 'function' && reject(res.msg || res.data);
+                        typeof reject === 'function' && reject(res.data.msg);
                     }
                 },
                 error: err => {
@@ -45,7 +45,8 @@ class Utils {
 
     redirectLogin() {
         console.log("redirectLogin")
-        window.location.herf = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+
+        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
     }
 
     getUrlParams(name) {
@@ -60,7 +61,7 @@ class Utils {
     }
 
     errorTips(errMsg) {
-        alert(errMsg || '操作失败!');
+        window.alert(errMsg || '操作失败!');
     }
 
     setStorage(name, value) {
@@ -95,6 +96,20 @@ class Utils {
     removeStorage(name) {
         window.localStorage.removeItem(name);
     }
+
+    validEmail(email) {
+        return /^\w+([\.\-]\w+)*\@\w+([\.\-]\w+)*\.\w+$/.test(email);
+    }
+
+    validUserName(username) {
+        let len = username.length
+        return len >= 3;
+    }
+
+    validPassword(password) {
+        let len = password.length
+        return len >= 6;
+    }
 }
 
-export default Utils;
+export default (Utils.getInstance());

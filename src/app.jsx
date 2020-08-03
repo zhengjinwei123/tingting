@@ -11,9 +11,8 @@ import UserNew from "page/user-new/index.jsx";
 
 import md5 from "js-md5"
 
-import UserService from "service/user.jsx";
+import userService from "service/user.jsx";
 
-let userService = UserService.getInstance();
 React.Component.prototype.$md5 = md5
 
 

@@ -29,18 +29,18 @@ func (this *mysqlProxy) Close() {
 	if this.proxy != nil {
 		err := this.proxy.Close()
 		if err != nil {
-			log.Fatalf("close mysql error: %v \n", err)
+			log.Printf("close mysql error: %v \n", err)
 		}
 		this.proxy = nil
 	}
 }
 
-func (this *mysqlProxy) Insert(sql string) bool {
+func (this *mysqlProxy) Insert(sql string) error {
 	if _, err := this.proxy.Exec(sql); err != nil {
-		log.Fatalf("Exec mysql error: %s %v \n", sql, err)
-		return false
+		log.Printf("Exec mysql error: %s %v \n", sql, err)
+		return err
 	}
-	return true
+	return nil
 }
 
 func (this *mysqlProxy) QueryOne(sql string, v interface{}) error {
@@ -80,7 +80,7 @@ func (this *mysqlProxy) Delete(sql string, args ...interface{}) (error, int64) {
 func (this *mysqlProxy) clearTransaction(tx *sqlx.Tx) {
 	err := tx.Rollback()
 	if err != sql.ErrTxDone && err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 }
 

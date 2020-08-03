@@ -11,6 +11,7 @@ func UserRouter() http.Handler {
 
 	r.Post("/login", service.UserLogin)
 	r.Post("/logout", service.UserLogout)
+	r.Post("/register", service.UserRegister)
 
 	return r
 }

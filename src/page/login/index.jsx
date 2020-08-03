@@ -1,12 +1,10 @@
 import React from "react";
 
 import "./index.scss";
-import Utils from "utils/utils.jsx";
-import UserService from "service/user.jsx";
+import utils from "utils/utils.jsx";
+import userService from "service/user.jsx";
 import {Redirect} from "react-router-dom";
 
-const utils = new Utils();
-const userService = UserService.getInstance();
 
 class Login extends React.Component {
     constructor(props) {

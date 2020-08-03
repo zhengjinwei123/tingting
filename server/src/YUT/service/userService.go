@@ -4,49 +4,80 @@ import (
 	"YUT/dbservice"
 	"YUT/manager"
 	"YUT/proto"
-	"fmt"
+	"YUT/utils"
 	"log"
 	"net/http"
 )
 
 
-
 func UserLogin(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	request := &proto.NetUserLoginRequest{}
 
-	if manager.GetUsrMgr().UserHasLogin(r) {
-		fmt.Println("UserLogin HAS LOGIN")
-	}
-
-	username := r.PostFormValue("username")
-	password := r.PostFormValue("password")
-
-	var dbUser proto.DBUserInfo
-	log.Println(":", username, password)
-	if err := dbservice.GetUser(username, password, &dbUser); err != nil {
-		fmt.Println("user not found",err)
-		ResponseError("user not found", w)
+	err := utils.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
-	log.Println("has user:", dbUser)
+	response := &proto.NetUserLoginResponse{}
+	response.SetResponseWriter(w)
+	response.UserName = request.UserName
 
-	userInfo := &proto.NetUserInfo{
-		UserName: dbUser.UserName,
+	if manager.GetUsrSessionMgr().UserHasLogin(r) {
+		response.Msg = "user has login";
+		response.ResponseError();
+		return;
 	}
 
-	err := manager.GetUsrMgr().SetUserLogin(username, w, r)
+	var dbUser proto.DBUserInfo
+	if err := dbservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
+		response.Msg = "user [" +request.UserName + "] not found"
+		response.ResponseError();
+		return
+	}
+
+	err = manager.GetUsrSessionMgr().SetUserLogin(request.UserName, w, r)
 	if err != nil {
-		fmt.Println(err)
-		ResponseError("user login failed", w)
-	} else {
-		ResponseSuccess(userInfo, w)
+		response.Msg = "user has login failed"
+		response.ResponseError()
+		return
 	}
+
+	response.ResponseSuccess()
 }
 
 func UserLogout(w http.ResponseWriter, r *http.Request) {
+	response := proto.NetUserLoginResponse{
+		UserName: "",
+	}
+	response.SetResponseWriter(w)
 
-	fmt.Println("UserLogout called")
+	_ = manager.GetUsrSessionMgr().SetUserLogout(w, r)
+	response.ResponseSuccess()
+}
 
-	_ = manager.GetUsrMgr().SetUserLogout(w, r)
-	ResponseSuccess(nil, w)
+func UserRegister(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &proto.NetUserRegisterRequest{}
+
+
+	err := utils.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &proto.NetUserRegisterResponse{}
+	response.SetResponseWriter(w)
+
+	err = dbservice.RegisterUser(request.UserName, request.Password, request.Email)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	response.ResponseSuccess()
 }

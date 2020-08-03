@@ -1,7 +1,5 @@
-import Utils from "utils/utils.jsx";
+import utils from "utils/utils.jsx";
 import $ from "jquery"
-
-const utils = Utils.getInstance();
 
 class UserService {
     constructor() {
@@ -23,6 +21,14 @@ class UserService {
             type: 'post',
             url: '/server/user/login',
             data: login_info
+        });
+    }
+
+    register(register_info) {
+        return utils.request({
+            type: 'post',
+            url : '/server/user/register',
+            data: register_info
         });
     }
 
@@ -92,4 +98,4 @@ class UserService {
     }
 }
 
-export default UserService
+export default UserService.getInstance()

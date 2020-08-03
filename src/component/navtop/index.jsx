@@ -1,12 +1,8 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 
-import UserService from "service/user.jsx";
-import Utils from "utils/utils.jsx";
-
-let userService = UserService.getInstance();
-let utils = Utils.getInstance();
-
+import userService from "service/user.jsx";
+import utils from "utils/utils.jsx";
 
 class NavTop extends React.Component {
     constructor(props) {

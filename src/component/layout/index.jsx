@@ -7,9 +7,8 @@ import $ from "jquery";
 import "./theme.css"
 import "./index.scss"
 import "./sidebar-menu.css"
-import UserService from "service/user.jsx";
+import userService from "service/user.jsx";
 
-let userService = UserService.getInstance();
 
 
 class Layout extends React.Component {

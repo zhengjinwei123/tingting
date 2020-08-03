@@ -1,23 +1,41 @@
 package main
 
 import (
+	"YUT/manager"
+	"YUT/proto"
 	"log"
 	"net/http"
 )
 
 func LoggerMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_ = r.ParseForm()
 
-		r.PostFormValue("u")
+		if r.Method != "POST" {
+			resp := &proto.NetNotLoginResponse{}
+			resp.SetResponseWriter(w)
+			resp.Msg = "Not Support Method:" + r.Method
+			resp.ResponseError()
+			return
+		}
+
+		if !manager.GetUsrSessionMgr().UserHasLogin(r) {
+			if r.URL.Path != "/server/user/login" &&
+				r.URL.Path != "/server/user/logout" {
+				resp := &proto.NetNotLoginResponse{}
+				resp.SetResponseWriter(w)
+				resp.Msg = "Not Allow Request, Please Login First"
+				resp.ResponseError()
+				return
+			}
+		}
 
 		var d string = ""
 		if r.Method == "POST" {
 			d = r.PostForm.Encode()
-		} else if r.Method == "GET" {
-			d = r.Form.Encode()
 		}
 
-		log.Printf("url:[%s] method:[%s] data:[%s]", r.URL, r.Method, d)
+		log.Printf("request ===> url:[%s] method:[%s] data:[%s]", r.URL.Path, r.Method, d)
 
 		next.ServeHTTP(w, r)
 	})
