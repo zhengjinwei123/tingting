@@ -20,8 +20,8 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 		}
 
 		if !manager.GetUsrSessionMgr().UserHasLogin(r) {
-			if r.URL.Path != "/server/user/login" &&
-				r.URL.Path != "/server/user/logout" {
+			if r.URL.Path != "/api/user/login" &&
+				r.URL.Path != "/api/user/logout" {
 				resp := &proto.NetNotLoginResponse{}
 				resp.SetResponseWriter(w)
 				resp.Msg = "Not Allow Request, Please Login First"

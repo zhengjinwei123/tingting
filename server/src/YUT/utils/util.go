@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -12,7 +13,7 @@ var (
 	md5Hash = md5.New()
 )
 
-func LoadConfig(filename string, v interface{}) error {
+func LoadXmlConfig(filename string, v interface{}) error {
 	if contents, err := ioutil.ReadFile(filename); err != nil {
 		return err
 	} else {
@@ -21,6 +22,18 @@ func LoadConfig(filename string, v interface{}) error {
 		}
 		return nil
 	}
+}
+
+func LoadJsonConfig(filename string, v interface{}) error {
+	contents, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	err = json.Unmarshal(contents, v)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func MD5(str string) string {

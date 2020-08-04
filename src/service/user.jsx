@@ -19,7 +19,7 @@ class UserService {
     login(login_info) {
         return utils.request({
             type: 'post',
-            url: '/server/user/login',
+            url: '/api/user/login',
             data: login_info
         });
     }
@@ -27,14 +27,12 @@ class UserService {
     register(register_info) {
         return utils.request({
             type: 'post',
-            url : '/server/user/register',
+            url : '/api/user/register',
             data: register_info
         });
     }
 
     setUserLogin(userInfo) {
-        console.log("setUserLogin")
-        console.dir(userInfo)
         utils.setStorage('user_info', userInfo);
     }
 
@@ -83,14 +81,14 @@ class UserService {
     logout() {
         return utils.request({
             type: 'post',
-            url: '/server/user/logout'
+            url: '/api/user/logout'
         });
     }
 
     getUserList(page_num) {
         return utils.request({
             type: 'post',
-            url: '/server/user/list',
+            url: '/api/user/list',
             data: {
                 page_num: page_num
             }

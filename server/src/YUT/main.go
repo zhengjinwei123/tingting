@@ -24,10 +24,14 @@ func main() {
 
 	r.Use(middleware.Timeout(60*time.Second))
 
-	r.Route("/server", func(r chi.Router) {
+	r.Route("/api", func(r chi.Router) {
 
 		r.Mount("/user", UserRouter())
 	})
+
+	// 加载菜单
+	log.Printf("menu %v", manager.GetMenuList().Menus)
+
 
 	// 加载mysql
 	serverConf, err := manager.GetServerConfig()

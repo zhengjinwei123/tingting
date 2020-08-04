@@ -16,7 +16,7 @@
         <entry file="file://$PROJECT_DIR$/src/YUT/service/userService.go">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="182">
-              <caret line="51" column="21" lean-forward="true" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
+              <caret line="51" column="21" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
               <folding>
                 <element signature="e#17#61#0" expanded="true" />
               </folding>
@@ -27,8 +27,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/YUT/middleware.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="21" column="56" lean-forward="true" selection-start-line="21" selection-start-column="56" selection-end-line="21" selection-end-column="56" />
+            <state relative-caret-position="144">
+              <caret line="8" selection-start-line="8" selection-end-line="8" />
+              <folding>
+                <element signature="e#14#71#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/YUT/manager/configManager.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
+              <folding>
+                <element signature="e#17#34#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/YUT/manager/menuConfigManager.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="38">
+              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+              <folding>
+                <element signature="e#17#65#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -36,10 +63,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/YUT/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="26" column="43" lean-forward="true" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
+            <state relative-caret-position="452">
+              <caret line="32" column="52" lean-forward="true" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
               <folding>
                 <element signature="e#14#168#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/YUT/router.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="144">
+              <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+              <folding>
+                <element signature="e#14#76#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -55,58 +94,25 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/settings/db_yut.sql">
+        <entry file="file://$PROJECT_DIR$/src/YUT/utils/util.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="8" column="64" selection-start-line="8" selection-start-column="64" selection-end-line="8" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/utils/orm/orm.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1298">
-              <caret line="80" column="26" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="26" />
+            <state relative-caret-position="270">
+              <caret line="16" column="63" selection-start-line="16" selection-start-column="63" selection-end-line="16" selection-end-column="63" />
               <folding>
-                <element signature="e#15#68#0" expanded="true" />
+                <element signature="e#15#91#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/utils/util.go">
+        <entry file="file://$PROJECT_DIR$/src/YUT/manager/manager.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/settings/config.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/proto/dbproto.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" column="12" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/YUT/proto/netproto.go">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="41" column="11" selection-start-line="41" selection-start-column="11" selection-end-line="41" selection-end-column="11" />
+            <state relative-caret-position="704">
+              <caret line="41" column="19" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="19" />
+              <folding>
+                <element signature="e#17#73#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -141,29 +147,32 @@
         <option value="$PROJECT_DIR$/src/YUT/manager/ConfigManager.go" />
         <option value="$PROJECT_DIR$/src/YUT/config.go" />
         <option value="$PROJECT_DIR$/src/YUT/manager/configManager.go" />
-        <option value="$PROJECT_DIR$/src/YUT/main.go" />
         <option value="C:/Go/src/net/http/request.go" />
         <option value="$PROJECT_DIR$/src/YUT/dbproto/dbproto.go" />
         <option value="$PROJECT_DIR$/src/YUT/service/netproto.go" />
         <option value="$PROJECT_DIR$/src/YUT/manager/global.go" />
         <option value="$PROJECT_DIR$/src/YUT/service/response.go" />
         <option value="$PROJECT_DIR$/src/YUT/router.go" />
-        <option value="$PROJECT_DIR$/src/YUT/utils/util.go" />
         <option value="$PROJECT_DIR$/src/YUT/utils/orm.go" />
         <option value="$PROJECT_DIR$/src/YUT/manager/userManager.go" />
         <option value="$PROJECT_DIR$/src/YUT/settings/db_yut.sql" />
         <option value="$PROJECT_DIR$/src/YUT/manager/common.go" />
-        <option value="$PROJECT_DIR$/src/YUT/middleware.go" />
         <option value="$PROJECT_DIR$/src/YUT/dbservice/user.go" />
         <option value="$PROJECT_DIR$/src/YUT/manager/mysqlManager.go" />
         <option value="$PROJECT_DIR$/src/YUT/proto/netproto.go" />
         <option value="$PROJECT_DIR$/src/YUT/utils/orm/orm.go" />
         <option value="$PROJECT_DIR$/src/YUT/service/userService.go" />
+        <option value="$PROJECT_DIR$/src/YUT/middleware.go" />
+        <option value="$PROJECT_DIR$/src/YUT/utils/util.go" />
+        <option value="$PROJECT_DIR$/src/YUT/settings/menu.json" />
+        <option value="$PROJECT_DIR$/src/YUT/manager/manager.go" />
+        <option value="$PROJECT_DIR$/src/YUT/main.go" />
+        <option value="$PROJECT_DIR$/src/YUT/manager/menuConfigManager.go" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1912" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
@@ -185,6 +194,33 @@
               <item name="server" type="b2602c69:ProjectViewProjectNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="YUT" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="YUT" type="462c0819:PsiDirectoryNode" />
+              <item name="manager" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="YUT" type="462c0819:PsiDirectoryNode" />
+              <item name="settings" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="YUT" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -228,7 +264,7 @@
     </option>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25746268" />
@@ -408,16 +444,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/YUT/router.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="13" column="38" selection-start-line="13" selection-start-column="38" selection-end-line="13" selection-end-column="38" />
-          <folding>
-            <element signature="e#14#76#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Go/src/log/log.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="290">
@@ -431,23 +457,6 @@
           <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding>
             <element signature="e#17#105#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/YUT/manager/configManager.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/YUT/manager/manager.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" column="36" selection-start-line="10" selection-start-column="36" selection-end-line="10" selection-end-column="36" />
-          <folding>
-            <element signature="e#17#73#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -500,13 +509,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/YUT/utils/util.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="18" selection-start-line="5" selection-start-column="18" selection-end-line="5" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/YUT/utils/orm/orm.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1298">
@@ -527,24 +529,84 @@
     <entry file="file://$PROJECT_DIR$/src/YUT/service/userService.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
-          <caret line="51" column="21" lean-forward="true" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
+          <caret line="51" column="21" selection-start-line="51" selection-start-column="21" selection-end-line="51" selection-end-column="21" />
           <folding>
             <element signature="e#17#61#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/router.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
+          <folding>
+            <element signature="e#14#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/utils/util.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="16" column="63" selection-start-line="16" selection-start-column="63" selection-end-line="16" selection-end-column="63" />
+          <folding>
+            <element signature="e#15#91#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/YUT/middleware.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="21" column="56" lean-forward="true" selection-start-line="21" selection-start-column="56" selection-end-line="21" selection-end-column="56" />
+        <state relative-caret-position="144">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+          <folding>
+            <element signature="e#14#71#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/manager/configManager.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#17#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/manager/manager.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="704">
+          <caret line="41" column="19" selection-start-line="41" selection-start-column="19" selection-end-line="41" selection-end-column="19" />
+          <folding>
+            <element signature="e#17#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/settings/menu.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/YUT/manager/menuConfigManager.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="e#17#65#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/YUT/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="26" column="43" lean-forward="true" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
+        <state relative-caret-position="452">
+          <caret line="32" column="52" lean-forward="true" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
           <folding>
             <element signature="e#14#168#0" expanded="true" />
           </folding>

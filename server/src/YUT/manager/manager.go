@@ -20,18 +20,24 @@ func GetUsrSessionMgr() *UsrSessionManager {
 	}
 	return usrSessionMgr
 }
-/*--------------------------------------------------------------------------*/
+/*-------------------------server config-------------------------------------------------*/
 
 var svrConf = NewServerConfig()
 var configFile = flag.String("config", "./settings/config.xml", "")
 func GetServerConfig() (*serverConfig, error) {
-	if err := utils.LoadConfig(*configFile, svrConf); err != nil {
-		return nil, errors.New(fmt.Sprintf("load config %v failed: %v \n", *configFile, err))
+	if err := utils.LoadXmlConfig(*configFile, svrConf); err != nil {
+		return nil, errors.New(fmt.Sprintf("load server config %v failed: %v \n", *configFile, err))
 	}
 	return svrConf, nil
 }
 
+/* mysql */
 var myProxy = NewMysqlProxy()
 func GetMysqlProxy() *mysqlProxy {
 	return myProxy
+}
+
+/*-------------------------menu config-------------------------------------------------*/
+func GetMenuList() *sMenuList {
+	return menuList
 }

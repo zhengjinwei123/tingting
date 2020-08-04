@@ -100,7 +100,7 @@ module.exports = {
             index: '/dist/index.html',
         },
         proxy: {
-            '/server': {
+            '/api': {
                 target: 'http://localhost:8087',
                 changeOrigin: true
             }
