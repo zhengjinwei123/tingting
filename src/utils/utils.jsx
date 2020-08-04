@@ -27,9 +27,9 @@ class Utils{
                     console.log("------Promise Start---")
                     console.dir(res)
                     console.log("------Promise End-----")
-                    if (CONST.STATUS_SUCCESS === res.status) {
+                    if (CONST.STATUS.STATUS_SUCCESS === res.status) {
                         typeof resolve === 'function' && resolve(res.data);
-                    } else if (CONST.STATUS_NOT_LOGIN === res.status) {
+                    } else if (CONST.STATUS.STATUS_NOT_LOGIN === res.status) {
                         this.redirectLogin();
                     } else {
                         typeof reject === 'function' && reject(res.data.msg);

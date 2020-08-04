@@ -10,7 +10,6 @@ import "./sidebar-menu.css"
 import userService from "service/user.jsx";
 
 
-
 class Layout extends React.Component {
     constructor(props) {
         super(props);
@@ -18,18 +17,16 @@ class Layout extends React.Component {
 
     shouldComponentUpdate() {
         if (!userService.checkUserHasLogin()) {
-            console.log("checkUserHasLogin false")
             this.props.history.push("/")
             return false;
         }
-        console.log("checkUserHasLogin true")
         return true;
     }
 
     render() {
         return (
             <div id="wrapper">
-                <NavTop />
+                <NavTop userinfo={this.props.userinfo}/>
                 <NavSide />
                 { this.props.children }
             </div>

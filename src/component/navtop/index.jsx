@@ -10,7 +10,6 @@ class NavTop extends React.Component {
 
         let userInfo = userService.getUserInfo();
 
-        console.dir(userInfo)
         this.state = {
             username : userInfo.username,
         }
@@ -27,6 +26,7 @@ class NavTop extends React.Component {
     }
 
     render() {
+
         return (
             <div className="navbar navbar-default top-navbar">
                 <div className="navbar-header">

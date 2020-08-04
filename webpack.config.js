@@ -21,6 +21,9 @@ module.exports = {
             utils: path.resolve(__dirname, "src/utils"),
             service: path.resolve(__dirname, "src/service"),
             proto: path.resolve(__dirname, 'src/proto'),
+            actions: path.resolve(__dirname, "src/actions"),
+            reducers: path.resolve(__dirname, "src/reducers"),
+            store: path.resolve(__dirname, "src/store"),
         }
     },
     module: {

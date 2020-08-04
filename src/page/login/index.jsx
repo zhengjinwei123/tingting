@@ -3,7 +3,7 @@ import React from "react";
 import "./index.scss";
 import utils from "utils/utils.jsx";
 import userService from "service/user.jsx";
-import {Redirect} from "react-router-dom";
+import {Redirect,withRouter} from "react-router-dom";
 
 
 class Login extends React.Component {
@@ -94,4 +94,4 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+export default withRouter(Login);
