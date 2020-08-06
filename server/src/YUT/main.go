@@ -28,6 +28,7 @@ func main() {
 	r.Route("/api", func(r chi.Router) {
 
 		r.Mount("/user", UserRouter())
+		r.Mount("/global", GlobalRouter())
 	})
 
 	// 加载mysql

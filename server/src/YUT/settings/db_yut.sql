@@ -12,8 +12,9 @@ insert into t_user(`username`,`password`,`email`, `group_id`) VALUES("admin", "e
 drop table if exists `t_group`;
 CREATE TABLE  `t_group` (
     `id` tinyint(2) NOT NULL DEFAULT 0 COMMENT 'id',
+    `desc` varchar(40) NOT NULL DEFAULT '' COMMENT '描述',
     `menus` varchar(255) NOT NULL DEFAULT '' COMMENT '菜单列表',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into t_group(`id`,`menus`) VALUES(1, "100,101,102,103,200,201,202,300,301,302,400,401,402,403,500,501,502,600,601");
+insert into t_group(`id`,`desc`,`menus`) VALUES(1,"管理员", "100,101,102,103,200,201,202,300,301,302,400,401,402,403,500,501,502,600,601");

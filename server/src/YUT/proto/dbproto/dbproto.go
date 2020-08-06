@@ -11,3 +11,8 @@ type DBGroupInfo struct {
 	GroupId int `db:"id"`
 	MenuStr string `db:"menus"`
 }
+
+type DBGroupListInfo struct {
+	GroupId int `db:"id"`
+	Desc string `db:"desc"`
+}

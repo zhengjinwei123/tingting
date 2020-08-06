@@ -118,3 +118,23 @@ func (this *NetMenuListResponse) ResponseError() {
 func (this *NetMenuListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
+// get group list
+type Group struct {
+	Id int `json:"id"`
+	Desc string `json:"desc"`
+}
+
+type NetGroupResponse struct {
+	NetResponse
+
+	GroupList []*Group `json:"grouplist"`
+}
+
+func (this *NetGroupResponse) ResponseError() {
+	outputJson(*this, -1, this.writer)
+}
+
+func (this *NetGroupResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}

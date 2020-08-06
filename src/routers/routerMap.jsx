@@ -19,11 +19,7 @@ import * as menuActions from "actions/menulist.jsx";
 class MyRouter extends React.Component {
 
     checkAuth(pathName) {
-        if (pathName === "/") {
-            return true;
-        }
-
-        if (pathName === "/login") {
+        if (pathName === "/" || pathName === "/login") {
             return true;
         }
 

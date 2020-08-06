@@ -5,6 +5,7 @@ import "./index.scss"
 import PageTitle from "component/pagetitle/index.jsx";
 import $ from "jquery"
 import userService from "service/user.jsx";
+import globalService from "service/global.jsx";
 import utils from "utils/utils.jsx"
 
 class UserNew extends React.Component {
@@ -14,7 +15,9 @@ class UserNew extends React.Component {
         this.state = {
             username: '',
             password: '',
-            email: ''
+            email: '',
+            group: '',
+            groupList: []
         }
     }
 
@@ -53,6 +56,17 @@ class UserNew extends React.Component {
         });
     }
 
+    componentWillMount() {
+        globalService.groupList().then(res => {
+            console.log("user new get group", res)
+            this.setState({
+                groupList: res.grouplist
+            })
+        },(err) => {
+            console.log(err)
+        })
+    }
+
     render() {
         return (
             <div id="page-wrapper">
@@ -69,6 +83,7 @@ class UserNew extends React.Component {
                                            className="form-control"
                                            name="username"
                                            placeholder="输入用户名"
+                                           value=""
                                            onChange={ e => this.onInputChange(e) } />
                                 </div>
                                 <div className="form-group">
@@ -76,6 +91,7 @@ class UserNew extends React.Component {
                                     <input type="email"
                                            className="form-control"
                                            name="email"
+                                           value=""
                                            placeholder="输入电子邮箱"
                                            onChange={ e => this.onInputChange(e) }/>
                                 </div>
@@ -84,8 +100,22 @@ class UserNew extends React.Component {
                                     <input type="password"
                                            className="form-control"
                                            name="password"
+                                           value=""
                                            placeholder="输入密码"
                                            onChange={ e => this.onInputChange(e) } />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="pwd">用户组:</label>
+                                    <select className="form-control">
+
+                                        {
+                                            this.state.groupList.map((item, idx) => {
+                                                return (
+                                                    <option key={idx}>{item.id} - { item.desc }</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
                                 </div>
 
                                 <button type="submit" className="btn btn-primary btn-block" onClick={e => this.onRegister(e) }>注册</button>

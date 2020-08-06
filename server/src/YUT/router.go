@@ -14,5 +14,13 @@ func UserRouter() http.Handler {
 	r.Post("/register", service.UserRegister)
 	r.Post("/menulist", service.MenuList)
 
+
+	return r
+}
+
+func GlobalRouter() http.Handler {
+	r := chi.NewRouter()
+
+	r.Post("/grouplist", service.GroupList)
 	return r
 }

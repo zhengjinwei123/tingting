@@ -48,8 +48,8 @@ func (this *mysqlProxy) QueryOne(sql string, v interface{}) error {
 	return err
 }
 
-func (this *mysqlProxy) QueryList(sql string,v []*interface{}) error {
-	err := this.proxy.Select(&v, sql)
+func (this *mysqlProxy) QueryList(sql string, v interface{}) error {
+	err := this.proxy.Select(v, sql)
 	return err
 }
 
