@@ -12,6 +12,7 @@ import userService from "service/user.jsx";
 import { connect } from "react-redux"
 import { bindActionCreators } from "redux";
 import * as userinfoActions from "actions/userinfo.jsx";
+import * as menuActions from "actions/menulist.jsx";
 
 
 
@@ -33,7 +34,7 @@ class MyRouter extends React.Component {
 class RouterMap extends React.Component {
     render() {
         let LayoutRouter = (
-            <Layout>
+            <Layout menuActions={ this.props.menuActions } menuList={ this.props.menuList }>
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route path="/user-new" component={UserNew} />
@@ -47,7 +48,7 @@ class RouterMap extends React.Component {
                 <Router>
                     <Switch>
                         <Route path="/login" >
-                            <Login actions={this.props.userinfoActions} />
+                            <Login />
                         </Route>
                         {/*<Route path="/login" component={ Login } />*/}
                         <MyRouter path="/" render={ props => LayoutRouter }/>
@@ -59,7 +60,7 @@ class RouterMap extends React.Component {
                 <RouterHash>
                     <Switch>
                         <Route path="/login" >
-                            <Login actions={this.props.userinfoActions} />
+                            <Login />
                         </Route>
                         <MyRouter path="/" render={ props => LayoutRouter }/>
                     </Switch>
@@ -72,13 +73,15 @@ class RouterMap extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        userinfo: state.userinfo
+        userinfo: state.userinfo,
+        menuList: state.menuList
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        userinfoActions: bindActionCreators(userinfoActions, dispatch)
+        userinfoActions: bindActionCreators(userinfoActions, dispatch),
+        menuActions: bindActionCreators(menuActions, dispatch),
     }
 }
 

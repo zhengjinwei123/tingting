@@ -1,7 +1,8 @@
 package main
 
 import (
-	"YUT/manager"
+	"YUT/manager/configManager"
+	"YUT/manager/mysqlManager"
 	"context"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -29,17 +30,13 @@ func main() {
 		r.Mount("/user", UserRouter())
 	})
 
-	// 加载菜单
-	log.Printf("menu %v", manager.GetMenuList().Menus)
-
-
 	// 加载mysql
-	serverConf, err := manager.GetServerConfig()
+	serverConf, err := configManager.GetServerConfig()
 	if err != nil {
 		panic(err)
 	}
 
-	mysqlProxy := manager.GetMysqlProxy()
+	mysqlProxy := mysqlManager.GetMysqlProxy()
 	if err := mysqlProxy.Init(serverConf.GetMysqlAddr()); err != nil {
 		panic(err)
 	}

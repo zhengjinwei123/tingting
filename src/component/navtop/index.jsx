@@ -19,6 +19,8 @@ class NavTop extends React.Component {
         userService.logout().then((data) => {
             userService.setUserLogout()
             this.props.history.push("/login");
+
+            this.props.menuActions.menuInit({})
         }, err => {
             console.error(err)
             utils.errorTips(err)

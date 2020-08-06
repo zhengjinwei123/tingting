@@ -1,5 +1,4 @@
 
-
 export default {
     STATUS : {
         STATUS_SUCCESS: 0,
@@ -7,12 +6,9 @@ export default {
     },
 
     ACTIONS: {
-        USERINFO_LOGIN: "action_userinfo_login"
+        USERINFO_LOGIN: "action_userinfo_login",
+        MENU_CHANGE: "action_menu_change",
+        MENU_INIT: "action_menu_init"
     }
 
 }
-
-
-
-
-

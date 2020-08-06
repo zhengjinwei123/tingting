@@ -1,5 +1,7 @@
 import CONST from "proto/consts.jsx";
 
+import userService from "service/user.jsx";
+
 class Utils{
     constructor() {
         if (!Utils.instance) {
@@ -18,6 +20,15 @@ class Utils{
 
     request(options) {
         return new Promise((resolve, reject) => {
+
+            if (options.url !== "/api/user/login") {
+                if (!userService.checkUserHasLogin()) {
+                    reject("error: please login first")
+                    return
+                }
+            }
+
+
             $.ajax({
                 type: options.type || "get",
                 url: options.url || '',
@@ -45,6 +56,7 @@ class Utils{
 
     redirectLogin() {
         console.log("redirectLogin")
+        this.clearStorage();
 
         window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
     }
@@ -91,6 +103,10 @@ class Utils{
             return rawData;
         }
         return '';
+    }
+
+    clearStorage() {
+        window.localStorage.clear();
     }
 
     removeStorage(name) {

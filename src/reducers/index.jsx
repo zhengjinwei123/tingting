@@ -1,8 +1,10 @@
 import { combineReducers } from "redux"
 import userinfo from "reducers/userinfo.jsx"
+import menuList from "reducers/menulist.jsx";
 
 const rootReducer =  combineReducers({
-    userinfo
+    userinfo,
+    menuList
 })
 
 export default rootReducer;

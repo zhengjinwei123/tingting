@@ -94,6 +94,13 @@ class UserService {
             }
         })
     }
+
+    getMenus() {
+        return utils.request({
+            type: 'post',
+            url: '/api/user/menulist'
+        });
+    }
 }
 
 export default UserService.getInstance()

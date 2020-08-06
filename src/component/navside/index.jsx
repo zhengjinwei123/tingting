@@ -1,13 +1,19 @@
 import React from "react"
 import {Link, NavLink } from "react-router-dom";
 import $ from "jquery";
+import userService from "service/user.jsx";
 
 class NavSide extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            menuList: {},
+            parentMenuMap : {}
+        }
     }
 
-    componentDidMount() {
+    runMenu() {
         $.sidebarMenu = function(menu) {
             var animationSpeed = 200;
 
@@ -51,6 +57,49 @@ class NavSide extends React.Component {
         $.sidebarMenu($('.sidebar-menu'))
     }
 
+    componentWillMount() {
+
+        if (Object.keys(this.props.menuList).length > 0) {
+            console.log("zjw called");
+            this.setState(this.props.menuList)
+        } else {
+            console.log("zjw called get menus")
+            userService.getMenus().then((data) => {
+                // 处理菜单数据
+                let menuList = {};
+                let parentMenuMap = {};
+                for (let k in data.menulist) {
+                    let menuObj = data.menulist[k];
+
+                    if (menuObj.parent_id === 0) {
+                        menuList[menuObj.id] = [];
+                        parentMenuMap[menuObj.id] = menuObj;
+                    } else {
+                        menuList[menuObj.parent_id] = menuList[menuObj.parent_id] || [];
+                        menuList[menuObj.parent_id].push(menuObj)
+                    }
+                }
+
+                this.setState({
+                    menuList: menuList,
+                    parentMenuMap : parentMenuMap
+                })
+
+                this.props.menuActions.menuInit({
+                    menuList: menuList,
+                    parentMenuMap : parentMenuMap
+                })
+            }, err => {
+                console.error(err)
+            })
+        }
+    }
+
+    componentDidMount() {
+        // load menu
+        this.runMenu();
+    }
+
     render() {
         return (
             <div>
@@ -65,72 +114,37 @@ class NavSide extends React.Component {
                             </NavLink>
                         </li>
 
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-files-o"></i>
-                                <span>资源管理</span>
-                                <span className="fa fa-angle-left pull-right"></span>
-                            </a>
-                            <ul className="treeview-menu" style={{display:"none"}}>
-                                <li><Link to="/photo-upload"><i className="fa fa-circle-o"></i> 图片上传 </Link></li>
-                                <li><Link to="/media-upload"><i className="fa fa-circle-o"></i> 视频上传 </Link></li>
-                                <li><Link to="/media-manage"><i className="fa fa-circle-o"></i> 资源管理 </Link></li>
-                            </ul>
-                        </li>
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-pie-chart"></i>
-                                <span>数据统计</span>
-                                <i className="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul className="treeview-menu">
-                                <li><Link to="/data-analyse"><i className="fa fa-circle-o"></i> 数据分析 </Link></li>
-                                <li><Link to="/data-query"><i className="fa fa-circle-o"></i> 数据查询 </Link></li>
-                            </ul>
-                        </li>
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-laptop"></i>
-                                <span>博客</span>
-                                <i className="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul className="treeview-menu">
-                                <li><Link to="/blog-new"><i className="fa fa-circle-o"></i> 写博客 </Link></li>
-                                <li><Link to="/blog-manage"><i className="fa fa-circle-o"></i> 博客管理 </Link></li>
-                            </ul>
-                        </li>
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-edit"></i> <span>用户</span>
-                                <i className="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul className="treeview-menu">
-                                <li><Link to="/user-new"><i className="fa fa-circle-o"></i> 新建用户 </Link></li>
-                                <li><Link to="/user-authmanage"><i className="fa fa-circle-o"></i> 权限管理 </Link></li>
-                                <li><Link to="/user-groupmanage"><i className="fa fa-circle-o"></i> 用户组管理 </Link></li>
-                                <li><Link to="/user-query"><i className="fa fa-circle-o"></i> 用户查询 </Link></li>
-                            </ul>
-                        </li>
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-table"></i> <span> 广告 </span>
-                                <i className="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul className="treeview-menu">
-                                <li><Link to="/advert-new"><i className="fa fa-circle-o"></i> 新建 </Link></li>
-                                <li><Link to="/advert-query"><i className="fa fa-circle-o"></i> 查询 </Link></li>
-                            </ul>
-                        </li>
-                        <li className="treeview">
-                            <a href="#">
-                                <i className="fa fa-folder"></i> <span>游戏</span>
-                                <i className="fa fa-angle-left pull-right"></i>
-                            </a>
-                            <ul className="treeview-menu">
-                                <li><Link to="/game-list"><i className="fa fa-circle-o"></i> 游戏列表 </Link></li>
-                                <li><Link to="/game-manage"><i className="fa fa-circle-o"></i> 管理 </Link></li>
-                            </ul>
-                        </li>
+                        {
+                            Object.keys(this.state.menuList).map((parentMenuId, idx) => {
+
+                                if (this.state.menuList[parentMenuId].length) {
+
+                                    let parentMenu = this.state.parentMenuMap[parentMenuId];
+                                    let parentIcon = "fa " + parentMenu.icon;
+                                    return (
+                                        <li className="treeview" key={idx}>
+                                            <a href="#">
+                                                <i className={ parentIcon }></i>
+                                                <span>{ parentMenu.desc }</span>
+                                                <span className="fa fa-angle-left pull-right"></span>
+                                            </a>
+                                            <ul className="treeview-menu">
+                                            {
+                                                this.state.menuList[parentMenuId].map((item, idx1) => {
+                                                    let icon = "fa " + item.icon;
+                                                    let linkTo = item.link;
+                                                    return (
+                                                        <li key={idx1}><Link to={ linkTo }><i className={ icon }></i> {item.desc} </Link></li>
+                                                    )
+                                                })
+                                            }
+                                            </ul>
+
+                                        </li>
+                                    )
+                                }
+                            })
+                        }
                     </ul>
                 </section>
             </aside>

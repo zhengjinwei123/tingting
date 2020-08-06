@@ -1,17 +1,17 @@
 package userservice
 
 import (
-	"YUT/manager"
-	"YUT/proto"
+	"YUT/manager/mysqlManager"
+	"YUT/proto/dbproto"
 	"fmt"
 )
 
 const table_name = "t_user"
 
-func GetUser(username string, password string, user_info *proto.DBUserInfo) error {
-	proxy := manager.GetMysqlProxy()
+func GetUser(username string, password string, user_info *dbproto.DBUserInfo) error {
+	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.QueryOne(fmt.Sprintf("select username,password from `%s` where username='%s' and password='%s'",
+	err := proxy.QueryOne(fmt.Sprintf("select * from `%s` where username='%s' and password='%s'",
 		table_name, username, password), user_info)
 	if err != nil {
 		return err
@@ -20,11 +20,11 @@ func GetUser(username string, password string, user_info *proto.DBUserInfo) erro
 	return nil
 }
 
-func RegisterUser(username string, password string, email string) error {
-	proxy := manager.GetMysqlProxy()
+func RegisterUser(username string, password string, email string, group_id int) error {
+	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`username`,`password`,`email`) values('%s','%s','%s')",
-		table_name, username, password, email))
+	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`username`,`password`,`email`,`group_id`) values('%s','%s','%s',%d)",
+		table_name, username, password, email, group_id))
 
 	return err
 }

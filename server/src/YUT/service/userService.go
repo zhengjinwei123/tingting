@@ -2,8 +2,9 @@ package service
 
 import (
 	"YUT/dbservice/userservice"
-	"YUT/manager"
-	"YUT/proto"
+	"YUT/manager/userManager"
+	"YUT/proto/dbproto"
+	"YUT/proto/netproto"
 	"YUT/utils/orm"
 	"log"
 	"net/http"
@@ -12,7 +13,7 @@ import (
 
 func UserLogin(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
-	request := &proto.NetUserLoginRequest{}
+	request := &netproto.NetUserLoginRequest{}
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
@@ -20,26 +21,26 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := &proto.NetUserLoginResponse{}
+	response := &netproto.NetUserLoginResponse{}
 	response.SetResponseWriter(w)
 	response.UserName = request.UserName
 
-	if manager.GetUsrSessionMgr().UserHasLogin(r) {
+	if userManager.GetUsrSessionMgr().UserHasLogin(r) {
 		response.Msg = "user has login";
 		response.ResponseError();
 		return;
 	}
 
-	var dbUser proto.DBUserInfo
+	var dbUser dbproto.DBUserInfo
 	if err := userservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
 		response.Msg = "user [" +request.UserName + "] not found"
 		response.ResponseError();
 		return
 	}
 
-	err = manager.GetUsrSessionMgr().SetUserLogin(request.UserName, w, r)
+	err = userManager.GetUsrSessionMgr().SetUserLogin(request.UserName, dbUser.GroupId, w, r)
 	if err != nil {
-		response.Msg = "user has login failed"
+		response.Msg = "user login failed"
 		response.ResponseError()
 		return
 	}
@@ -48,19 +49,19 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func UserLogout(w http.ResponseWriter, r *http.Request) {
-	response := proto.NetUserLoginResponse{
+	response := netproto.NetUserLoginResponse{
 		UserName: "",
 	}
 	response.SetResponseWriter(w)
 
-	_ = manager.GetUsrSessionMgr().SetUserLogout(w, r)
+	_ = userManager.GetUsrSessionMgr().SetUserLogout(w, r)
 	response.ResponseSuccess()
 }
 
 func UserRegister(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
-	request := &proto.NetUserRegisterRequest{}
+	request := &netproto.NetUserRegisterRequest{}
 
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
@@ -69,10 +70,10 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := &proto.NetUserRegisterResponse{}
+	response := &netproto.NetUserRegisterResponse{}
 	response.SetResponseWriter(w)
 
-	err = userservice.RegisterUser(request.UserName, request.Password, request.Email)
+	err = userservice.RegisterUser(request.UserName, request.Password, request.Email, request.GroupId)
 	if err != nil {
 		response.Msg = err.Error();
 		response.ResponseError()
