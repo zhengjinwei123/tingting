@@ -20,7 +20,12 @@ class Layout extends React.Component {
             this.props.history.push("/")
             return false;
         }
+
         return true;
+    }
+
+    componentWillMount() {
+        console.dir(this.props.menuList)
     }
 
     render() {

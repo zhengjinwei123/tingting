@@ -60,10 +60,10 @@ class NavSide extends React.Component {
     componentWillMount() {
 
         if (Object.keys(this.props.menuList).length > 0) {
-            console.log("zjw called");
+            console.log("menu load from props");
             this.setState(this.props.menuList)
         } else {
-            console.log("zjw called get menus")
+            console.log("menu load from server")
             userService.getMenus().then((data) => {
                 // 处理菜单数据
                 let menuList = {};

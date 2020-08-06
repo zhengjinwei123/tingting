@@ -51,9 +51,7 @@ class UserNew extends React.Component {
         }, (err) => {
             utils.errorTips(err)
         });
-
     }
-
 
     render() {
         return (

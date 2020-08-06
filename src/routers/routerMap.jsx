@@ -18,16 +18,54 @@ import * as menuActions from "actions/menulist.jsx";
 
 class MyRouter extends React.Component {
 
+    checkAuth(pathName) {
+        if (pathName === "/") {
+            return true;
+        }
+
+        if (pathName === "/login") {
+            return true;
+        }
+
+        for (let k in this.props.menuList.menuList) {
+
+            for (let kk in this.props.menuList.menuList[k]) {
+                if (this.props.menuList.menuList[k][kk].link === pathName) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     render() {
         let userHasLogin = userService.checkUserHasLogin();
+        let pathName = this.props.location.pathname;
 
-        return (
-            <div>
-                {
-                    userHasLogin ? <Route { ...this.props }></Route> : <Redirect to="/login"></Redirect>
-                }
-            </div>
-        )
+        let hasAuth = this.checkAuth(pathName)
+
+        if (userHasLogin) {
+            if (hasAuth) {
+                return (
+                    <div>
+                        <Route { ...this.props } />
+                    </div>
+                )
+            } else {
+                return (
+                    <div>
+                        <Redirect to="/" />
+                    </div>
+                )
+            }
+
+        } else {
+            return (
+                <div>
+                    <Redirect to="/login" />
+                </div>
+            )
+        }
     }
 }
 
@@ -50,8 +88,7 @@ class RouterMap extends React.Component {
                         <Route path="/login" >
                             <Login />
                         </Route>
-                        {/*<Route path="/login" component={ Login } />*/}
-                        <MyRouter path="/" render={ props => LayoutRouter }/>
+                        <MyRouter path="/" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
                     </Switch>
                 </Router>
             )
