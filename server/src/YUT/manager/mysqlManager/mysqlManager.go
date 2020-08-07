@@ -15,7 +15,7 @@ func (this *mysqlProxy) Init(addr string) error {
 	var err error
 	this.proxy, err = sqlx.Open("mysql", addr)
 	if err != nil {
-		log.Fatalf("init mysql error: %s %v \n", addr, err)
+		log.Printf("init mysql error: %s %v \n", addr, err)
 		return err;
 	}
 

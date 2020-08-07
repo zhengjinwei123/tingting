@@ -17,7 +17,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -66,7 +66,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Fatalf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
