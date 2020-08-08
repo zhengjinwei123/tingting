@@ -8,3 +8,9 @@ type Menu struct {
 	Link string
 	Sort int
 }
+
+type ReqUrl struct {
+	Id int
+	Desc string
+	Url string
+}

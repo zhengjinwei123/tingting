@@ -1,7 +1,7 @@
 package service
 
 import (
-	"YUT/dbservice/groupService"
+	"YUT/dbservice/dbgroupservice"
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
@@ -38,7 +38,7 @@ func GroupList(w http.ResponseWriter, r *http.Request) {
 	response.SetResponseWriter(w)
 
 	var dbGroupList []*dbproto.DBGroupListInfo
-	err := groupService.GetGroupList(&dbGroupList)
+	err := dbgroupservice.GetGroupList(&dbGroupList)
 	if err != nil {
 		response.Msg = err.Error()
 		response.ResponseError()

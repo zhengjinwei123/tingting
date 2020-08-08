@@ -32,5 +32,36 @@
       "601,列表,fa-circle-o,/game-list",
       "602,管理,fa-circle-o,/game-manage"
     ]
+  ],
+  "requestlist": [
+    [
+      "1001,/res/upload,资源上传",
+      "1002,/res/query,资源查询",
+      "1003,/res/delete,资源删除",
+      "1004,/res/publish,资源发布",
+
+      "2001,/user/register,用户注册",
+      "2002,/user/list,用户列表",
+      "2003,/user/delete,用户删除",
+      "2004,/user/update,用户更新",
+      "2005,/user/menulist,用户菜单",
+
+      "3001,/h5game/list,h5游戏列表",
+      "3002,/h5game/upload,h5游戏发布",
+      "3003,/h5game/update,h5游戏更新",
+      "3004,/h5game/run/status,h5游戏运行状态查询",
+
+      "4001,/blog/new,新建博客",
+      "4002,/blog/update,更新博客",
+      "4003,/blog/delete,删除博客",
+      "4004,/blog/publish,发布博客",
+
+      "5001,/advert/new,新建广告",
+      "5002,/advert/update,更新广告",
+      "5003,/advert/delete,删除广告",
+      "5004,/advert/publish,发布广告",
+
+      "6001,/global/grouplist,用户分组列表"
+    ]
   ]
 }

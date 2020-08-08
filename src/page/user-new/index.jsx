@@ -25,6 +25,8 @@ class UserNew extends React.Component {
         let inputValue = e.target.value,
             inputName = e.target.name;
 
+        console.log(inputName, inputValue)
+
         this.setState({
             [inputName] : inputValue
         })
@@ -59,6 +61,7 @@ class UserNew extends React.Component {
     componentWillMount() {
         globalService.groupList().then(res => {
             console.log("user new get group", res)
+
             this.setState({
                 groupList: res.grouplist
             })
@@ -77,13 +80,11 @@ class UserNew extends React.Component {
                         <div className="panel-body">
                             <form className="form-vertical">
                                 <div className="form-group">
-                                    <label htmlFor="email">用户名:</label>
+                                    <label htmlFor="username">用户名:</label>
                                     <input type="input"
-                                           id="username"
                                            className="form-control"
                                            name="username"
                                            placeholder="输入用户名"
-                                           value=""
                                            onChange={ e => this.onInputChange(e) } />
                                 </div>
                                 <div className="form-group">
@@ -91,27 +92,25 @@ class UserNew extends React.Component {
                                     <input type="email"
                                            className="form-control"
                                            name="email"
-                                           value=""
                                            placeholder="输入电子邮箱"
                                            onChange={ e => this.onInputChange(e) }/>
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="pwd">密  码:</label>
+                                    <label htmlFor="password">密  码:</label>
                                     <input type="password"
                                            className="form-control"
                                            name="password"
-                                           value=""
                                            placeholder="输入密码"
                                            onChange={ e => this.onInputChange(e) } />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="pwd">用户组:</label>
-                                    <select className="form-control">
+                                    <label htmlFor="">用户组:</label>
+                                    <select className="form-control" name="group" onChange={ e => this.onInputChange(e) }>
 
                                         {
                                             this.state.groupList.map((item, idx) => {
                                                 return (
-                                                    <option key={idx}>{item.id} - { item.desc }</option>
+                                                    <option value={item.id} key={idx}>{item.id} - { item.desc }</option>
                                                 )
                                             })
                                         }

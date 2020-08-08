@@ -3,6 +3,7 @@ package netproto
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -22,7 +23,7 @@ func outputJson(data interface{}, status int, w http.ResponseWriter) {
 
 	_, err := io.WriteString(w, string(ret_json))
 	if err != nil {
-		panic(err)
+		log.Printf("outputJson error: %s \n", ret_json)
 	}
 }
 
@@ -44,13 +45,27 @@ type NetNotLoginResponse struct {
 }
 
 func (this *NetNotLoginResponse) ResponseError() {
-	outputJson(*this, 101, this.writer)
+	outputJson(*this, NET_STATUS_NOT_LOGIN, this.writer)
 
 }
 
 func (this *NetNotLoginResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
+// NoAuth
+type NetNoAuthResponse struct {
+	NetResponse
+}
+func (this *NetNoAuthResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_NO_AUTH, this.writer)
+
+}
+
+func (this *NetNoAuthResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
 
 // login
 type NetUserLoginRequest struct {
@@ -65,7 +80,7 @@ type NetUserLoginResponse struct {
 }
 
 func (this *NetUserLoginResponse) ResponseError() {
-	outputJson(*this, -1, this.writer)
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
 
 }
 
@@ -87,7 +102,7 @@ type NetUserRegisterResponse struct {
 }
 
 func (this *NetUserRegisterResponse) ResponseError() {
-	outputJson(*this, -1, this.writer)
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
 
 }
 
@@ -112,7 +127,7 @@ type NetMenuListResponse struct {
 }
 
 func (this *NetMenuListResponse) ResponseError() {
-	outputJson(*this, -1, this.writer)
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
 }
 
 func (this *NetMenuListResponse) ResponseSuccess() {
@@ -132,7 +147,7 @@ type NetGroupResponse struct {
 }
 
 func (this *NetGroupResponse) ResponseError() {
-	outputJson(*this, -1, this.writer)
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
 }
 
 func (this *NetGroupResponse) ResponseSuccess() {

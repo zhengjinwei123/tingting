@@ -10,6 +10,8 @@ type DBUserInfo struct {
 type DBGroupInfo struct {
 	GroupId int `db:"id"`
 	MenuStr string `db:"menus"`
+	Desc string `db:"desc"`
+	AuthStr string `db:"auths"`
 }
 
 type DBGroupListInfo struct {

@@ -1,7 +1,7 @@
 package service
 
 import (
-	"YUT/dbservice/userservice"
+	"YUT/dbservice/dbuserservice"
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
@@ -32,7 +32,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var dbUser dbproto.DBUserInfo
-	if err := userservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
+	if err := dbuserservice.GetUser(request.UserName, request.Password, &dbUser); err != nil {
 		response.Msg = "user [" +request.UserName + "] not found"
 		response.ResponseError();
 		return
@@ -73,7 +73,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	response := &netproto.NetUserRegisterResponse{}
 	response.SetResponseWriter(w)
 
-	err = userservice.RegisterUser(request.UserName, request.Password, request.Email, request.GroupId)
+	err = dbuserservice.RegisterUser(request.UserName, request.Password, request.Email, request.GroupId)
 	if err != nil {
 		response.Msg = err.Error();
 		response.ResponseError()

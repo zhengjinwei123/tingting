@@ -1,8 +1,10 @@
 package main
 
 import (
+	"YUT/manager/authManager"
 	"YUT/manager/configManager"
 	"YUT/manager/mysqlManager"
+	"YUT/utils"
 	"context"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -31,15 +33,20 @@ func main() {
 		r.Mount("/global", GlobalRouter())
 	})
 
+	// 权限路由加载
+	if err := authManager.GetAuthManager().Load(); err != nil {
+		utils.PanicExt(err.Error())
+	}
 	// 加载mysql
 	serverConf, err := configManager.GetServerConfig()
 	if err != nil {
-		panic(err)
+		utils.PanicExt(err.Error())
+		return
 	}
 
 	mysqlProxy := mysqlManager.GetMysqlProxy()
 	if err := mysqlProxy.Init(serverConf.GetMysqlAddr()); err != nil {
-		panic(err)
+		utils.PanicExt(err.Error())
 	}
 	defer mysqlProxy.Close()
 

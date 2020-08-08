@@ -35,6 +35,17 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 				resp.ResponseError()
 				return
 			}
+		} else {
+			// 已经登录 权限合法性判断
+			if r.URL.Path != "/api/user/logout" {
+				if !userManager.GetUsrSessionMgr().CheckAuth(r) {
+					resp := &netproto.NetNoAuthResponse{}
+					resp.SetResponseWriter(w)
+					resp.Msg = "No Auth, Please Contact To Admin Manager"
+					resp.ResponseError()
+					return
+				}
+			}
 		}
 
 		next.ServeHTTP(w, r)
