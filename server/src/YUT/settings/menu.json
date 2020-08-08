@@ -19,7 +19,7 @@
     [
       "400,用户,fa-edit,#",
       "401,新建用户,fa-circle-o,/user-new",
-      "402,权限管理,fa-circle-o,/user-authmanage",
+      "402,权限管理,fa-circle-o,/user-auth-manage",
       "403,用户查询,fa-circle-o,/user-query"
     ],
     [

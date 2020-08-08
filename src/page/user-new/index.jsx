@@ -16,7 +16,7 @@ class UserNew extends React.Component {
             username: '',
             password: '',
             email: '',
-            group: '',
+            group_id: '',
             groupList: []
         }
     }
@@ -50,7 +50,8 @@ class UserNew extends React.Component {
         userService.register({
             username: this.state.username,
             password: this.$md5(this.state.password),
-            email: this.state.email
+            email: this.state.email,
+            group_id: this.state.group_id
         }).then(res => {
             utils.successTips("注册成功")
         }, (err) => {
@@ -62,9 +63,16 @@ class UserNew extends React.Component {
         globalService.groupList().then(res => {
             console.log("user new get group", res)
 
-            this.setState({
-                groupList: res.grouplist
-            })
+            if (res.grouplist.length) {
+                this.setState({
+                    groupList: res.grouplist
+                })
+
+                this.setState({
+                    group_id: res.grouplist[0].id
+                })
+            }
+
         },(err) => {
             console.log(err)
         })
@@ -81,40 +89,52 @@ class UserNew extends React.Component {
                             <form className="form-vertical">
                                 <div className="form-group">
                                     <label htmlFor="username">用户名:</label>
-                                    <input type="input"
+                                    <div className="input-group margin-bottom-sm">
+                                        <span className="input-group-addon"><i className="fa fa-user fa-fw"></i></span>
+                                        <input type="input"
                                            className="form-control"
                                            name="username"
                                            placeholder="输入用户名"
                                            onChange={ e => this.onInputChange(e) } />
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="email">电子邮箱:</label>
-                                    <input type="email"
-                                           className="form-control"
-                                           name="email"
-                                           placeholder="输入电子邮箱"
-                                           onChange={ e => this.onInputChange(e) }/>
+                                    <div className="input-group margin-bottom-sm">
+                                        <span className="input-group-addon"><i className="fa fa-envelope-o fa-fw"></i></span>
+                                        <input type="email"
+                                               className="form-control"
+                                               name="email"
+                                               placeholder="输入电子邮箱"
+                                               onChange={ e => this.onInputChange(e) }/>
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="password">密  码:</label>
-                                    <input type="password"
-                                           className="form-control"
-                                           name="password"
-                                           placeholder="输入密码"
-                                           onChange={ e => this.onInputChange(e) } />
+                                    <div className="input-group margin-bottom-sm">
+                                        <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
+                                        <input type="password"
+                                               className="form-control"
+                                               name="password"
+                                               placeholder="输入密码"
+                                               onChange={ e => this.onInputChange(e) } />
+                                    </div>
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="">用户组:</label>
-                                    <select className="form-control" name="group" onChange={ e => this.onInputChange(e) }>
+                                    <div className="input-group margin-bottom-sm">
+                                        <span className="input-group-addon"><i className="fa fa-snapchat fa-fw"></i></span>
+                                        <select className="form-control" name="group_id" onChange={ e => this.onInputChange(e) }>
 
-                                        {
-                                            this.state.groupList.map((item, idx) => {
-                                                return (
-                                                    <option value={item.id} key={idx}>{item.id} - { item.desc }</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
+                                            {
+                                                this.state.groupList.map((item, idx) => {
+                                                    return (
+                                                        <option value={item.id} key={idx}>{item.id} - { item.desc }</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <button type="submit" className="btn btn-primary btn-block" onClick={e => this.onRegister(e) }>注册</button>

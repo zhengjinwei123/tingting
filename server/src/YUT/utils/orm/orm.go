@@ -2,6 +2,7 @@ package orm
 
 import (
 	"errors"
+	"log"
 	"net/url"
 	"reflect"
 	"strconv"
@@ -96,5 +97,7 @@ func UnmarshalHttpValues(i interface{}, form url.Values) error {
 			continue
 		}
 	}
+
+	log.Printf("unmarshal httpvalues: %v \n", i)
 	return nil
 }

@@ -28,7 +28,6 @@ class Utils{
                 }
             }
 
-
             $.ajax({
                 type: options.type || "get",
                 url: options.url || '',
@@ -48,7 +47,12 @@ class Utils{
                 },
                 error: err => {
                     console.error("Promise error:", err, JSON.stringify(options))
+
                     typeof reject === 'function' && reject(err.statusText);
+
+                    if (err.status === 504) {
+                        console.error("504,服务器出错了!!!!")
+                    }
                 }
             })
         })
@@ -59,6 +63,10 @@ class Utils{
         this.clearStorage();
 
         window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+    }
+
+    redirect(url) {
+        window.open(url, "top")
     }
 
     getUrlParams(name) {

@@ -106,11 +106,11 @@ class NavSide extends React.Component {
             <aside className="main-sidebar">
                 <section className="sidebar">
                     <ul className="sidebar-menu">
-                        <li className="header"><h2 className="text-warning">YUT 管理系统</h2></li>
+                        <li className="header"><h3 className="text-red"><i className="fa fa-dashboard fa-fw fa-left"></i>YUT 管理系统</h3></li>
 
                         <li className="treeview">
                             <NavLink exact to="/">
-                                <i className="fa fa-dashboard"></i> <span>首页</span>
+                                <i className="fa fa-home text-yellow"></i><span>首页</span>
                             </NavLink>
                         </li>
 
@@ -120,7 +120,7 @@ class NavSide extends React.Component {
                                 if (this.state.menuList[parentMenuId].length) {
 
                                     let parentMenu = this.state.parentMenuMap[parentMenuId];
-                                    let parentIcon = "fa " + parentMenu.icon;
+                                    let parentIcon = "fa " + parentMenu.icon +" text-yellow";
                                     return (
                                         <li className="treeview" key={idx}>
                                             <a href="#">
@@ -131,7 +131,7 @@ class NavSide extends React.Component {
                                             <ul className="treeview-menu">
                                             {
                                                 this.state.menuList[parentMenuId].map((item, idx1) => {
-                                                    let icon = "fa " + item.icon;
+                                                    let icon = "fa " + item.icon + " text-success";
                                                     let linkTo = item.link;
                                                     return (
                                                         <li key={idx1}><Link to={ linkTo }><i className={ icon }></i> {item.desc} </Link></li>

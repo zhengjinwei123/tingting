@@ -1,0 +1,17 @@
+.nav-center {
+  margin: 0 0 0 220px;
+  padding: 15px 30px;
+  button {
+    margin: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-center {
+    margin: 0 0 0 1px;
+    padding: 5px 5px;
+  }
+  .navbar-right {
+    float: right;
+  }
+}

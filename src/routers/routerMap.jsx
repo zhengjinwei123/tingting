@@ -6,6 +6,7 @@ import Home from 'page/home/index.jsx';
 import Error from "page/error/index.jsx";
 import Login from "page/login/index.jsx";
 import UserNew from "page/user-new/index.jsx";
+import UserAuthManage from "page/user-auth-manage/index.jsx";
 
 import userService from "service/user.jsx";
 
@@ -72,6 +73,7 @@ class RouterMap extends React.Component {
                 <Switch>
                     <Route exact path="/" component={Home}/>
                     <Route path="/user-new" component={UserNew} />
+                    <Route path="/user-auth-manage" component={UserAuthManage} />
                     <Route component={Error}/>
                 </Switch>
             </Layout>
