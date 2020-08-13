@@ -20,10 +20,10 @@ func GetMenuList(groupId int, group_info *dbproto.DBGroupInfo) error {
 	return nil
 }
 
-func GetGroupList(group_list *[]*dbproto.DBGroupListInfo) error {
+func GetGroupList(group_list *[]*dbproto.DBGroupInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.QueryList(fmt.Sprintf("select id,`desc` from `%s`",
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s`",
 		table_name), group_list)
 
 	if err != nil {

@@ -1,0 +1,14 @@
+.group-pannel-container {
+  display: block;
+  border: 1px solid rgba(213, 64, 188, 0.51);
+  border-radius: 10px;
+  .check-box {
+    margin-left: 10px;
+    color: #ffb53e;
+  }
+
+  .check-box:hover {
+    font-size: medium;
+    background-color: rgba(201, 162, 234, 0.98);
+  }
+}

@@ -1,0 +1,33 @@
+
+.dialog-con {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.child {
+  height: 200px;
+  position: fixed;
+  top: 40px;
+  left: 40%;
+}
+
+
+.item1-enter {
+  opacity: 0;
+}
+.item1-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.item1-exit {
+  opacity: 1;
+}
+.item1-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
+

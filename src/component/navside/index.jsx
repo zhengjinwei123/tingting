@@ -57,7 +57,7 @@ class NavSide extends React.Component {
         $.sidebarMenu($('.sidebar-menu'))
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
 
         if (Object.keys(this.props.menuList).length > 0) {
             console.log("menu load from props");

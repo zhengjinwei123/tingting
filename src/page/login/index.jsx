@@ -17,7 +17,7 @@ class Login extends React.Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         document.title = "登录 YUT"
     }
 

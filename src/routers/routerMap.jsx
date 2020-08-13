@@ -16,7 +16,6 @@ import * as userinfoActions from "actions/userinfo.jsx";
 import * as menuActions from "actions/menulist.jsx";
 
 
-
 class MyRouter extends React.Component {
 
     checkAuth(pathName) {

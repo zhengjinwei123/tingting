@@ -24,7 +24,7 @@ class Layout extends React.Component {
         return true;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         console.dir(this.props.menuList)
     }
 

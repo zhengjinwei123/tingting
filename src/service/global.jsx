@@ -22,6 +22,22 @@ class Global {
             data: {}
         });
     }
+
+    authList() {
+        return utils.request({
+            type: "post",
+            url: "/api/global/authlist",
+            data: {}
+        });
+    }
+
+    groupDetailList() {
+        return utils.request({
+            type: 'post',
+            url: '/api/global/group-detail-list',
+            data: {}
+        });
+    }
 }
 
 export default Global.getInstance()

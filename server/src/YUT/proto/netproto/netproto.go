@@ -153,3 +153,46 @@ func (this *NetGroupResponse) ResponseError() {
 func (this *NetGroupResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
+// get auth list
+type Auth struct {
+	Id int `json:"id"`
+	Desc string `json:"desc"`
+	Url string `json:"url"`
+}
+type NetAuthListResponse struct {
+	NetResponse
+
+	AuthList []*Auth `json:"authlist"`
+	MenuList []*Auth `json:"menulist"`
+}
+
+func (this *NetAuthListResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+}
+
+func (this *NetAuthListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// get group detail list
+type GroupDetail struct {
+	Id int `json:"id"`
+	Desc string `json:"desc"`
+	Menus string `json:"menus"`
+	Auths string `json:"auths"`
+}
+
+type NetGroupDetailListResponse struct {
+	NetResponse
+
+	GroupList []*GroupDetail `json:"grouplist"`
+}
+
+func (this *NetGroupDetailListResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+}
+
+func (this *NetGroupDetailListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}

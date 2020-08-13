@@ -192,6 +192,11 @@ func (this *UsrSessionManager) GetUserGroupId(r *http.Request) int {
 }
 
 func (this *UsrSessionManager) CheckAuth(r *http.Request) bool {
+	groupId := this.GetUserGroupId(r)
+	if groupId == 1 {
+		return true
+	}
+
 	userName := this.GetUserName(r)
 	url := r.URL.Path
 

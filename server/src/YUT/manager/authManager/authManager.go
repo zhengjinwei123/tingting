@@ -28,6 +28,7 @@ func newAuthManager() *authManager {
 	authM := &authManager{}
 	authM.hasInit = false
 	authM.reqMap = make(map[int]*proto.ReqUrl, 0)
+	authM.reqGroup = make(map[int][]*proto.ReqUrl, 0)
 
 	return authM
 }
@@ -41,6 +42,7 @@ func GetAuthManager() *authManager {
 
 type authManager struct {
 	reqMap map[int]*proto.ReqUrl
+	reqGroup map[int][]*proto.ReqUrl
 	hasInit bool
 }
 
@@ -80,6 +82,13 @@ func (this *authManager) Load() error {
 				Desc: desc,
 			}
 			this.reqMap[id] = reqUrl
+
+			mapId := int(id / 1000);
+			_, exists = this.reqGroup[mapId]
+			if !exists {
+				this.reqGroup[mapId] = make([]*proto.ReqUrl, 0)
+			}
+			this.reqGroup[mapId] = append(this.reqGroup[mapId], reqUrl)
 		}
 	}
 
@@ -93,4 +102,8 @@ func (this *authManager) GetAuthById(id int) (*proto.ReqUrl, error) {
 		return this.reqMap[id], nil
 	}
 	return nil, errors.New(fmt.Sprintf("GetUrlById not found id: %d",id))
+}
+
+func (this *authManager) GetAuthMap() map[int][]*proto.ReqUrl {
+	return this.reqGroup
 }

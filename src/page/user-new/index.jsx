@@ -59,7 +59,7 @@ class UserNew extends React.Component {
         });
     }
 
-    componentWillMount() {
+    componentDidMount() {
         globalService.groupList().then(res => {
             console.log("user new get group", res)
 

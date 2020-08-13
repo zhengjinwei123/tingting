@@ -6,7 +6,7 @@ class PageTitle extends React.Component {
         super(props);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         document.title = this.props.title + " - YUT 管理信息系统"
     }
 

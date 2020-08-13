@@ -64,6 +64,7 @@ class NavTop extends React.Component {
         ]
 
         return (
+
             <div className="navbar navbar-default top-navbar">
                 <div className="navbar-header">
                     <div className="nav-center">
@@ -82,7 +83,7 @@ class NavTop extends React.Component {
 
                 <ul className="nav navbar-top-links navbar-right">
                     <li className="dropdown">
-                        <a className="dropdown-toggle" href="javascript:;">
+                        <a className="dropdown-toggle" href="javascript=#!">
                             <i className="fa fa-user fa-fw fa-2x text-yellow"></i>
                             {
                                 <span>欢迎 <span className="text-red">{ this.state.username }</span></span>

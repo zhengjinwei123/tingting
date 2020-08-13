@@ -2,6 +2,9 @@ import CONST from "proto/consts.jsx";
 
 import userService from "service/user.jsx";
 
+import Child from "component/alert/child.jsx"
+import Dialog  from "component/alert/index.jsx"
+
 class Utils{
     constructor() {
         if (!Utils.instance) {
@@ -77,11 +80,37 @@ class Utils{
     }
 
     successTips(successMsg) {
-        alert(successMsg || '操作成功!');
+
+        Dialog.open({
+            childrens: [Child],
+            props: {
+                content: successMsg,
+                tips: "成功",
+                open: true,
+                type: "info" // info danger warning
+            },
+            closeDialog: function() {
+                console.log("closeDialog successTips")
+            },
+        })
     }
 
     errorTips(errMsg) {
-        window.alert(errMsg || '操作失败!');
+        // window.alert(errMsg || '操作失败!');
+
+        Dialog.open({
+            childrens: [Child],
+            props: {
+                content: errMsg,
+                tips: "提示",
+                open: true,
+                type: "danger" // info danger warning
+            },
+            closeDialog: function() {
+                console.log("closeDialog errorTips")
+            },
+        })
+
     }
 
     setStorage(name, value) {
