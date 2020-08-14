@@ -22,6 +22,7 @@ class Utils{
     }
 
     request(options) {
+        console.log("request:", options)
         return new Promise((resolve, reject) => {
 
             if (options.url !== "/api/user/login") {

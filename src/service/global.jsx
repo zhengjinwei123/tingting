@@ -38,6 +38,18 @@ class Global {
             data: {}
         });
     }
+
+    addGroup(group_name, menus_str, auths_str) {
+        return utils.request({
+            type: "post",
+            url: "/api/global/addgroup",
+            data: {
+                group: group_name,
+                menus: menus_str,
+                auths: auths_str
+            }
+        });
+    }
 }
 
 export default Global.getInstance()
