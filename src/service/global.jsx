@@ -50,6 +50,18 @@ class Global {
             }
         });
     }
+
+    updateGroupAuth(id, menus_str, auths_str) {
+        return utils.request({
+            type: "post",
+            url: "/api/global/update-group-auth",
+            data: {
+                id: id,
+                menus: menus_str,
+                auths: auths_str
+            }
+        });
+    }
 }
 
 export default Global.getInstance()

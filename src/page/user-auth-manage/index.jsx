@@ -23,15 +23,11 @@ class UserAuthManage extends React.Component {
     }
 
     componentDidMount() {
-
         globalService.groupDetailList().then(res => {
-
             this.setState({
                 group_detail_list: res.grouplist
             })
-
             console.log("group_detail_list:", res.grouplist)
-
         }, err => {
             console.error(err)
         })
@@ -41,7 +37,6 @@ class UserAuthManage extends React.Component {
         this.setState({
             showAdd: true
         })
-        // utils.errorTips("zjw called")
     }
 
     render() {

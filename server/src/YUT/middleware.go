@@ -41,7 +41,7 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 				if !userManager.GetUsrSessionMgr().CheckAuth(r) {
 					resp := &netproto.NetNoAuthResponse{}
 					resp.SetResponseWriter(w)
-					resp.Msg = "No Auth, Please Contact To Admin Manager"
+					resp.Msg = r.URL.Path +  ": No Auth, Please Contact To Admin Manager"
 					resp.ResponseError()
 					return
 				}

@@ -13,6 +13,7 @@ func UserRouter() http.Handler {
 	r.Post("/logout", service.UserLogout)
 	r.Post("/register", service.UserRegister)
 	r.Post("/menulist", service.MenuList)
+	r.Post("/list", service.UserList)
 
 	return r
 }
@@ -23,5 +24,7 @@ func GlobalRouter() http.Handler {
 	r.Post("/grouplist", service.GroupList)
 	r.Post("/authlist", service.AuthList)
 	r.Post("/group-detail-list", service.GroupDetailList)
+	r.Post("/addgroup", service.GroupAdd)
+	r.Post("/update-group-auth", service.GroupAuthUpdate)
 	return r
 }

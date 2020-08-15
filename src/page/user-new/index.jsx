@@ -1,6 +1,5 @@
 import React from "react"
 import {Link, withRouter} from "react-router-dom";
-
 import "./index.scss"
 import PageTitle from "component/pagetitle/index.jsx";
 import $ from "jquery"
@@ -82,6 +81,7 @@ class UserNew extends React.Component {
         return (
             <div id="page-wrapper">
                 <PageTitle title="新建用户"/>
+
                 <div className="container">
                     <div className="panel panel-default register-pannel">
                         <div className="panel-heading">用户注册</div>

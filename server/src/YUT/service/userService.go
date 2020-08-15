@@ -105,3 +105,30 @@ func MenuList(w http.ResponseWriter, r *http.Request) {
 
 	response.ResponseSuccess()
 }
+
+func UserList(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	response := &netproto.NetUserListResponse {}
+	response.SetResponseWriter(w)
+
+	var dbUserList []*dbproto.DBUserInfo
+
+	err := dbuserservice.GetUserList(&dbUserList)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	for _, v := range dbUserList {
+		t := &netproto.NetUserDetail {
+			UserName: v.UserName,
+			GroupId: v.GroupId,
+			Email: v.Email,
+		}
+		response.UserList = append(response.UserList, t)
+	}
+
+	response.ResponseSuccess()
+}

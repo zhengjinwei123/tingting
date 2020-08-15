@@ -3,6 +3,7 @@ package dbgroupservice
 import (
 	"YUT/manager/mysqlManager"
 	"YUT/proto/dbproto"
+	"errors"
 	"fmt"
 )
 
@@ -35,4 +36,29 @@ func GetGroupList(group_list *[]*dbproto.DBGroupInfo) error {
 
 func GetAuthList(groupId int, group_info *dbproto.DBGroupInfo) error {
 	return GetMenuList(groupId, group_info)
+}
+
+func AddGroup(group_name, menus, auths string) error {
+
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`desc`,`menus`,`auths`) values('%s','%s','%s')",
+		table_name, group_name, menus, auths))
+
+	return err
+}
+
+func GroupAuthUpdate(group_id int, menus, auths string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Update(fmt.Sprintf("update `%s` set `menus`='%s',`auths`='%s' where `id`=%d",
+		table_name, menus, auths, group_id))
+	if err != nil {
+		return err
+	}
+
+	if n <= 0 {
+		return errors.New("update failed: data not changed")
+	}
+	return nil
 }

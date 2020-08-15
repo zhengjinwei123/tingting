@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
+import { Header, Segment } from 'semantic-ui-react'
 
 import './index.scss'
 import PageTitle from "component/pagetitle/index.jsx";
@@ -18,62 +19,66 @@ class Home extends React.Component {
     }
 
     render() {
+        const square = { width: 175, height: 175 }
+
         return (
             <div id="page-wrapper">
                 <PageTitle title="首页"/>
-                <div className="row">
-                    <div className="col-md-4">
-                        <Link to="/user" className="color-box brown">
-                            <p className="count">{ this.state.userCount }</p>
-                            <p className="desc">
-                                <i className="fa fa-user-o"></i>
-                                <span>用户总数</span>
-                            </p>
-                        </Link>
-                    </div>
+                <div className={"color-box"}>
+                    <Link to="#">
+                        <Segment circular style={square} inverted color={"teal"} >
+                            <Header as='h2'>
+                                用户总数!
+                                <Header.Subheader>{this.state.userCount}</Header.Subheader>
+                            </Header>
+                        </Segment>
+                    </Link>
 
-                    <div className="col-md-4">
-                        <Link to="/product" className="color-box green">
-                            <p className="count">{ this.state.resCount }</p>
-                            <p className="desc">
-                                <i className="fa fa-list"></i>
-                                <span>资源总数</span>
-                            </p>
-                        </Link>
-                    </div>
-
-                    <div className="col-md-4">
-                        <Link to="/order" className="color-box blue">
-                            <p className="count">{this.state.gameCount}</p>
-                            <p className="desc">
-                                <i className="fa fa-check-square-o"></i>
-                                <span>游戏总数</span>
-                            </p>
-                        </Link>
-                    </div>
                 </div>
 
-                <div className="row" style={{marginTop: "20px"}} >
-                    <div className="col-md-4">
-                        <Link to="/order" className="color-box red">
-                            <p className="count">{this.state.moneyCount} 元</p>
-                            <p className="desc">
-                                <i className="fa fa-check-square-o"></i>
-                                <span>总收入</span>
-                            </p>
-                        </Link>
-                    </div>
-
-                    <div className="col-md-4">
-                        <Link to="/order" className="color-box green">
-                            <p className="count">{this.state.publishBlogCount}</p>
-                            <p className="desc">
-                                <i className="fa fa-check-square-o"></i>
-                                <span>发布博客总数</span>
-                            </p>
-                        </Link>
-                    </div>
+                <div className={"color-box"}>
+                    <Link to="#">
+                        <Segment circular style={square} inverted color={"yellow"}>
+                            <Header as='h2'>
+                                资源总数
+                                <Header.Subheader>{this.state.resCount}</Header.Subheader>
+                            </Header>
+                        </Segment>
+                    </Link>
                 </div>
+
+                <div className={"color-box"}>
+                    <Link to="#">
+                        <Segment circular style={square} inverted color={"olive"}>
+                            <Header as='h2'>
+                                游戏总数
+                                <Header.Subheader>{this.state.gameCount}</Header.Subheader>
+                            </Header>
+                        </Segment>
+                    </Link>
+                </div>
+                <div className={"color-box"}>
+                    <Link to="#">
+                    <Segment circular style={square} inverted color={"violet"}>
+                        <Header as='h2'>
+                            总收入
+                            <Header.Subheader>{this.state.moneyCount} 元</Header.Subheader>
+                        </Header>
+                    </Segment>
+                    </Link>
+                </div>
+
+                <div className={"color-box"}>
+                    <Link to="#">
+                    <Segment circular style={square} inverted color={"green"}>
+                        <Header as='h2'>
+                            发布博客总数
+                            <Header.Subheader>{this.state.publishBlogCount}</Header.Subheader>
+                        </Header>
+                    </Segment>
+                    </Link>
+                </div>
+
             </div>
         )
     }

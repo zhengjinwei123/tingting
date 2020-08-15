@@ -4,6 +4,7 @@ import userService from "service/user.jsx";
 
 import Child from "component/alert/child.jsx"
 import Dialog  from "component/alert/index.jsx"
+import Loading from "component/loading/index.jsx"
 
 class Utils{
     constructor() {
@@ -23,6 +24,7 @@ class Utils{
 
     request(options) {
         console.log("request:", options)
+        this.openLoading();
         return new Promise((resolve, reject) => {
 
             if (options.url !== "/api/user/login") {
@@ -38,6 +40,7 @@ class Utils{
                 dataType: options.dataType || 'json',
                 data: options.data || null,
                 success: res => {
+                    this.closeLoading();
                     console.log("------Promise Start---")
                     console.dir(res)
                     console.log("------Promise End-----")
@@ -50,6 +53,7 @@ class Utils{
                     }
                 },
                 error: err => {
+                    this.closeLoading();
                     console.error("Promise error:", err, JSON.stringify(options))
 
                     typeof reject === 'function' && reject(err.statusText);
@@ -81,7 +85,6 @@ class Utils{
     }
 
     successTips(successMsg) {
-
         Dialog.open({
             childrens: [Child],
             props: {
@@ -91,27 +94,32 @@ class Utils{
                 type: "info" // info danger warning
             },
             closeDialog: function() {
-                console.log("closeDialog successTips")
+                console.log(successMsg)
             },
         })
     }
 
     errorTips(errMsg) {
-        // window.alert(errMsg || '操作失败!');
-
         Dialog.open({
             childrens: [Child],
             props: {
                 content: errMsg,
-                tips: "提示",
+                tips: "出错啦",
                 open: true,
                 type: "danger" // info danger warning
             },
             closeDialog: function() {
-                console.log("closeDialog errorTips")
+                console.error(errMsg)
             },
         })
+    }
 
+    openLoading() {
+        Loading.open()
+    }
+
+    closeLoading() {
+        Loading.close()
     }
 
     setStorage(name, value) {

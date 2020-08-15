@@ -196,3 +196,64 @@ func (this *NetGroupDetailListResponse) ResponseError() {
 func (this *NetGroupDetailListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
+// add group
+type NetGroupAddRequest struct {
+	GroupName string `http:"group"`
+	Menus string `http:"menus"`
+	Auths string `http:"auths"`
+}
+type NetGroupAddResponse struct {
+	NetResponse
+}
+
+func (this *NetGroupAddResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetGroupAddResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// update group auth
+type NetGroupAuthUpdateRequest struct {
+	GroupId int `http:"id"`
+	Menus string `http:"menus"`
+	Auths string `http:"auths"`
+}
+
+type NetGroupAuthUpdateResponse struct {
+	NetResponse
+}
+
+func (this *NetGroupAuthUpdateResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetGroupAuthUpdateResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// user list
+
+type NetUserDetail struct {
+	UserName string `json:"username"`
+	Email string `json:"email"`
+	GroupId int `json:"group_id"`
+}
+
+type NetUserListResponse struct {
+	NetResponse
+
+	UserList []*NetUserDetail `json:"userlist"`
+}
+
+func (this *NetUserListResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+}
+
+func (this *NetUserListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}

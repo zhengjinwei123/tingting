@@ -4,8 +4,11 @@ import (
 	"YUT/dbservice/dbgroupservice"
 	"YUT/manager/authManager"
 	"YUT/manager/menuManager"
+	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
+	"YUT/utils/orm"
+	"log"
 	"net/http"
 )
 
@@ -55,6 +58,56 @@ func GroupDetailList(w http.ResponseWriter, r *http.Request) {
 		}
 		response.GroupList = append(response.GroupList, groupDetail)
 	}
+
+	response.ResponseSuccess()
+}
+
+func GroupAdd(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGroupAddRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetGroupAddResponse{}
+	response.SetResponseWriter(w)
+
+	err = dbgroupservice.AddGroup(request.GroupName, request.Menus, request.Auths)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	response.ResponseSuccess()
+}
+
+func GroupAuthUpdate(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGroupAuthUpdateRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetGroupAuthUpdateResponse{}
+	response.SetResponseWriter(w)
+
+	err = dbgroupservice.GroupAuthUpdate(request.GroupId, request.Menus, request.Auths)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	userManager.GetUsrSessionMgr().ReloadGroupAuth(r, request.GroupId)
 
 	response.ResponseSuccess()
 }

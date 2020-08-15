@@ -85,13 +85,11 @@ class UserService {
         });
     }
 
-    getUserList(page_num) {
+    getUserList() {
         return utils.request({
             type: 'post',
             url: '/api/user/list',
-            data: {
-                page_num: page_num
-            }
+            data: {}
         })
     }
 

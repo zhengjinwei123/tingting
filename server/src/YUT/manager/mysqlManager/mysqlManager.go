@@ -2,9 +2,10 @@ package mysqlManager
 
 import (
 	"database/sql"
+	"fmt"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
-	_ "github.com/go-sql-driver/mysql"
 )
 
 type mysqlProxy struct {
@@ -41,6 +42,21 @@ func (this *mysqlProxy) Insert(sql string) error {
 		return err
 	}
 	return nil
+}
+
+func (this *mysqlProxy) GetCount(sql string) (int, error) {
+	rows, err := this.proxy.Query(sql)
+	if err != nil {
+		return 0, err
+	}
+
+	count := 0
+	for rows.Next(){
+		count += 1
+	}
+
+	fmt.Println(fmt.Sprintf("getcounrt: %d", count))
+	return count, nil
 }
 
 func (this *mysqlProxy) QueryOne(sql string, v interface{}) error {

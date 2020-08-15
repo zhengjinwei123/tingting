@@ -72,6 +72,23 @@ func (this *UsrSessionManager) loadAuth(r *http.Request) {
 	}
 }
 
+func (this *UsrSessionManager) ReloadGroupAuth(r *http.Request, group_id int) {
+	userName := this.GetUserName(r)
+	if userName == "" {
+		return
+	}
+	groupId := this.GetUserGroupId(r)
+	if group_id != groupId {
+		return
+	}
+
+	this.clearAuth(userName)
+	this.clearMenu(userName)
+
+	this.loadAuth(r)
+	this.loadMenu(r)
+}
+
 func (this *UsrSessionManager) clearAuth(userName string) {
 	// clear menus
 	_, ok := this.authList[userName];

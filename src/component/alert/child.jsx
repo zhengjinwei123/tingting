@@ -33,13 +33,13 @@ class Child extends Component {
     render() {
 
         let validType = {
-            'error' : 1,
+            'danger' : 1,
             'info' : 1,
-            'warn' : 1,
+            'warning' : 1,
         }
 
         let type = "info";
-        if (validType[this.state.type] != null) {
+        if (validType[this.state.type]) {
             type = this.state.type;
         }
 

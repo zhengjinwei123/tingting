@@ -12,6 +12,9 @@ class AuthItems extends React.Component {
 
             menus: {},
             auths: {},
+
+            checked_menus: {},
+            checked_auths: {}
         }
     }
 
@@ -31,6 +34,15 @@ class AuthItems extends React.Component {
 
             for (let j = 0; j < data[i].data.length; j++) {
                 if (data[i].data[j].checked) {
+
+                    let parent_index = id_list.findIndex(function(x) {
+                        return x === data[i].data[j].parent_id;
+                    })
+
+                    if (parent_index === -1) {
+                        id_list.push(data[i].data[j].parent_id)
+                    }
+
                     id_list.push(data[i].data[j].id);
                 }
             }
@@ -49,24 +61,46 @@ class AuthItems extends React.Component {
     componentDidMount() {
         if (this.state.first_render) {
             let auths = {};
+
             Object.keys(this.props.auth_parents).map((id, idx) => {
 
-                let data_list = [];
+                let item_k = this.props.auth_parents[id];
 
+                if (this.props.checked_auths != null) {
+                    if (this.props.checked_auths[item_k.id]) {
+                        item_k.checked = true;
+                    } else {
+                        item_k.checked = false;
+                    }
+                } else {
+                    item_k.checked = true;
+                }
+
+                item_k.type = 0;
+
+
+                let data_list = [];
                 this.props.auths[id].map((item, idx) => {
                     let data1 = item;
                     data1.type = 1;
-                    data1.checked = true;
+
+                    if (this.props.checked_auths != null) {
+
+                        if (this.props.checked_auths[data1.id]) {
+                            data1.checked = true;
+                        } else {
+                            data1.checked = false;
+                        }
+                    } else {
+                        data1.checked = true;
+                    }
+
+                    data1.parent_id = item_k.id;
                     data_list[idx] = data1;
                 })
-                let item_data = data_list;
-
-                let item_k = this.props.auth_parents[id];
-                item_k.checked = true;
-                item_k.type = 0;
 
                 auths[id] = auths[id] || {
-                    data: item_data,
+                    data: data_list,
                     k: item_k
                 }
             })
@@ -76,7 +110,6 @@ class AuthItems extends React.Component {
                 menus: this.mergeMenus(this.props.menus),
                 auths: auths,
             }, () => {
-                console.log("get state", this.state)
             })
         }
 
@@ -116,8 +149,6 @@ class AuthItems extends React.Component {
 
 
     onMenuChange(e, checked, id, type, v) {
-        console.log("onMenuChange", checked, id, type, v)
-
         if (type === 0) {
             // 全选
             let menus = this.state.menus;
@@ -155,7 +186,20 @@ class AuthItems extends React.Component {
             let e = item.id % 100;
 
             item.idx = idx ++;
-            item.checked = true;
+
+
+
+            if (this.props.checked_menus != null) {
+
+
+                if (this.props.checked_menus[item.id]) {
+                    item.checked = true;
+                } else {
+                    item.checked = false;
+                }
+            } else {
+                item.checked = true;
+            }
 
             menus[iid] = menus[iid] || {
                 data: [],
@@ -167,6 +211,7 @@ class AuthItems extends React.Component {
                 menus[iid].k = item;
             } else {
                 item.type = 1;
+                item.parent_id = menus[iid].k.id;
                 menus[iid].data.push(item)
             }
         })
@@ -199,7 +244,7 @@ class AuthItems extends React.Component {
                                                     <List.List key={menus[iid].k.idx}>
                                                         <List.Item>
                                                             <List.Icon name='share' />
-                                                            <List.Content>
+                                                            <List.Content className={"list-line"}>
                                                                 <List.Header>{menus[iid].k.desc}</List.Header>
                                                                 <Checkbox label={menus[iid].k.checked ? "全不选":"全选"} className={ "check-box"} t={menus[iid].k.type} value={iid} v={menus[iid].k.id} checked={menus[iid].k.checked}
                                                                           onChange={(e, {checked, value, t, v}) => { this.onMenuChange(e, checked, value, t, v)} }/>

@@ -79,12 +79,19 @@ class GroupAddModal extends React.Component {
 
     onSubmit() {
 
+        if (this.state.group_name.length <= 1) {
+            utils.errorTips("用户组名称太短!");
+            return;
+        }
+
         if (this.authItemComponent) {
             let data = this.authItemComponent.getData();
             let menus = data.menus.join(",")
             let auths = data.auths.join(",")
+
             globalService.addGroup(this.state.group_name, menus, auths).then(res => {
                 console.log("onSubmit", res)
+                utils.successTips("success");
             }, err => {
                 utils.errorTips(err)
                 console.error(err)

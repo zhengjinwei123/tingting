@@ -32,14 +32,26 @@ func GetUserByName(username string, user_info *dbproto.DBUserInfo) error {
 func RegisterUser(username string, password string, email string, group_id int) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	var user_info *dbproto.DBUserInfo
-	err := GetUserByName(username, user_info)
+	count, err := proxy.GetCount(fmt.Sprintf("select * from `%s` where username='%s'", table_name, username))
 	if err != nil {
-		return errors.New("user: "+ username + " has registered")
+		return errors.New(err.Error())
+	}
+
+	if count > 0 {
+		return errors.New("user " + username + " has  registered")
 	}
 
 	err = proxy.Insert(fmt.Sprintf("insert into `%s` (`username`,`password`,`email`,`group_id`) values('%s','%s','%s',%d)",
 		table_name, username, password, email, group_id))
 
+	return err
+}
+
+
+func GetUserList(user_list *[]*dbproto.DBUserInfo) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s`",
+		table_name), user_list)
 	return err
 }
