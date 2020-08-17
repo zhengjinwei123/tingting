@@ -208,6 +208,12 @@ func (this *UsrSessionManager) GetUserGroupId(r *http.Request) int {
 	return groupId
 }
 
+func (this *UsrSessionManager) IsAdmin(r *http.Request) bool {
+	groupIdStr := manager.GetSession("group_id", r)
+	groupId := groupIdStr.(int)
+	return groupId == 1
+}
+
 func (this *UsrSessionManager) CheckAuth(r *http.Request) bool {
 	groupId := this.GetUserGroupId(r)
 	if groupId == 1 {

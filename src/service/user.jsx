@@ -93,6 +93,28 @@ class UserService {
         })
     }
 
+    updateUser(username, email, group_id) {
+        return utils.request({
+            type: 'post',
+            url: '/api/user/update',
+            data: {
+                username: username,
+                email: email,
+                group_id: group_id
+            }
+        })
+    }
+
+    deleteUser(username) {
+        return utils.request({
+            type: 'post',
+            url: '/api/user/delete',
+            data: {
+                username: username,
+            }
+        })
+    }
+
     getMenus() {
         return utils.request({
             type: 'post',

@@ -90,8 +90,9 @@ class GroupAddModal extends React.Component {
             let auths = data.auths.join(",")
 
             globalService.addGroup(this.state.group_name, menus, auths).then(res => {
-                console.log("onSubmit", res)
                 utils.successTips("success");
+
+                this.props.updatePage();
             }, err => {
                 utils.errorTips(err)
                 console.error(err)
@@ -127,7 +128,7 @@ class GroupAddModal extends React.Component {
                     </Container>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button positive onClick={ () => this.onSubmit() }>提交修改</Button>
+                    <Button positive onClick={ () => this.onSubmit() }>新增</Button>
                     <Button positive onClick={ () => this.setShow(false) }>
                         关闭
                     </Button>

@@ -72,7 +72,8 @@
       "6003,/global/authupdate,权限更新",
       "6004,/global/group-detail-list,用户组详情列表",
       "6005,/global/addgroup,新增用户组",
-      "6006,/global/update-group-auth,用户组权限修改"
+      "6006,/global/update-group-auth,用户组权限修改",
+      "6007,/global/group-delete,用户组删除"
     ]
   ]
 }

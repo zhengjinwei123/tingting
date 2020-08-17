@@ -4,6 +4,8 @@ import { Icon, Label, Table } from 'semantic-ui-react'
 import GroupAuthEditModal from "page/user-auth-manage/group-auth-edit-modal/index.jsx";
 import globalService from "service/global.jsx";
 
+import utils from "utils/utils.jsx"
+
 
 class UserAuthTable extends React.Component {
     constructor(props) {
@@ -22,14 +24,13 @@ class UserAuthTable extends React.Component {
     UNSAFE_componentWillReceiveProps(nextProps) {
         setTimeout(() => {
             this.setState({
-                group_detail_list: this.state.group_detail_list.length === 0 ?  nextProps.groupDetailList: this.state.group_detail_list
+                group_detail_list: nextProps.groupDetailList
             })
         }, 0)
     }
 
     closeDialog() {
 
-        console.log("closeDialog called")
         this.setState({
             showEditModal: false
         })
@@ -53,6 +54,19 @@ class UserAuthTable extends React.Component {
         })
     }
 
+    onDelete(id) {
+        utils.confirmDialog("确认删除吗？", (agree) => {
+            if (agree) {
+                globalService.deleteGroup(id).then(res => {
+                    this.updatePage()
+                    utils.successTips("success")
+                }, error => {
+                    utils.errorTips(error)
+                })
+            }
+        })
+    }
+
     render() {
         return (
             <div>
@@ -62,6 +76,7 @@ class UserAuthTable extends React.Component {
                             <Table.HeaderCell>用户组ID</Table.HeaderCell>
                             <Table.HeaderCell>用户组名称</Table.HeaderCell>
                             <Table.HeaderCell>权限</Table.HeaderCell>
+                            <Table.HeaderCell>编辑</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -92,6 +107,11 @@ class UserAuthTable extends React.Component {
                                                 desc
                                             }
                                         </Label>
+                                    </Button>
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Button color='youtube' onClick={() => this.onDelete(item.id)} disabled={item.id === 1 ? true : false}>
+                                        <Icon name='delete' /> 删除
                                     </Button>
                                 </Table.Cell>
                             </Table.Row>

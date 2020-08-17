@@ -62,6 +62,16 @@ class Global {
             }
         });
     }
+
+    deleteGroup(id) {
+        return utils.request({
+            type: "post",
+            url: "/api/global/group-delete",
+            data: {
+                id: id
+            }
+        });
+    }
 }
 
 export default Global.getInstance()

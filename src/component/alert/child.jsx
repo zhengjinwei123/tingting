@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Modal} from "semantic-ui-react";
+import {Button, Modal, Message} from "semantic-ui-react";
 
 class Child extends Component {
     constructor(props){
@@ -52,12 +52,20 @@ class Child extends Component {
                 open={ this.state.show }
             >
                 <Modal.Header> <span className={color}>{ this.state.tips } </span></Modal.Header>
-                <Modal.Content>
-                    <p>{ this.state.content }</p>
+                <Modal.Content className={"content"}>
+                    {
+                        this.state.type === "danger" ?
+                            <Message warning>
+                                { this.state.content }
+                            </Message> :
+                            <Message positive>
+                                { this.state.content }
+                            </Message>
+                    }
                 </Modal.Content>
                 <Modal.Actions>
                     <Button positive onClick={ () => this.onClose(false) }>
-                        Yes
+                        好的
                     </Button>
                 </Modal.Actions>
             </Modal>

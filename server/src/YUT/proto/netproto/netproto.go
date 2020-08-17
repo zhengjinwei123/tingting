@@ -237,7 +237,6 @@ func (this *NetGroupAuthUpdateResponse) ResponseSuccess() {
 }
 
 // user list
-
 type NetUserDetail struct {
 	UserName string `json:"username"`
 	Email string `json:"email"`
@@ -255,5 +254,61 @@ func (this *NetUserListResponse) ResponseError() {
 }
 
 func (this *NetUserListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// group delete
+type NetGroupDeleteRequest struct {
+	GroupId int `http:"id"`
+}
+
+type NetGroupDeleteResponse struct {
+	NetResponse
+}
+
+func (this *NetGroupDeleteResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetGroupDeleteResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// user update
+type NetUserUpdateRequest struct {
+	GroupId int `http:"group_id"`
+	UserName string `http:"username"`
+	Email string `http:"email"`
+}
+
+type NetUserUpdateResponse struct {
+	NetResponse
+}
+
+func (this *NetUserUpdateResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetUserUpdateResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// user delete
+type NetUserDeleteRequest struct {
+	UserName string `http:"username"`
+}
+
+type NetUserDeleteResponse struct {
+	NetResponse
+}
+
+func (this *NetUserDeleteResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetUserDeleteResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }

@@ -47,6 +47,38 @@ func RegisterUser(username string, password string, email string, group_id int) 
 	return err
 }
 
+func UserUpdate(username string, email string, group_id int) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Update(fmt.Sprintf("update `%s` set `email`='%s',`group_id`=%d where `username`='%s'",
+		table_name, email, group_id, username))
+
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("data not changed")
+	}
+
+	return nil
+}
+
+func UserDelete(username string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Delete(fmt.Sprintf("delete from `%s` where `username`='%s'",
+		table_name, username))
+
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("data not changed")
+	}
+
+	return nil
+}
+
 
 func GetUserList(user_list *[]*dbproto.DBUserInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()

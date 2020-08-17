@@ -93,8 +93,8 @@ class Dialog extends Component{
                 <CSSTransition timeout={500} className="item1">
                     {
                         this.state.open ?
-                            <Child open={true } tips={this.state.tips} content={this.state.content} type={this.state.type }/> :
-                            <Child open={false } tips={this.state.tips} content={this.state.content} type={this.state.type }/>
+                            <Child open={true } tips={this.state.tips} content={this.state.content} type={this.state.type } close={() => this.close()}/> :
+                            <Child open={false } tips={this.state.tips} content={this.state.content} type={this.state.type } close={() => this.close()}/>
                     }
 
                 </CSSTransition>

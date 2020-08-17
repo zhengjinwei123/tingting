@@ -144,3 +144,35 @@ func AuthList(w http.ResponseWriter, r *http.Request) {
 
 	response.ResponseSuccess()
 }
+
+func GroupDelete(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGroupDeleteRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetGroupDeleteResponse{}
+	response.SetResponseWriter(w)
+
+	if (!userManager.GetUsrSessionMgr().IsAdmin(r)) {
+		response.Msg = "no auth"
+		response.ResponseError()
+		return;
+	}
+
+	err = dbgroupservice.GroupDelete(request.GroupId)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	userManager.GetUsrSessionMgr().ReloadGroupAuth(r, request.GroupId)
+
+	response.ResponseSuccess()
+}

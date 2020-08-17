@@ -62,3 +62,17 @@ func GroupAuthUpdate(group_id int, menus, auths string) error {
 	}
 	return nil
 }
+
+func GroupDelete(group_id int) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Delete(fmt.Sprintf("delete from `%s` where `id`=%d",
+		table_name, group_id))
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("update failed: data not changed")
+	}
+	return nil
+}

@@ -23,19 +23,27 @@ class UserAuthManage extends React.Component {
     }
 
     componentDidMount() {
+       this.updatePage();
+    }
+
+    updatePage(close) {
         globalService.groupDetailList().then(res => {
+
             this.setState({
                 group_detail_list: res.grouplist
             })
-            console.log("group_detail_list:", res.grouplist)
+
+            if (close) {
+                this.showAdd(false)
+            }
         }, err => {
             console.error(err)
         })
     }
 
-    showAdd() {
+    showAdd(show) {
         this.setState({
-            showAdd: true
+            showAdd: show
         })
     }
 
@@ -46,7 +54,7 @@ class UserAuthManage extends React.Component {
                <div className="auth-pannel">
                    <div className="panel panel-default">
                        <div className="panel-heading">
-                           <Button inverted color='violet' onClick={this.showAdd}>
+                           <Button inverted color='violet' onClick={() => this.showAdd(true)}>
                                新增用户组
                            </Button>
                        </div>
@@ -57,7 +65,7 @@ class UserAuthManage extends React.Component {
                </div>
 
                <div>
-                   <GroupAddModal show={ this.state.showAdd }/>
+                   <GroupAddModal show={ this.state.showAdd } updatePage={ () => this.updatePage(true)} />
                </div>
            </div>
        )

@@ -14,6 +14,8 @@ func UserRouter() http.Handler {
 	r.Post("/register", service.UserRegister)
 	r.Post("/menulist", service.MenuList)
 	r.Post("/list", service.UserList)
+	r.Post("/update", service.Update)
+	r.Post("/delete", service.Delete)
 
 	return r
 }
@@ -26,5 +28,6 @@ func GlobalRouter() http.Handler {
 	r.Post("/group-detail-list", service.GroupDetailList)
 	r.Post("/addgroup", service.GroupAdd)
 	r.Post("/update-group-auth", service.GroupAuthUpdate)
+	r.Post("/group-delete", service.GroupDelete)
 	return r
 }

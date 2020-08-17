@@ -132,3 +132,53 @@ func UserList(w http.ResponseWriter, r *http.Request) {
 
 	response.ResponseSuccess()
 }
+
+func Update(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserUpdateRequest{}
+
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetUserUpdateResponse{}
+	response.SetResponseWriter(w)
+
+	err = dbuserservice.UserUpdate(request.UserName, request.Email, request.GroupId)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	response.ResponseSuccess()
+}
+
+func Delete(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserDeleteRequest{}
+
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetUserDeleteResponse{}
+	response.SetResponseWriter(w)
+
+	err = dbuserservice.UserDelete(request.UserName)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError()
+		return
+	}
+
+	response.ResponseSuccess()
+}

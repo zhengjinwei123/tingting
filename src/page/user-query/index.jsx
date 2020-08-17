@@ -1,11 +1,13 @@
 import React from "react"
 import PageTitle from "component/pagetitle/index.jsx";
-import { Table,Button,Icon, Input } from 'semantic-ui-react'
+import { Table,Button,Icon, Input, Dropdown } from 'semantic-ui-react'
 
 import userService from "service/user.jsx"
 import utils from "utils/utils.jsx"
+import globalService from "service/global.jsx";
 
 import "./index.scss"
+
 
 class UserQuery extends React.Component {
 
@@ -13,11 +15,18 @@ class UserQuery extends React.Component {
         super(props);
 
         this.state = {
-            user_list :[]
+            user_list :[],
+            group_list : []
         }
+
+        this.checkChanged = this.checkChanged.bind(this)
     }
 
-    componentDidMount() {
+    isAdminUser(user) {
+        return user.username === "admin" && user.group_id === 1;
+    }
+
+    loadUserList() {
         userService.getUserList().then(res => {
 
             let userList = [];
@@ -26,6 +35,8 @@ class UserQuery extends React.Component {
                 item.group_input = false;
                 item.focus = false;
                 item.idx = idx;
+                item.last_email = item.email;
+                item.last_group = item.group_id;
 
                 userList[idx] = item;
             })
@@ -39,7 +50,32 @@ class UserQuery extends React.Component {
         })
     }
 
+    loadGroupList() {
+        globalService.groupList().then(res => {
+            if (res.grouplist.length) {
+                this.setState({
+                    group_list: res.grouplist
+                })
+            }
+
+        },(err) => {
+            console.log(err)
+        })
+    }
+
+    componentDidMount() {
+
+        this.loadUserList();
+        this.loadGroupList();
+    }
+
+
     onDbClick(user, type) {
+
+        if (this.isAdminUser(user)) {
+            return;
+        }
+
         let user_list = this.state.user_list;
         let edit_field = (type === "e") ? "email_input" : "group_input"
 
@@ -102,6 +138,14 @@ class UserQuery extends React.Component {
 
     disableInput(edit_field, user) {
         if (user[edit_field]) {
+
+            if (edit_field === "email_input") {
+                if (!utils.validEmail(user.email)) {
+                    utils.errorTips("邮箱非法")
+                    return;
+                }
+            }
+
             let user_list = this.state.user_list;
             user[edit_field] = false;
             user_list[user.idx] = user;
@@ -109,6 +153,58 @@ class UserQuery extends React.Component {
                 user_list: user_list
             })
         }
+    }
+
+    checkChanged(user) {
+        return ((user.email !== user.last_email) ||
+            (user.group_id !== user.last_group))
+    }
+
+    onUpdate(user) {
+        if (!this.checkChanged(user)) {
+            utils.errorTips("没有可更新的数据");
+            return;
+        }
+
+        userService.updateUser(user.username, user.email, user.group_id).then(res => {
+
+            utils.successTips()
+
+            user.last_group = user.group_id;
+            user.last_email = user.email;
+
+            let user_list = this.state.user_list;
+            user_list[user.idx] = user;
+            this.setState({
+                user_list: user_list
+            })
+
+        }, error => {
+            utils.errorTips(error)
+        })
+    }
+
+    onGroupChange(e, group_id, user) {
+        user.group_id = group_id;
+
+        let user_list = this.state.user_list;
+        user_list[user.idx] = user;
+        this.setState({
+            user_list: user_list
+        })
+    }
+
+    onDeleteUser(user) {
+
+        utils.confirmDialog("确认删除 " + user.username +" 吗?", (agree) => {
+            if (agree) {
+                userService.deleteUser(user.username).then(res => {
+                    this.loadUserList();
+                }, err => {
+                    utils.errorTips(err)
+                })
+            }
+        })
     }
 
     render() {
@@ -123,7 +219,7 @@ class UserQuery extends React.Component {
                                     <Table.Row>
                                         <Table.HeaderCell>用户名</Table.HeaderCell>
                                         <Table.HeaderCell>邮箱</Table.HeaderCell>
-                                        <Table.HeaderCell>用户组ID</Table.HeaderCell>
+                                        <Table.HeaderCell>用户组</Table.HeaderCell>
                                         <Table.HeaderCell>编辑</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
@@ -131,6 +227,27 @@ class UserQuery extends React.Component {
                                 <Table.Body>
                                     {
                                         this.state.user_list.map((user, idx) => {
+
+                                            let dataChanged = this.checkChanged(user)
+
+                                            let groupOptions = [];
+                                            let groupPlaceHolder = "";
+                                            this.state.group_list.map((group, idx) => {
+                                                groupOptions.push({
+                                                    key: idx,
+                                                    text: group.desc + "(" +group.id + ")" ,
+                                                    value: group.id
+                                                })
+
+                                                if (group.id === user.group_id) {
+                                                    groupPlaceHolder = group.desc + "(" +group.id + ")";
+                                                }
+
+                                                if (user.group_id === group.id) {
+                                                    user.desc = group.desc;
+                                                }
+                                            })
+
                                             return (
                                                 <Table.Row key={idx}>
                                                     <Table.Cell>{user.username}</Table.Cell>
@@ -145,24 +262,24 @@ class UserQuery extends React.Component {
                                                                 : user.email
                                                         }
                                                     </Table.Cell>
-                                                    <Table.Cell onDoubleClick={ () => this.onDbClick(user, "g")} onClick={ (e) => this.onTDClick(e, "g", user)}>
+                                                    <Table.Cell>
                                                         {
-                                                            user.group_input ? <Input
-                                                                    placeholder={user.group_id}
-                                                                    onChange={(e) => this.onInputChange(e, "g", user)}
-                                                                    onBlur={(e) => this.onInputBlur(e, "g", user)}
-                                                                    onKeyUp={(e) => this.onInputKeyUp(e, "g", user)}/>
-                                                                : user.group_id
+                                                            this.isAdminUser(user) ? user.desc + "(" + user.group_id + ")" :
+                                                                <Dropdown placeholder={groupPlaceHolder} search selection options={groupOptions} onChange={(e, {value}) => this.onGroupChange(e, value, user)}/>
                                                         }
+
                                                     </Table.Cell>
                                                     <Table.Cell textAlign='center'>
-                                                        <Button.Group>
-                                                            <Button color='green' disabled={true}>
-                                                                <Icon name='edit' /> 更新
-                                                            </Button>
-                                                            <Button.Or />
-                                                            <Button color='youtube'><Icon name='delete' /> 删除</Button>
-                                                        </Button.Group>
+                                                        {
+                                                            this.isAdminUser(user) ? "管理员用户不可修改" :
+                                                                <Button.Group>
+                                                                    <Button color={!dataChanged ? "brown" : "green"} disabled={ !dataChanged } onClick={ () => this.onUpdate(user)}>
+                                                                        <Icon name='edit' /> 更新
+                                                                    </Button>
+                                                                    <Button.Or />
+                                                                    <Button color='youtube' onClick={ () => this.onDeleteUser(user)}><Icon name='delete'/> 删除</Button>
+                                                                </Button.Group>
+                                                        }
                                                     </Table.Cell>
 
                                                 </Table.Row>

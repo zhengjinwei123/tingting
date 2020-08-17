@@ -5,6 +5,7 @@ import userService from "service/user.jsx";
 import Child from "component/alert/child.jsx"
 import Dialog  from "component/alert/index.jsx"
 import Loading from "component/loading/index.jsx"
+import ConfirmDialog from "component/confirm/index.jsx"
 
 class Utils{
     constructor() {
@@ -85,6 +86,7 @@ class Utils{
     }
 
     successTips(successMsg) {
+        successMsg = successMsg || "success!"
         Dialog.open({
             childrens: [Child],
             props: {
@@ -120,6 +122,16 @@ class Utils{
 
     closeLoading() {
         Loading.close()
+    }
+
+    confirmDialog(content, callback, title) {
+        let options = options || {
+            title : title || "提示",
+            content: content,
+            callback: callback
+        }
+
+        ConfirmDialog.open(options)
     }
 
     setStorage(name, value) {
@@ -171,6 +183,10 @@ class Utils{
     validPassword(password) {
         let len = password.length
         return len >= 6;
+    }
+
+    isFunction(f) {
+        return typeof f === "function"
     }
 }
 
