@@ -115,6 +115,17 @@ class UserService {
         })
     }
 
+    updatePassword(username, password) {
+        return utils.request({
+            type: 'post',
+            url: '/api/user/update-password',
+            data: {
+                username: username,
+                password: password
+            }
+        })
+    }
+
     getMenus() {
         return utils.request({
             type: 'post',

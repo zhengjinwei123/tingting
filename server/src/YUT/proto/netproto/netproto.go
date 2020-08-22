@@ -38,6 +38,15 @@ func (this *NetResponse) SetResponseWriter(w http.ResponseWriter) {
 	this.writer = w
 }
 
+func (this *NetResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
 /*--------------------------------网络response 子类------------------------------------------------*/
 // NotLogin
 type NetNotLoginResponse struct {
@@ -46,7 +55,6 @@ type NetNotLoginResponse struct {
 
 func (this *NetNotLoginResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_NOT_LOGIN, this.writer)
-
 }
 
 func (this *NetNotLoginResponse) ResponseSuccess() {
@@ -97,18 +105,7 @@ type NetUserRegisterRequest struct {
 	GroupId int `http:"group_id"`
 }
 
-type NetUserRegisterResponse struct {
-	NetResponse
-}
 
-func (this *NetUserRegisterResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetUserRegisterResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
-}
 
 // get menu
 type Menu struct {
@@ -128,11 +125,13 @@ type NetMenuListResponse struct {
 
 func (this *NetMenuListResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
 }
 
 func (this *NetMenuListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
 
 // get group list
 type Group struct {
@@ -148,11 +147,13 @@ type NetGroupResponse struct {
 
 func (this *NetGroupResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
 }
 
 func (this *NetGroupResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
 
 // get auth list
 type Auth struct {
@@ -169,12 +170,12 @@ type NetAuthListResponse struct {
 
 func (this *NetAuthListResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
 }
 
 func (this *NetAuthListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
-
 // get group detail list
 type GroupDetail struct {
 	Id int `json:"id"`
@@ -191,11 +192,13 @@ type NetGroupDetailListResponse struct {
 
 func (this *NetGroupDetailListResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
 }
 
 func (this *NetGroupDetailListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
+
 
 // add group
 type NetGroupAddRequest struct {
@@ -203,18 +206,7 @@ type NetGroupAddRequest struct {
 	Menus string `http:"menus"`
 	Auths string `http:"auths"`
 }
-type NetGroupAddResponse struct {
-	NetResponse
-}
 
-func (this *NetGroupAddResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetGroupAddResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
-}
 
 // update group auth
 type NetGroupAuthUpdateRequest struct {
@@ -223,18 +215,6 @@ type NetGroupAuthUpdateRequest struct {
 	Auths string `http:"auths"`
 }
 
-type NetGroupAuthUpdateResponse struct {
-	NetResponse
-}
-
-func (this *NetGroupAuthUpdateResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetGroupAuthUpdateResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
-}
 
 // user list
 type NetUserDetail struct {
@@ -251,28 +231,17 @@ type NetUserListResponse struct {
 
 func (this *NetUserListResponse) ResponseError() {
 	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
 }
 
 func (this *NetUserListResponse) ResponseSuccess() {
 	outputJson(*this, 0, this.writer)
 }
 
+
 // group delete
 type NetGroupDeleteRequest struct {
 	GroupId int `http:"id"`
-}
-
-type NetGroupDeleteResponse struct {
-	NetResponse
-}
-
-func (this *NetGroupDeleteResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetGroupDeleteResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
 }
 
 // user update
@@ -282,33 +251,13 @@ type NetUserUpdateRequest struct {
 	Email string `http:"email"`
 }
 
-type NetUserUpdateResponse struct {
-	NetResponse
-}
-
-func (this *NetUserUpdateResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetUserUpdateResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
-}
-
 // user delete
 type NetUserDeleteRequest struct {
 	UserName string `http:"username"`
 }
 
-type NetUserDeleteResponse struct {
-	NetResponse
-}
-
-func (this *NetUserDeleteResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
-
-}
-
-func (this *NetUserDeleteResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+// user update password
+type NetUserUpdatePasswordRequest struct {
+	UserName string `http:"username"`
+	Password string `http:"password"`
 }

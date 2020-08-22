@@ -11,8 +11,10 @@
 .child {
   height: 240px;
   //position: fixed;
-  top: 40px;
-  left: 40%;
+  left: 50%;
+  top: 50%;
+
+  transform: translateX(-50%) translateY(-50%);
 
   .content {
     height: 120px;

@@ -47,6 +47,7 @@
       "2003,/user/delete,用户删除",
       "2004,/user/update,用户更新",
       "2005,/user/menulist,用户菜单",
+      "2006,/user/update-password,用户密码修改",
 
       "3000,#,H5游戏",
       "3001,/h5game/list,h5游戏列表",

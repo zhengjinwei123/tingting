@@ -79,6 +79,22 @@ func UserDelete(username string) error {
 	return nil
 }
 
+func UserUpdatePassword(username string, password string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Update(fmt.Sprintf("update `%s` set `password`='%s' where `username`='%s'",
+		table_name, password, username))
+
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("data not changed")
+	}
+
+	return nil
+}
+
 
 func GetUserList(user_list *[]*dbproto.DBUserInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()

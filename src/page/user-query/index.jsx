@@ -2,6 +2,7 @@ import React from "react"
 import PageTitle from "component/pagetitle/index.jsx";
 import { Table,Button,Icon, Input, Dropdown } from 'semantic-ui-react'
 
+import UserPasswordDialog from "page/user-password/index.jsx"
 import userService from "service/user.jsx"
 import utils from "utils/utils.jsx"
 import globalService from "service/global.jsx";
@@ -16,7 +17,10 @@ class UserQuery extends React.Component {
 
         this.state = {
             user_list :[],
-            group_list : []
+            group_list : [],
+
+            show_update_password: false,
+            update_username: ""
         }
 
         this.checkChanged = this.checkChanged.bind(this)
@@ -207,6 +211,15 @@ class UserQuery extends React.Component {
         })
     }
 
+    onUpdatePassword(user) {
+        console.log("onUpdatePassword", user)
+        this.setState({
+            show_update_password: true,
+            update_username: user.username
+        })
+
+    }
+
     render() {
         return (
             <div id="page-wrapper">
@@ -278,6 +291,8 @@ class UserQuery extends React.Component {
                                                                     </Button>
                                                                     <Button.Or />
                                                                     <Button color='youtube' onClick={ () => this.onDeleteUser(user)}><Icon name='delete'/> 删除</Button>
+                                                                    <Button.Or />
+                                                                    <Button color='blue' onClick={ () => this.onUpdatePassword(user)}><Icon name='edit'/> 修改密码 </Button>
                                                                 </Button.Group>
                                                         }
                                                     </Table.Cell>
@@ -290,6 +305,10 @@ class UserQuery extends React.Component {
                             </Table>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <UserPasswordDialog show={ this.state.show_update_password } username={ this.state.update_username }/>
                 </div>
             </div>
         )

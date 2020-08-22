@@ -1,7 +1,8 @@
 package main
 
 import (
-	"YUT/service"
+	"YUT/service/globalservice"
+	"YUT/service/userservice"
 	"github.com/go-chi/chi"
 	"net/http"
 )
@@ -9,13 +10,14 @@ import (
 func UserRouter() http.Handler {
 	r := chi.NewRouter()
 
-	r.Post("/login", service.UserLogin)
-	r.Post("/logout", service.UserLogout)
-	r.Post("/register", service.UserRegister)
-	r.Post("/menulist", service.MenuList)
-	r.Post("/list", service.UserList)
-	r.Post("/update", service.Update)
-	r.Post("/delete", service.Delete)
+	r.Post("/login", userservice.UserLogin)
+	r.Post("/logout", userservice.UserLogout)
+	r.Post("/register", userservice.UserRegister)
+	r.Post("/menulist", userservice.MenuList)
+	r.Post("/list", userservice.UserList)
+	r.Post("/update", userservice.Update)
+	r.Post("/delete", userservice.Delete)
+	r.Post("/update-password", userservice.UpdatePassword)
 
 	return r
 }
@@ -23,11 +25,11 @@ func UserRouter() http.Handler {
 func GlobalRouter() http.Handler {
 	r := chi.NewRouter()
 
-	r.Post("/grouplist", service.GroupList)
-	r.Post("/authlist", service.AuthList)
-	r.Post("/group-detail-list", service.GroupDetailList)
-	r.Post("/addgroup", service.GroupAdd)
-	r.Post("/update-group-auth", service.GroupAuthUpdate)
-	r.Post("/group-delete", service.GroupDelete)
+	r.Post("/grouplist", globalservice.GroupList)
+	r.Post("/authlist", globalservice.AuthList)
+	r.Post("/group-detail-list", globalservice.GroupDetailList)
+	r.Post("/addgroup", globalservice.GroupAdd)
+	r.Post("/update-group-auth", globalservice.GroupAuthUpdate)
+	r.Post("/group-delete", globalservice.GroupDelete)
 	return r
 }

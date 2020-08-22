@@ -138,7 +138,7 @@ class GroupAuthEditModal extends React.Component {
                             <Form.Field>
                                 <label>用户组ID</label>
                                 <input placeholder={this.state.group_id} disabled={true} value={this.state.group_id}/>
-                                <label>用户组ID</label>
+                                <label>用户组名称</label>
                                 <input placeholder={this.state.group_name} disabled={true} value={this.state.group_name}/>
                             </Form.Field>
                             <Form.Field>
