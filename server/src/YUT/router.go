@@ -1,6 +1,7 @@
 package main
 
 import (
+	"YUT/service/blogservice"
 	"YUT/service/globalservice"
 	"YUT/service/userservice"
 	"github.com/go-chi/chi"
@@ -31,5 +32,19 @@ func GlobalRouter() http.Handler {
 	r.Post("/addgroup", globalservice.GroupAdd)
 	r.Post("/update-group-auth", globalservice.GroupAuthUpdate)
 	r.Post("/group-delete", globalservice.GroupDelete)
+	return r
+}
+
+func BlogRouter() http.Handler {
+	r := chi.NewRouter()
+
+	r.Post("/new", blogservice.AddBlog)
+	r.Post("/update", blogservice.UpdateBlog)
+	r.Post("/delete", blogservice.DeleteBlog)
+	r.Post("/publish", blogservice.PublishBlog)
+	r.Post("/add-category", blogservice.AddCategory)
+	r.Post("/user-blogs", blogservice.GetBlogList)
+	r.Post("/user-categories", blogservice.GetUserCategories)
+
 	return r
 }

@@ -18,7 +18,6 @@ class UserService {
 
     login(login_info) {
         return utils.request({
-            type: 'post',
             url: '/api/user/login',
             data: login_info
         });
@@ -26,7 +25,6 @@ class UserService {
 
     register(register_info) {
         return utils.request({
-            type: 'post',
             url : '/api/user/register',
             data: register_info
         });
@@ -80,14 +78,12 @@ class UserService {
 
     logout() {
         return utils.request({
-            type: 'post',
             url: '/api/user/logout'
         });
     }
 
     getUserList() {
         return utils.request({
-            type: 'post',
             url: '/api/user/list',
             data: {}
         })
@@ -95,7 +91,6 @@ class UserService {
 
     updateUser(username, email, group_id) {
         return utils.request({
-            type: 'post',
             url: '/api/user/update',
             data: {
                 username: username,
@@ -107,7 +102,6 @@ class UserService {
 
     deleteUser(username) {
         return utils.request({
-            type: 'post',
             url: '/api/user/delete',
             data: {
                 username: username,
@@ -117,7 +111,6 @@ class UserService {
 
     updatePassword(username, password) {
         return utils.request({
-            type: 'post',
             url: '/api/user/update-password',
             data: {
                 username: username,
@@ -128,7 +121,6 @@ class UserService {
 
     getMenus() {
         return utils.request({
-            type: 'post',
             url: '/api/user/menulist'
         });
     }

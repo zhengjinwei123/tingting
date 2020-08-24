@@ -6,7 +6,6 @@ import (
 	"YUT/manager/mysqlManager"
 	"YUT/utils"
 	"context"
-	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"log"
@@ -34,6 +33,7 @@ func main() {
 
 		r.Mount("/user", UserRouter())
 		r.Mount("/global", GlobalRouter())
+		r.Mount("/blog", BlogRouter())
 	})
 
 	// 权限路由加载
@@ -59,7 +59,6 @@ func main() {
 
 	go func() {
 		p, _ := filepath.Abs(filepath.Dir("./public/"))
-		fmt.Println("static_path:", p, http.Dir(p))
 
 		http.Handle("/", http.FileServer(http.Dir(p)))
 		http.ListenAndServe(":9000", nil)

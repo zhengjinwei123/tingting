@@ -36,7 +36,7 @@ class Utils{
             }
 
             $.ajax({
-                type: options.type || "get",
+                type: options.type || "post",
                 url: options.url || '',
                 dataType: options.dataType || 'json',
                 data: options.data || null,
@@ -187,6 +187,21 @@ class Utils{
 
     isFunction(f) {
         return typeof f === "function"
+    }
+
+    formatDate(tmstamp) {
+        tmstamp = parseInt(tmstamp) * 1000;
+        if (tmstamp <= 0) {
+            return tmstamp;
+        }
+        var date = new Date(tmstamp);
+        var YY = date.getFullYear() + '-';
+        var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+        var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':';
+        var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
+        return YY + MM + DD +" "+hh + mm + ss;
     }
 }
 

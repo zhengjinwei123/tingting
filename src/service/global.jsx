@@ -1,23 +1,22 @@
 import utils from "utils/utils.jsx";
 
-class Global {
+class GlobalService {
     constructor() {
-        if (!Global.instance) {
-            Global.instance = this;
+        if (!GlobalService.instance) {
+            GlobalService.instance = this;
         }
-        return Global.instance
+        return GlobalService.instance
     }
 
     static getInstance() {
         if (!this.instance) {
-            return this.instance = new Global();
+            return this.instance = new GlobalService();
         }
         return this.instance
     }
 
     groupList() {
         return utils.request({
-            type: 'post',
             url: '/api/global/grouplist',
             data: {}
         });
@@ -33,7 +32,6 @@ class Global {
 
     groupDetailList() {
         return utils.request({
-            type: 'post',
             url: '/api/global/group-detail-list',
             data: {}
         });
@@ -41,7 +39,6 @@ class Global {
 
     addGroup(group_name, menus_str, auths_str) {
         return utils.request({
-            type: "post",
             url: "/api/global/addgroup",
             data: {
                 group: group_name,
@@ -53,7 +50,6 @@ class Global {
 
     updateGroupAuth(id, menus_str, auths_str) {
         return utils.request({
-            type: "post",
             url: "/api/global/update-group-auth",
             data: {
                 id: id,
@@ -65,7 +61,6 @@ class Global {
 
     deleteGroup(id) {
         return utils.request({
-            type: "post",
             url: "/api/global/group-delete",
             data: {
                 id: id
@@ -74,4 +69,4 @@ class Global {
     }
 }
 
-export default Global.getInstance()
+export default GlobalService.getInstance()

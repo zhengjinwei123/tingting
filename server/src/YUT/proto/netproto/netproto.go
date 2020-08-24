@@ -261,3 +261,67 @@ type NetUserUpdatePasswordRequest struct {
 	UserName string `http:"username"`
 	Password string `http:"password"`
 }
+
+// add blog category
+type NetBlogCategoryAddRequest struct {
+	Category string `http:"category"`
+}
+
+// add blog
+type NetBlogAddRequest struct {
+	BlogName string `http:"blog_name"`
+	BlogType int `http:"blog_type"`
+	CategoryId int `http:"category_id"`
+	Content string `http:"content"`
+}
+
+// get user blogs
+type NetBlogAllDetail struct {
+	Id int `json:"id"`
+	Status int `json:"status"`
+	BlogType int `json:"type"`
+	UserName string `json:"username"`
+	BlogName string `json:"name"`
+	BlogUrl string `json:"url"`
+	CategoryId int `json:"category_id"`
+	Content string `json:"content"`
+	CreateTm int `json:"create_tm"`
+	PublishTm int `json:"publish_tm"`
+	UpdateTm string `json:"update_tm"`
+}
+
+type NetGetUserBlogListResponse struct {
+	NetResponse
+
+	UserBlogList []*NetBlogAllDetail `json:"bloglist"`
+}
+
+func (this *NetGetUserBlogListResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetGetUserBlogListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}
+
+// get category
+type NetBlogCategoryDetail struct {
+	CategoryId int `json:"category_id"`
+	Category string `json:"desc"`
+}
+
+type NetGetUserBlogCategoryListResponse struct {
+	NetResponse
+
+	CategoryList []*NetBlogCategoryDetail `json:"categories"`
+}
+
+func (this *NetGetUserBlogCategoryListResponse) ResponseError() {
+	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+
+}
+
+func (this *NetGetUserBlogCategoryListResponse) ResponseSuccess() {
+	outputJson(*this, 0, this.writer)
+}

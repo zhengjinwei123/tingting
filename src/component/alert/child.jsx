@@ -47,6 +47,7 @@ class Child extends Component {
 
         return (
             <Modal
+                closeOnDimmerClick={false}
                 className={ "child" }
                 size={"mini"}
                 open={ this.state.show }

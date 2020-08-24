@@ -60,6 +60,9 @@
       "4002,/blog/update,博客更新",
       "4003,/blog/delete,博客删除",
       "4004,/blog/publish,博客发布",
+      "4005,/blog/add-category,新增博客分类",
+      "4006,/blog/user-blogs,用户博客列表",
+      "4007,/blog/user-categories,用户博客列表",
 
       "5000,#,广告",
       "5001,/advert/new,广告新建",

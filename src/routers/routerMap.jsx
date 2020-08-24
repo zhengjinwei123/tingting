@@ -9,6 +9,7 @@ import UserNew from "page/user-new/index.jsx";
 import UserAuthManage from "page/user-auth-manage/index.jsx";
 import UserQuery from "page/user-query/index.jsx";
 import BlogNew from "page/blog/new-blog/index.jsx"
+import BlogList from "page/blog/blog-list/index.jsx";
 
 import userService from "service/user.jsx";
 
@@ -77,6 +78,7 @@ class RouterMap extends React.Component {
                     <Route path="/user-auth-manage" component={UserAuthManage} />
                     <Route path="/user-query" component={UserQuery} />
                     <Route path="/blog-new" component={BlogNew} />
+                    <Route path="/blog-manage" component={BlogList} />
                     <Route component={Error}/>
                 </Switch>
             </Layout>

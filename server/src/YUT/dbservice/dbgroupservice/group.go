@@ -26,12 +26,7 @@ func GetGroupList(group_list *[]*dbproto.DBGroupInfo) error {
 
 	err := proxy.QueryList(fmt.Sprintf("select * from `%s`",
 		table_name), group_list)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return err
 }
 
 func GetAuthList(groupId int, group_info *dbproto.DBGroupInfo) error {
@@ -39,7 +34,6 @@ func GetAuthList(groupId int, group_info *dbproto.DBGroupInfo) error {
 }
 
 func AddGroup(group_name, menus, auths string) error {
-
 	proxy := mysqlManager.GetMysqlProxy()
 
 	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`desc`,`menus`,`auths`) values('%s','%s','%s')",
