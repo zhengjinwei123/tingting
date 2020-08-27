@@ -1,6 +1,8 @@
 import React from "react"
+import { Link } from 'react-router-dom';
 import PageTitle from "component/pagetitle/index.jsx";
-import {Button, Dropdown, Icon, Label, Table} from "semantic-ui-react";
+import {Button, Icon, Label, Table} from "semantic-ui-react";
+import EditBlogModal from "page/blog/edit-blog/index.jsx";
 
 import "./index.scss"
 
@@ -12,11 +14,18 @@ class BlogList extends React.Component {
         super(props);
 
         this.state = {
-            blog_list: []
+            blog_list: [],
+
+            show_edit_blog: false,
+            cur_blog: null
         }
     }
 
     componentDidMount() {
+        this.loadBlogs()
+    }
+
+    loadBlogs() {
         blogService.getUserBlogs().then(res => {
 
             if (res.bloglist && res.bloglist.length) {
@@ -24,8 +33,33 @@ class BlogList extends React.Component {
                     blog_list: res.bloglist
                 })
             }
-        }, err => {
+        })
+    }
 
+    onEditBlog(blog) {
+        this.setState({
+            cur_blog: blog,
+            show_edit_blog: true
+        })
+    }
+
+    onPublish(blog, status) {
+        blogService.publishBlog(blog.id, status).then(res => {
+            if (status === 1) {
+                utils.successTips("发布成功")
+            } else {
+                utils.successTips("已关闭")
+            }
+
+            this.loadBlogs()
+        }, err => {
+            utils.errorTips(err)
+        })
+    }
+
+    onCloseEditDialog() {
+        this.setState({
+            show_edit_blog: false
         })
     }
 
@@ -62,13 +96,20 @@ class BlogList extends React.Component {
 
                                         <Table.Row key={idx} error={ous}>
                                             <Table.Cell>
-                                                <Label ribbon color={"blue"}>{blog.id}</Label>
+                                                <Label ribbon={true} color={"blue"}>
+                                                    {blog.id}
+                                                </Label>
                                             </Table.Cell>
                                             <Table.Cell>{blog.name}</Table.Cell>
                                             <Table.Cell>{blog.type}</Table.Cell>
                                             <Table.Cell className={bgColor}>
-                                                {hasPublished ? <Label ribbon={"right"} as='a' color={"teal"}>{"已发布,点击前往"}</Label>:
-                                                    "未发布"}
+                                                {
+                                                    hasPublished ?
+                                                        <Link to={blog.url}>
+                                                            <Label ribbon color="teal">{"已发布,点击前往"}</Label>
+                                                        </Link>:
+                                                        "未发布"
+                                                }
                                             </Table.Cell>
                                             <Table.Cell>{utils.formatDate(blog.create_tm) }</Table.Cell>
                                             <Table.Cell>{utils.formatDate(blog.publish_tm) }</Table.Cell>
@@ -79,13 +120,13 @@ class BlogList extends React.Component {
                                                 </Button>
 
                                                 {
-                                                    hasPublished ? "" :
-                                                        <Button positive>
+                                                    hasPublished ? <Button color={"grey"} onClick={() => this.onPublish(blog, 0)}>关闭</Button> :
+                                                        <Button positive onClick={() => this.onPublish(blog, 1)}>
                                                             <Icon name='send' />发布
                                                         </Button>
 
                                                 }
-                                                <Button color={"linkedin"}>
+                                                <Button color={"linkedin"} onClick={() => this.onEditBlog(blog) } >
                                                     <Icon name='edit' />修改
                                                 </Button>
                                             </Table.Cell>
@@ -95,6 +136,10 @@ class BlogList extends React.Component {
                             }
                         </Table.Body>
                     </Table>
+                </div>
+
+                <div>
+                    <EditBlogModal show={ this.state.show_edit_blog } blog={ this.state.cur_blog } onClose={() => this.onCloseEditDialog()} reload={() => this.loadBlogs() }/>
                 </div>
             </div>
         )

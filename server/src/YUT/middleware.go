@@ -3,11 +3,14 @@ package main
 import (
 	"YUT/manager/userManager"
 	"YUT/proto/netproto"
+	"context"
+	"github.com/go-chi/chi"
 	"log"
 	"net/http"
+	"strconv"
 )
 
-func LoggerMiddleware(next http.Handler) http.Handler {
+func ApiMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_ = r.ParseForm()
 
@@ -20,9 +23,8 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 
 		if r.Method != "POST" {
 			resp := &netproto.NetNotLoginResponse{}
-			resp.SetResponseWriter(w)
 			resp.Msg = "Not Support Method:" + r.Method
-			resp.ResponseError()
+			resp.ResponseError(w)
 			return
 		}
 
@@ -30,9 +32,8 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 			if r.URL.Path != "/api/user/login" &&
 				r.URL.Path != "/api/user/logout" {
 				resp := &netproto.NetNotLoginResponse{}
-				resp.SetResponseWriter(w)
 				resp.Msg = "Not Allow Request, Please Login First"
-				resp.ResponseError()
+				resp.ResponseError(w)
 				return
 			}
 		} else {
@@ -40,14 +41,34 @@ func LoggerMiddleware(next http.Handler) http.Handler {
 			if r.URL.Path != "/api/user/logout" {
 				if !userManager.GetUsrSessionMgr().CheckAuth(r) {
 					resp := &netproto.NetNoAuthResponse{}
-					resp.SetResponseWriter(w)
 					resp.Msg = r.URL.Path +  ": No Auth, Please Contact To Admin Manager"
-					resp.ResponseError()
+					resp.ResponseError(w)
 					return
 				}
 			}
 		}
 
 		next.ServeHTTP(w, r)
+	})
+}
+
+func PubBlogMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		blog_id := chi.URLParam(r, "blog_id")
+
+		log.Println("PubBlogMiddleware:", blog_id)
+		// redis 缓存获取,缓存存在,直接返回
+
+		id, err := strconv.Atoi(blog_id)
+		if err != nil {
+			resp := &netproto.NetInvalidParamResponse{}
+			resp.Msg = "invalid blog_id type." + err.Error()
+			resp.ResponseError(w)
+			return
+		}
+		log.Println("PubBlogMiddleware:", blog_id)
+
+		ctx := context.WithValue(r.Context(), "id", id)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

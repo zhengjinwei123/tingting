@@ -20,6 +20,10 @@ class MyMarkdownEditor extends React.Component {
     updateMarkDown(editor, data, value) {
         this.setState({
             data: value
+        }, () => {
+            if (this.props.onChange) {
+                this.props.onChange(this.state.data)
+            }
         })
     }
 

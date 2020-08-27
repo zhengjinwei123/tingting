@@ -127,6 +127,10 @@ module.exports = {
             '/api': {
                 target: 'http://localhost:8087',
                 changeOrigin: true
+            },
+            '/pub': {
+                target: 'http://localhost:8087',
+                changeOrigin: true
             }
         }
     }

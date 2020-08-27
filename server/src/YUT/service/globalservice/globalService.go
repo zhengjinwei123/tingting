@@ -16,13 +16,12 @@ func GroupList(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
 	response := &netproto.NetGroupResponse{}
-	response.SetResponseWriter(w)
 
 	var dbGroupList []*dbproto.DBGroupInfo
 	err := dbgroupservice.GetGroupList(&dbGroupList)
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return
 	}
 
@@ -34,19 +33,18 @@ func GroupList(w http.ResponseWriter, r *http.Request) {
 		response.GroupList = append(response.GroupList, groupInfo)
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GroupDetailList(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 	response := &netproto.NetGroupDetailListResponse{}
-	response.SetResponseWriter(w)
 
 	var dbGroupList []*dbproto.DBGroupInfo
 	err := dbgroupservice.GetGroupList(&dbGroupList)
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return
 	}
 	for _, v := range dbGroupList {
@@ -59,7 +57,7 @@ func GroupDetailList(w http.ResponseWriter, r *http.Request) {
 		response.GroupList = append(response.GroupList, groupDetail)
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GroupAdd(w http.ResponseWriter, r *http.Request) {
@@ -74,16 +72,15 @@ func GroupAdd(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	response.SetResponseWriter(w)
 
 	err = dbgroupservice.AddGroup(request.GroupName, request.Menus, request.Auths)
 	if err != nil {
 		response.Msg = err.Error();
-		response.ResponseError()
+		response.ResponseError(w)
 		return
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GroupAuthUpdate(w http.ResponseWriter, r *http.Request) {
@@ -98,24 +95,22 @@ func GroupAuthUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	response.SetResponseWriter(w)
 
 	err = dbgroupservice.GroupAuthUpdate(request.GroupId, request.Menus, request.Auths)
 	if err != nil {
 		response.Msg = err.Error();
-		response.ResponseError()
+		response.ResponseError(w)
 		return
 	}
 
 	userManager.GetUsrSessionMgr().ReloadGroupAuth(r, request.GroupId)
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func AuthList(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 	response := &netproto.NetAuthListResponse{}
-	response.SetResponseWriter(w)
 
 	auth_map := authManager.GetAuthManager().GetAuthMap()
 
@@ -142,7 +137,7 @@ func AuthList(w http.ResponseWriter, r *http.Request) {
 		response.MenuList = append(response.MenuList, auth)
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GroupDelete(w http.ResponseWriter, r *http.Request) {
@@ -157,22 +152,21 @@ func GroupDelete(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	response.SetResponseWriter(w)
 
 	if (!userManager.GetUsrSessionMgr().IsAdmin(r)) {
 		response.Msg = "no auth"
-		response.ResponseError()
+		response.ResponseError(w)
 		return;
 	}
 
 	err = dbgroupservice.GroupDelete(request.GroupId)
 	if err != nil {
 		response.Msg = err.Error();
-		response.ResponseError()
+		response.ResponseError(w)
 		return
 	}
 
 	userManager.GetUsrSessionMgr().ReloadGroupAuth(r, request.GroupId)
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }

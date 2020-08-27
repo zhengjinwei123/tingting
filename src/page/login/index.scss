@@ -12,3 +12,20 @@
     text-align: center;
   }
 }
+
+.my-pannel {
+  width: 600px;
+  height: 400px;
+  padding: 0;
+  //margin: 200px auto;
+  border-radius: 5px;
+  box-shadow: 10px 10px 5px #8d8888;
+
+
+  transform: translateX(100%) translateY(30%);
+}
+
+
+.centered {
+  text-align: center;
+}

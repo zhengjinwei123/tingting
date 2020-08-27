@@ -133,11 +133,6 @@ class MyBraftEditor extends React.Component {
     }
 
     buildPreviewHtml () {
-
-        // return (
-        //     <div className="braft-output-content" dangerouslySetInnerHTML={{__html: this.state.editorState.toHTML()}}></div>
-        // );
-
         let content = this.state.editorState.toHTML()
 
         content = content.replace(/<br\s*\/?>/g,'\n');
@@ -216,12 +211,16 @@ class MyBraftEditor extends React.Component {
     }
 
     getData() {
-        return this.state.editorState.toRAW(false)
+        return this.state.editorState.toHTML()
     }
 
     handleEditorChange(editorState) {
         this.setState({
             editorState
+        }, () => {
+            if (this.props.onChange) {
+                this.props.onChange(this.state.editorState.toHTML())
+            }
         })
     }
 
@@ -256,17 +255,18 @@ class MyBraftEditor extends React.Component {
                 text: '预览',
                 onClick: () => this.preview()
             },
-            'separator',
-            {
-                key: 'custom-button2',
-                type: 'button',
-                text: '保存',
-                onClick: () => this.submitContent()
-            }
+            // 'separator',
+            // {
+            //     key: 'custom-button2',
+            //     type: 'button',
+            //     text: '保存',
+            //     onClick: () => this.submitContent()
+            // }
         ]
 
         return (
             <BraftEditor
+                // contentClassName={"braft-content"}
                 className={"myeditor"}
                 id="myeditor"
                 extendControls={extendControls}

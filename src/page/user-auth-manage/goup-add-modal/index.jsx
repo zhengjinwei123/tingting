@@ -9,6 +9,8 @@ import "./index.scss"
 import globalService from "service/global.jsx";
 import utils from "utils/utils.jsx"
 
+import ModalHeader from "component/basic/modal-header/index.jsx"
+
 class GroupAddModal extends React.Component {
     constructor(props) {
         super(props);
@@ -108,7 +110,9 @@ class GroupAddModal extends React.Component {
                 onClose={ () => this.setShow(false) }
                 open = { this.state.show }
             >
-                <Modal.Header>新增用户组</Modal.Header>
+                <Modal.Header>
+                    <ModalHeader title={"新增用户组"} onClose={() => this.setShow(false)}/>
+                </Modal.Header>
                 <Modal.Content scrolling={true}>
                     <Container>
                         <Form>

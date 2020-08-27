@@ -4,6 +4,8 @@ import AuthItems from "component/auth-items/index.jsx";
 import globalService from "service/global.jsx";
 import utils from "utils/utils.jsx"
 
+import ModalHeader from "component/basic/modal-header/index.jsx"
+
 class GroupAuthEditModal extends React.Component {
 
     constructor(props) {
@@ -131,7 +133,9 @@ class GroupAuthEditModal extends React.Component {
                 onClose={ () => this.setShow(false) }
                 open = { this.state.show }
             >
-                <Modal.Header>权限修改</Modal.Header>
+                <Modal.Header>
+                    <ModalHeader title={"权限修改"} onClose={() => this.setShow(false)}/>
+                </Modal.Header>
                 <Modal.Content scrolling={true}>
                     <Container>
                         <Form>

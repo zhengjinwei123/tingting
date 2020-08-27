@@ -6,6 +6,7 @@ import "./index.scss"
 
 import blogService from "service/blog.jsx"
 import utils from "utils/utils.jsx"
+import ModalHeader from "component/basic/modal-header/index.jsx";
 
 class AddBlogModal extends React.Component {
     constructor(props) {
@@ -71,8 +72,6 @@ class AddBlogModal extends React.Component {
 
     loadCategories() {
         blogService.getCategories().then(res => {
-            console.log("categories:", res)
-
             if (res.categories && res.categories.length) {
                 this.setState({
                     categories: res.categories
@@ -100,7 +99,7 @@ class AddBlogModal extends React.Component {
         this.state.categories.map((value, idx) => {
             categoryOptions.push({
                 key: idx,
-                text: value.desc,
+                text: value.desc+"("+value.category_id+")",
                 value: value.category_id
             })
         })
@@ -115,8 +114,10 @@ class AddBlogModal extends React.Component {
                     onClose={ () => this.setShow(false) }
                     open = { this.state.show }
                 >
-                    <Modal.Header>上传博客</Modal.Header>
-                    <Modal.Content className={"content"}>
+                    <Modal.Header>
+                        <ModalHeader title={"上传博客"} onClose={() => this.setShow(false)}/>
+                    </Modal.Header>
+                    <Modal.Content className={"content"} scrolling={true}>
                         <Container>
                             <Form>
                                 <Form.Field>
@@ -126,6 +127,7 @@ class AddBlogModal extends React.Component {
                                 <Form.Field>
                                     <label>博客类别</label>
                                     <Form.Dropdown
+                                        defaultValue={categoryOptions.length ? categoryOptions[0].value : 0}
                                         selection
                                         labeled
                                         options={categoryOptions}

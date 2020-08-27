@@ -127,9 +127,7 @@ class BlogEditor extends React.Component {
                                 </Button> :  <Button onClick={ () => this.changeEditorType()} positive>
                                     <Icon name={"code"}/>切换到 富文本编辑器</Button>
                         }
-
                         <Button.Or text='Or' />
-
                         <Button color={"google plus"} onClick={() => this.upLoadBlog() }>
                             <Icon name={"upload"}/>上传博客</Button>
                     </Button.Group>

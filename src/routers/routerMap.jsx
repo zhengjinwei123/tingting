@@ -4,12 +4,14 @@ import {BrowserRouter as Router, HashRouter as RouterHash, Switch, Route, Redire
 import Layout from "component/layout/index.jsx";
 import Home from 'page/home/index.jsx';
 import Error from "page/error/index.jsx";
+import NotFoundPage from "page/notfound/index.jsx"
 import Login from "page/login/index.jsx";
 import UserNew from "page/user-new/index.jsx";
 import UserAuthManage from "page/user-auth-manage/index.jsx";
 import UserQuery from "page/user-query/index.jsx";
 import BlogNew from "page/blog/new-blog/index.jsx"
 import BlogList from "page/blog/blog-list/index.jsx";
+import PubBlogView from "page/pub/blog/view/index.jsx";
 
 import userService from "service/user.jsx";
 
@@ -18,6 +20,17 @@ import { bindActionCreators } from "redux";
 import * as userinfoActions from "actions/userinfo.jsx";
 import * as menuActions from "actions/menulist.jsx";
 
+
+class MyPublicRouter extends React.Component {
+
+    render() {
+        return (
+            <div>
+                <Route { ...this.props } />
+            </div>
+        )
+    }
+}
 
 class MyRouter extends React.Component {
 
@@ -84,6 +97,14 @@ class RouterMap extends React.Component {
             </Layout>
         )
 
+        let PublicRouter = (
+            <Switch>
+                {/*<Route exact path="/pub/" component={PubBlogView}/>*/}
+                <Route path="/pup/blog/:blog_id" component={PubBlogView}/>
+                <Route component={NotFoundPage}/>
+            </Switch>
+        )
+
         if (process.env.WEBPACK_ENV === "dev") {
             return (
                 <Router>
@@ -91,6 +112,7 @@ class RouterMap extends React.Component {
                         <Route path="/login" >
                             <Login />
                         </Route>
+                        <MyPublicRouter path="/pup" render={ props => PublicRouter} />
                         <MyRouter path="/" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
                     </Switch>
                 </Router>
@@ -102,7 +124,8 @@ class RouterMap extends React.Component {
                         <Route path="/login" >
                             <Login />
                         </Route>
-                        <MyRouter path="/" render={ props => LayoutRouter }/>
+                        <MyPublicRouter path="/pub" render={ props => PublicRouter} />
+                        <MyRouter path="/" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
                     </Switch>
                 </RouterHash>
             )

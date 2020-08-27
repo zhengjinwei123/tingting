@@ -29,49 +29,57 @@ func outputJson(data interface{}, status int, w http.ResponseWriter) {
 
 /*--------------------------------网络response 基类------------------------------------------------*/
 type NetResponse struct {
-	writer http.ResponseWriter
-
 	Msg string `json:"msg"`
 }
 
-func (this *NetResponse) SetResponseWriter(w http.ResponseWriter) {
-	this.writer = w
-}
-
-func (this *NetResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 /*--------------------------------网络response 子类------------------------------------------------*/
+
+type NetInvalidParamResponse struct {
+	NetResponse
+}
+
+func (this *NetInvalidParamResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_INVALID_PARAM, writer)
+}
+
+func (this *NetInvalidParamResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+
 // NotLogin
 type NetNotLoginResponse struct {
 	NetResponse
 }
 
-func (this *NetNotLoginResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_NOT_LOGIN, this.writer)
+func (this *NetNotLoginResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_NOT_LOGIN, writer)
 }
 
-func (this *NetNotLoginResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetNotLoginResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 // NoAuth
 type NetNoAuthResponse struct {
 	NetResponse
 }
-func (this *NetNoAuthResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_NO_AUTH, this.writer)
+func (this *NetNoAuthResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_NO_AUTH, writer)
 
 }
 
-func (this *NetNoAuthResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetNoAuthResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -87,13 +95,13 @@ type NetUserLoginResponse struct {
 	UserName string `json:"username"`
 }
 
-func (this *NetUserLoginResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetUserLoginResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetUserLoginResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetUserLoginResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -123,13 +131,13 @@ type NetMenuListResponse struct {
 	MenuList []*Menu `json:"menulist"`
 }
 
-func (this *NetMenuListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetMenuListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetMenuListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetMenuListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -145,13 +153,13 @@ type NetGroupResponse struct {
 	GroupList []*Group `json:"grouplist"`
 }
 
-func (this *NetGroupResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetGroupResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetGroupResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetGroupResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -168,13 +176,13 @@ type NetAuthListResponse struct {
 	MenuList []*Auth `json:"menulist"`
 }
 
-func (this *NetAuthListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetAuthListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetAuthListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetAuthListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 // get group detail list
 type GroupDetail struct {
@@ -190,13 +198,13 @@ type NetGroupDetailListResponse struct {
 	GroupList []*GroupDetail `json:"grouplist"`
 }
 
-func (this *NetGroupDetailListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetGroupDetailListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetGroupDetailListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetGroupDetailListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -229,13 +237,13 @@ type NetUserListResponse struct {
 	UserList []*NetUserDetail `json:"userlist"`
 }
 
-func (this *NetUserListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetUserListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetUserListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetUserListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 
@@ -296,13 +304,13 @@ type NetGetUserBlogListResponse struct {
 	UserBlogList []*NetBlogAllDetail `json:"bloglist"`
 }
 
-func (this *NetGetUserBlogListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetGetUserBlogListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetGetUserBlogListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetGetUserBlogListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }
 
 // get category
@@ -317,11 +325,42 @@ type NetGetUserBlogCategoryListResponse struct {
 	CategoryList []*NetBlogCategoryDetail `json:"categories"`
 }
 
-func (this *NetGetUserBlogCategoryListResponse) ResponseError() {
-	outputJson(*this, NET_STATUS_UNKNOWN, this.writer)
+func (this *NetGetUserBlogCategoryListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
 
 }
 
-func (this *NetGetUserBlogCategoryListResponse) ResponseSuccess() {
-	outputJson(*this, 0, this.writer)
+func (this *NetGetUserBlogCategoryListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// publish blog
+type NetBlogPublishRequest struct {
+	BlogId int `http:"id"`
+	Status int `http:"status"`
+}
+
+// GET BLOG
+type NetPubBlogGetResponse struct {
+	NetResponse
+
+	Content string `json:"content"`
+	Type int `json:"type"`
+}
+
+func (this *NetPubBlogGetResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetPubBlogGetResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// update blog
+type NetBlogUpdateRequest struct {
+	BlogId int `http:"id"`
+	BlogName string `http:"blog_name"`
+	CategoryId int `http:"category_id"`
+	Content string `http:"content"`
 }

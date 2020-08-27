@@ -5,6 +5,7 @@ import "./index.scss"
 
 import blogService from "service/blog.jsx"
 import utils from "utils/utils.jsx"
+import ModalHeader from "component/basic/modal-header/index.jsx";
 
 
 class AddCategoryModal extends BaseModal {
@@ -49,8 +50,10 @@ class AddCategoryModal extends BaseModal {
                onClose={ () => this.setShow(false) }
                open = { this.state.show }
            >
-               <Modal.Header>新增博客类别</Modal.Header>
-               <Modal.Content className={"content"}>
+               <Modal.Header>
+                   <ModalHeader title={"新增博客类别"} onClose={() => this.setShow(false)}/>
+               </Modal.Header>
+               <Modal.Content className={"content"} scrolling={true}>
                    <Container>
                        <Form>
                            <Form.Field>

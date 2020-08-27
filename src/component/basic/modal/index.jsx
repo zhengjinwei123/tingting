@@ -21,6 +21,10 @@ class BaseModal extends React.Component {
         this.setState({
             show: show
         })
+
+        if (!show && this.props.onClose) {
+            this.props.onClose()
+        }
     }
 }
 

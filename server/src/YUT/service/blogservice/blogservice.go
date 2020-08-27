@@ -7,9 +7,35 @@ import (
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
 	"YUT/utils/orm"
+	"fmt"
 	"log"
 	"net/http"
 )
+
+func GetBlog(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	response := &netproto.NetPubBlogGetResponse{}
+	ctx := r.Context()
+	blogId, ok := ctx.Value("id").(int)
+	if !ok {
+		response.ResponseError(w)
+		return
+	}
+
+	var dbblog dbproto.DBBlogAllInfo
+	err := dbblogservice.GetBlog(blogId, &dbblog)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.Content = dbblog.Content
+	response.Type = dbblog.BlogType
+
+	response.ResponseSuccess(w)
+}
 
 func AddBlog(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
@@ -22,32 +48,30 @@ func AddBlog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	response.SetResponseWriter(w)
 
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
 	err = dbblogservice.AddBlog(username, request.CategoryId, request.Content, request.BlogName, request.BlogType)
 
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return;
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GetUserCategories(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
 	response := &netproto.NetGetUserBlogCategoryListResponse{}
-	response.SetResponseWriter(w)
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
 
 	var categories []*dbproto.DBBlogCategoryInfo
 	err := dbblogcategoryservice.GetCategoryList(username, &categories)
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return;
 	}
 
@@ -60,13 +84,29 @@ func GetUserCategories(w http.ResponseWriter, r *http.Request) {
 		response.CategoryList = append(response.CategoryList, &data)
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
+	request := &netproto.NetBlogUpdateRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
 
+	response := &netproto.NetResponse{}
+	err = dbblogservice.UpdateBlog(request.BlogId, request.Content, request.BlogName, request.CategoryId)
+
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return;
+	}
+
+	response.ResponseSuccess(w)
 }
 
 func DeleteBlog(w http.ResponseWriter, r *http.Request) {
@@ -87,24 +127,22 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	response.SetResponseWriter(w)
 
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
 	err = dbblogcategoryservice.AddCategory(username, request.Category)
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return;
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func GetBlogList(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
 	response := &netproto.NetGetUserBlogListResponse{}
-	response.SetResponseWriter(w)
 
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
 
@@ -112,7 +150,7 @@ func GetBlogList(w http.ResponseWriter, r *http.Request) {
 	err := dbblogservice.GetUserBlogList(username, &dbBlogList)
 	if err != nil {
 		response.Msg = err.Error()
-		response.ResponseError()
+		response.ResponseError(w)
 		return;
 	}
 
@@ -134,11 +172,30 @@ func GetBlogList(w http.ResponseWriter, r *http.Request) {
 		response.UserBlogList = append(response.UserBlogList, &detail)
 	}
 
-	response.ResponseSuccess()
+	response.ResponseSuccess(w)
 }
 
 func PublishBlog(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
+	request := &netproto.NetBlogPublishRequest{}
 
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetResponse{}
+
+	url := fmt.Sprintf("/pup/blog/%d", request.BlogId)
+
+	err = dbblogservice.PublishBlog(request.BlogId, url, request.Status)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
 }

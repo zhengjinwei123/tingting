@@ -47,6 +47,36 @@ class BlogService {
             url: '/api/blog/user-categories',
         })
     }
+
+    publishBlog(id, status) {
+        return utils.request({
+            url: '/api/blog/publish',
+            data: {
+                id: id,
+                status: status
+            }
+        })
+    }
+
+    getBlog(id) {
+        return utils.request({
+            type: 'post',
+            url: '/pub/blog/' + id,
+        })
+    }
+
+    updateBlog(id, name, category_id, content) {
+        return utils.request({
+            type: 'post',
+            url: '/api/blog/update',
+            data: {
+                id: id,
+                blog_name: name,
+                category_id: category_id,
+                content: content,
+            }
+        })
+    }
 }
 
 export default BlogService.getInstance()

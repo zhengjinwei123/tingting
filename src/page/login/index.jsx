@@ -4,6 +4,7 @@ import "./index.scss";
 import utils from "utils/utils.jsx";
 import userService from "service/user.jsx";
 import {Redirect,withRouter} from "react-router-dom";
+import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
 
 
 class Login extends React.Component {
@@ -61,43 +62,54 @@ class Login extends React.Component {
           <div>
               {
                   userService.checkUserHasLogin() ? <Redirect to="/"></Redirect> :
-                      <div className="col-md-4 col-md-offset-4 login-wrapper">
-                          <div className="panel panel-default login-panel">
-                              <div className="panel-heading"><i className="fa fa-home fa-fw fa-2x fa-left text-info"></i>欢迎登录 -YUT 管理后台</div>
-                              <div className="panel-body">
-                                  <div>
-                                      <div className="form-group">
-                                          <div className="input-group margin-bottom-sm">
-                                              <span className="input-group-addon"><i className="fa fa-user fa-fw"></i></span>
-                                              <input type="text"
-                                                     name="username"
-                                                     className="form-control"
-                                                     placeholder="请输入用户名"
-                                                     onKeyUp={e => this.onInputKeyUp(e)}
-                                                     onChange={e => this.onInputChange(e)}/>
-                                          </div>
-                                      </div>
-                                      <div className="form-group">
-                                          <div className="input-group margin-bottom-sm">
-                                              <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
-                                              <input type="password"
-                                                     name="password"
-                                                     className="form-control"
-                                                     placeholder="请输入密码"
-                                                     onKeyUp={e => this.onInputKeyUp(e)}
-                                                     onChange={e => this.onInputChange(e)}/>
-                                          </div>
-                                      </div>
-                                      <button className="btn btn-lg btn-success btn-block"
-                                              onClick={e => {this.onSubmit(e)}}>登录</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+                  <div className="col-md-4 col-md-offset-4 login-wrapper">
+                        <div className="panel panel-default login-panel">
+                            <div className="panel-heading"><i className="fa fa-home fa-fw fa-2x fa-left text-info"></i>欢迎登录 -YUT 管理后台</div>
+                            <div className="panel-body">
+                                <div>
+                                    <div className="form-group">
+                                        <div className="input-group margin-bottom-sm">
+                                            <span className="input-group-addon"><i className="fa fa-user fa-fw"></i></span>
+                                            <input type="text"
+                                                   name="username"
+                                                   className="form-control"
+                                                   placeholder="请输入用户名"
+                                                   onKeyUp={e => this.onInputKeyUp(e)}
+                                                   onChange={e => this.onInputChange(e)}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="input-group margin-bottom-sm">
+                                            <span className="input-group-addon"><i className="fa fa-key fa-fw"></i></span>
+                                            <input type="password"
+                                                   name="password"
+                                                   className="form-control"
+                                                   placeholder="请输入密码"
+                                                   onKeyUp={e => this.onInputKeyUp(e)}
+                                                   onChange={e => this.onInputChange(e)}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group centered">
+                                        <Button positive onClick={e => {this.onSubmit(e)}}>
+                                            注册
+                                        </Button>
+                                        <Button negative onClick={e => {this.onSubmit(e)}}>
+                                            登录
+                                        </Button>
+                                    </div>
+
+                                    {/*<button className="btn btn-lg btn-success btn-block"*/}
+                                    {/*        onClick={e => {this.onSubmit(e)}}>登录</button>*/}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
               }
           </div>
       )
     }
 }
+
+
 
 export default withRouter(Login);

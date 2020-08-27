@@ -4,6 +4,7 @@ import (
 	"YUT/manager/authManager"
 	"YUT/manager/configManager"
 	"YUT/manager/mysqlManager"
+	"YUT/service/blogservice"
 	"YUT/utils"
 	"context"
 	"github.com/go-chi/chi"
@@ -25,15 +26,24 @@ func main() {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Recoverer)
-	r.Use(LoggerMiddleware)
 
 	r.Use(middleware.Timeout(60*time.Second))
 
 	r.Route("/api", func(r chi.Router) {
 
+		r.Use(ApiMiddleware)
+
 		r.Mount("/user", UserRouter())
 		r.Mount("/global", GlobalRouter())
 		r.Mount("/blog", BlogRouter())
+	})
+
+	r.Route("/pub", func(r chi.Router) {
+
+		r.Route("/blog/{blog_id}", func(r chi.Router) {
+			r.Use(PubBlogMiddleware)
+			r.Post("/", blogservice.GetBlog)
+		})
 	})
 
 	// 权限路由加载
