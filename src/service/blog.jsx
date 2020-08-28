@@ -42,6 +42,16 @@ class BlogService {
         })
     }
 
+    getUserBlogsPageNate(last_id, cur_page) {
+        return utils.request({
+            url: '/api/blog/user-blogs-pagenate',
+            data: {
+                last_id: last_id,
+                cur_page: cur_page
+            }
+        })
+    }
+
     getCategories() {
         return utils.request({
             url: '/api/blog/user-categories',
@@ -74,6 +84,15 @@ class BlogService {
                 blog_name: name,
                 category_id: category_id,
                 content: content,
+            }
+        })
+    }
+
+    deleteBlog(id) {
+        return utils.request({
+            url: '/api/blog/delete',
+            data: {
+                id: id,
             }
         })
     }

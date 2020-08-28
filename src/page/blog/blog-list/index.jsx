@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from 'react-router-dom';
 import PageTitle from "component/pagetitle/index.jsx";
-import {Button, Icon, Label, Table} from "semantic-ui-react";
+import {Button, Icon, Label, Table, Pagination} from "semantic-ui-react";
 import EditBlogModal from "page/blog/edit-blog/index.jsx";
 
 import "./index.scss"
@@ -17,7 +17,14 @@ class BlogList extends React.Component {
             blog_list: [],
 
             show_edit_blog: false,
-            cur_blog: null
+            cur_blog: null,
+
+            cur_page: 1,
+            total_page: 0,
+
+            page_info: {
+                1: 0
+            }
         }
     }
 
@@ -26,13 +33,31 @@ class BlogList extends React.Component {
     }
 
     loadBlogs() {
-        blogService.getUserBlogs().then(res => {
 
+        const lastId = this.state.page_info[this.state.cur_page] ? this.state.page_info[this.state.cur_page].last_id : this.state.last_id;
+
+        console.log("zjwzjw", this.state.page_info)
+
+        blogService.getUserBlogsPageNate(lastId, this.state.cur_page).then(res => {
+
+            console.log("zjw called page:", res)
             if (res.bloglist && res.bloglist.length) {
+                let last_id = res.bloglist[res.bloglist.length-1].id
+
+                let next_page = res.cur_page + 1
+                let pageInfo = this.state.page_info
+                pageInfo[next_page] = {}
+                pageInfo[next_page].last_id = last_id
+
                 this.setState({
-                    blog_list: res.bloglist
+                    blog_list: res.bloglist,
+                    cur_page: res.cur_page,
+                    total_page: res.total_page,
+                    page_info: pageInfo
                 })
             }
+        }, err => {
+
         })
     }
 
@@ -60,6 +85,29 @@ class BlogList extends React.Component {
     onCloseEditDialog() {
         this.setState({
             show_edit_blog: false
+        })
+    }
+
+    onDeleteBlog(id) {
+        utils.confirmDialog("确认删除吗？", (agree) => {
+            if (agree) {
+                blogService.deleteBlog(id).then(res => {
+                    utils.successTips("删除成功")
+                    this.loadBlogs()
+                }, err => {
+                    utils.errorTips(err)
+                })
+            }
+        })
+    }
+
+    onPageChange(e, data) {
+        console.log(data.activePage)
+
+        this.setState({
+            cur_page: data.activePage,
+        }, () => {
+            this.loadBlogs()
         })
     }
 
@@ -115,7 +163,7 @@ class BlogList extends React.Component {
                                             <Table.Cell>{utils.formatDate(blog.publish_tm) }</Table.Cell>
                                             <Table.Cell>{blog.update_tm}</Table.Cell>
                                             <Table.Cell>
-                                                <Button negative>
+                                                <Button negative onClick={() => this.onDeleteBlog(blog.id)}>
                                                     <Icon name='delete' />删除
                                                 </Button>
 
@@ -136,6 +184,18 @@ class BlogList extends React.Component {
                             }
                         </Table.Body>
                     </Table>
+                    <div className={"float-right"}>
+                        <Pagination
+                            onPageChange={(e, data) => this.onPageChange(e, data)}
+                            defaultActivePage={this.state.cur_page}
+                            ellipsisItem={{ content: <Icon name='ellipsis horizontal' />, icon: true }}
+                            firstItem={{ content: <Icon name='angle double left' />, icon: true }}
+                            lastItem={{ content: <Icon name='angle double right' />, icon: true }}
+                            prevItem={{ content: <Icon name='angle left' />, icon: true }}
+                            nextItem={{ content: <Icon name='angle right' />, icon: true }}
+                            totalPages={this.state.total_page}
+                        />
+                    </div>
                 </div>
 
                 <div>

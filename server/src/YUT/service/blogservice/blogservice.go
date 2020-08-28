@@ -3,6 +3,7 @@ package blogservice
 import (
 	"YUT/dbservice/dbblogcategoryservice"
 	"YUT/dbservice/dbblogservice"
+	"YUT/dbservice/dbpagehelper"
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
@@ -27,6 +28,12 @@ func GetBlog(w http.ResponseWriter, r *http.Request) {
 	err := dbblogservice.GetBlog(blogId, &dbblog)
 	if err != nil {
 		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	if dbblog.Status == 0 {
+		response.Msg = "forbidden visit"
 		response.ResponseError(w)
 		return
 	}
@@ -111,7 +118,23 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 
 func DeleteBlog(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
+	request := &netproto.NetBlogDeleteRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
 
+	response := &netproto.NetResponse{}
+	err = dbblogservice.DelBlog(request.BlogId)
+
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return;
+	}
+
+	response.ResponseSuccess(w)
 
 }
 
@@ -136,6 +159,51 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 		return;
 	}
 
+	response.ResponseSuccess(w)
+}
+
+func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGetBlogPagenateSearchRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	pageHelper := dbpagehelper.NewPageHelper(request.LastId, request.CurPage)
+
+	response := &netproto.NetGetBlogPagenateListResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	var dbBlogList []*dbproto.DBBlogAllInfo
+	err = pageHelper.SearchBlog(username, &dbBlogList)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return;
+	}
+
+	response.CurPage = pageHelper.CurPage;
+	response.TotalPage = pageHelper.TotalPage()
+	for _, v := range dbBlogList {
+		detail := netproto.NetBlogAllDetail{
+			Id: v.Id,
+			Status: v.Status,
+			BlogType: v.BlogType,
+			UserName: v.UserName,
+			BlogName: v.BlogName,
+			BlogUrl: v.BlogUrl,
+			CategoryId: v.CategoryId,
+			Content: v.Content,
+			CreateTm: v.CreateTm,
+			UpdateTm: v.UpdateTm,
+			PublishTm: v.PublishTm,
+		}
+
+		response.UserBlogList = append(response.UserBlogList, &detail)
+	}
 	response.ResponseSuccess(w)
 }
 

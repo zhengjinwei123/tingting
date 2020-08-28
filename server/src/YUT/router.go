@@ -45,6 +45,7 @@ func BlogRouter() http.Handler {
 	r.Post("/add-category", blogservice.AddCategory)
 	r.Post("/user-blogs", blogservice.GetBlogList)
 	r.Post("/user-categories", blogservice.GetUserCategories)
+	r.Post("/user-blogs-pagenate", blogservice.GetBlogPageNateSearch)
 
 	return r
 }

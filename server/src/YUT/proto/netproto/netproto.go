@@ -364,3 +364,32 @@ type NetBlogUpdateRequest struct {
 	CategoryId int `http:"category_id"`
 	Content string `http:"content"`
 }
+
+// delete blog
+type NetBlogDeleteRequest struct {
+	BlogId int `http:"id"`
+}
+
+// get blog pagenate
+
+type NetGetBlogPagenateSearchRequest struct {
+	LastId  int `http:"last_id"`
+	CurPage int `http:"cur_page"`
+}
+
+type NetGetBlogPagenateListResponse struct {
+	NetResponse
+
+	UserBlogList []*NetBlogAllDetail `json:"bloglist"`
+	CurPage int `json:"cur_page"`
+	TotalPage int `json:"total_page"`
+}
+
+func (this *NetGetBlogPagenateListResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetGetBlogPagenateListResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}

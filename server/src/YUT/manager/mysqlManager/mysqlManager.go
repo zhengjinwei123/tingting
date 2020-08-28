@@ -1,7 +1,7 @@
 package mysqlManager
 
 import (
-	"database/sql"
+	 "database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -19,9 +19,6 @@ func (this *mysqlProxy) Init(addr string) error {
 		log.Printf("init mysql error: %s %v \n", addr, err)
 		return err;
 	}
-
-	this.proxy.SetMaxOpenConns(20)
-	this.proxy.SetMaxIdleConns(10)
 
 	return nil
 }
@@ -55,8 +52,32 @@ func (this *mysqlProxy) GetCount(sql string) (int, error) {
 		count += 1
 	}
 
-	fmt.Println(fmt.Sprintf("getcounrt: %d", count))
 	return count, nil
+}
+
+func (this *mysqlProxy) GetCount2(field, table string, where string) (int, error) {
+	sqlStr := fmt.Sprintf("select count(`%s`) as cnt from %s", field, table)
+
+	if where != "" {
+		sqlStr += (" where " + where)
+	}
+	rows, err := this.proxy.Query(sqlStr)
+
+	if err != nil {
+		return 0, err
+	}
+
+	for rows.Next(){
+		var num  int
+		err := rows.Scan(&num)
+		if err != nil {
+			return 0, err
+		}
+
+		return num, nil
+	}
+
+	return 0, err
 }
 
 func (this *mysqlProxy) QueryOne(sql string, v interface{}) error {

@@ -19,6 +19,21 @@ func AddBlog(username string, category_id int, content string, blog_name string,
 	return err
 }
 
+func DelBlog(id int) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Delete(fmt.Sprintf("delete from `%s` where `id`=%d",
+		table_name, id))
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("update failed: data not changed")
+	}
+	return nil
+}
+
+
 func UpdateBlog(blog_id int, content string, blog_name string, category_id int) error {
 	proxy := mysqlManager.GetMysqlProxy()
 	err, n := proxy.Update(fmt.Sprintf("update `%s` set `name`='%s', `content`='%s', `category_id`=%d where `id`=%d",
@@ -45,8 +60,8 @@ func GetBlog(blog_id int, blogInfo *dbproto.DBBlogAllInfo) error {
 func GetUserBlogList(username string, blogList *[]*dbproto.DBBlogAllInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.QueryList(fmt.Sprintf("select * from `%s`",
-		table_name), blogList)
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s` where `username`='?'",
+		table_name, username), blogList)
 	return err
 }
 
@@ -62,4 +77,19 @@ func PublishBlog(blog_id int, url string, status int) error {
 		return errors.New("update failed: data not changed")
 	}
 	return nil
+}
+
+func PageNateTotalCount(username string) (int, error) {
+	proxy := mysqlManager.GetMysqlProxy()
+	count, err := proxy.GetCount2("id", table_name, "`username`='" + username + "'")
+	return count, err
+}
+
+func PageNateSearchUserBlog(username string, last_id int, limit_num int, blogList *[]*dbproto.DBBlogAllInfo) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s` where `username`='%s' and `id`>%d order by id asc limit %d",
+		table_name, username, last_id, limit_num), blogList)
+
+	return err
 }

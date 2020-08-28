@@ -34,6 +34,7 @@ class MyMarkdownEditor extends React.Component {
     render() {
         return (
             <MarkdownEditor
+                visble={true}
                 className={"myeditor"}
                 value={this.props.data }
                 onChange={(editor, data,value) => this.updateMarkDown(editor, data, value)}

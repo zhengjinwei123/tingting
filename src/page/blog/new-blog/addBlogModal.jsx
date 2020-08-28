@@ -74,7 +74,8 @@ class AddBlogModal extends React.Component {
         blogService.getCategories().then(res => {
             if (res.categories && res.categories.length) {
                 this.setState({
-                    categories: res.categories
+                    categories: res.categories,
+                    category_id:  res.categories.length ? res.categories[0].category_id : 0
                 })
             }
 
@@ -109,7 +110,6 @@ class AddBlogModal extends React.Component {
                 <Modal
                     className={"addblog-dialog"}
                     closeOnDimmerClick={false}
-                    centered={false}
                     size = "small"
                     onClose={ () => this.setShow(false) }
                     open = { this.state.show }
@@ -153,7 +153,10 @@ class AddBlogModal extends React.Component {
                     </Modal.Actions>
                 </Modal>
                 <div>
-                    <AddCategoryModal show={ this.state.show_add_category } closeModal={(reason) => this.openAddCategoryModal(false, reason)}/>
+                    <AddCategoryModal
+                        onClose={() => this.setShow(false)}
+                        show={ this.state.show_add_category } closeModal={(reason) => this.openAddCategoryModal(false, reason)}/>
+
                 </div>
             </div>
         )

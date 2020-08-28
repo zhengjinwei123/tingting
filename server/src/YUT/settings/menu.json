@@ -63,6 +63,7 @@
       "4005,/blog/add-category,新增博客分类",
       "4006,/blog/user-blogs,用户博客列表",
       "4007,/blog/user-categories,用户博客列表",
+      "4008,/blog/user-blogs-pagenate,用户博客列表-分页",
 
       "5000,#,广告",
       "5001,/advert/new,广告新建",

@@ -11,6 +11,7 @@
     <mapping directory="$PROJECT_DIR$/src/github.com/gorilla/sessions" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/hashicorp/golang-lru" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/jmoiron/sqlx" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/src/github.com/jmoiron/sqlx111" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/prometheus/client_golang" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/github.com/shiena/ansicolor" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/src/golang.org/x/net" vcs="Git" />

@@ -23,6 +23,10 @@ import * as menuActions from "actions/menulist.jsx";
 
 class MyPublicRouter extends React.Component {
 
+    UNSAFE_componentWillMount() {
+        document.title = "价值空间-博客"
+    }
+
     render() {
         return (
             <div>

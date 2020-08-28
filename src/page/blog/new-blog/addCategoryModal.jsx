@@ -46,7 +46,7 @@ class AddCategoryModal extends BaseModal {
                className={"addcategory-dialog"}
                closeOnDimmerClick={false}
                centered={false}
-               size = "tiny"
+               size = "small"
                onClose={ () => this.setShow(false) }
                open = { this.state.show }
            >
