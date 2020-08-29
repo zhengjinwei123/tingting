@@ -203,6 +203,15 @@ class Utils{
         var ss = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds());
         return YY + MM + DD +" "+hh + mm + ss;
     }
+
+    imageHost(image_name) {
+        let host = process.env.IMAGE_HOST;
+        return "http://"+host+"/images/"+image_name;
+    }
+
+    redirectPubHomePage() {
+
+    }
 }
 
 export default (Utils.getInstance());

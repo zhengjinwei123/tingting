@@ -31,6 +31,12 @@ class AddBlogModal extends React.Component {
         }
     }
 
+    closeAddCategoryModal() {
+        this.setState({
+            show_add_category: false}
+        )
+    }
+
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.setState({
             show: nextProps.show
@@ -154,7 +160,7 @@ class AddBlogModal extends React.Component {
                 </Modal>
                 <div>
                     <AddCategoryModal
-                        onClose={() => this.setShow(false)}
+                        onClose={() => this.closeAddCategoryModal(false)}
                         show={ this.state.show_add_category } closeModal={(reason) => this.openAddCategoryModal(false, reason)}/>
 
                 </div>

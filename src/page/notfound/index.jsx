@@ -1,17 +1,29 @@
 import React from "react";
 import { Image, Card, Button } from 'semantic-ui-react'
-
+import {Redirect,withRouter} from "react-router-dom";
 import "./index.scss"
+
+import utils from "utils/utils.jsx"
 
 class NotFoundPage extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    onClickLastPage() {
+        this.props.history.goBack();
+    }
+
+    onClickHomePage() {
+
+    }
+
     render() {
+
+        let timgImage = utils.imageHost("timg.gif")
         return (
             <Card centered={true} raised={true} className={"pannel-center"}>
-                <Image src='http://localhost:9000/images/timg.gif' />
+                <Image src={timgImage} />
                 <Card.Content>
                     <Card.Header>页面没找到</Card.Header>
                     <Card.Meta>
@@ -23,10 +35,10 @@ class NotFoundPage extends React.Component {
                 </Card.Content>
                 <Card.Content extra>
                     <div className='ui two buttons'>
-                        <Button basic color='green'>
+                        <Button basic color='green' onClick={() => this.onClickHomePage()}>
                             返回主页
                         </Button>
-                        <Button basic color='red'>
+                        <Button basic color='red' onClick={() => this.onClickLastPage()}>
                             返回上一页
                         </Button>
                     </div>
@@ -38,4 +50,4 @@ class NotFoundPage extends React.Component {
     }
 }
 
-export default NotFoundPage;
+export default withRouter(NotFoundPage);

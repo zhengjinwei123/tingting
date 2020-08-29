@@ -114,7 +114,8 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                WEBPACK_ENV: JSON.stringify("dev")
+                WEBPACK_ENV: JSON.stringify("dev"),
+                IMAGE_HOST: JSON.stringify("127.0.0.1:9000"),
             }
         })
     ],

@@ -12,6 +12,7 @@ import UserQuery from "page/user-query/index.jsx";
 import BlogNew from "page/blog/new-blog/index.jsx"
 import BlogList from "page/blog/blog-list/index.jsx";
 import PubBlogView from "page/pub/blog/view/index.jsx";
+import PubHomePage from "page/pub/index.jsx";
 
 import userService from "service/user.jsx";
 
@@ -103,7 +104,7 @@ class RouterMap extends React.Component {
 
         let PublicRouter = (
             <Switch>
-                {/*<Route exact path="/pub/" component={PubBlogView}/>*/}
+                <Route exact path="/pup" component={PubHomePage} />
                 <Route path="/pup/blog/:blog_id" component={PubBlogView}/>
                 <Route component={NotFoundPage}/>
             </Switch>

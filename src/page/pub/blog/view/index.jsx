@@ -1,9 +1,7 @@
 import React from "react"
 
-import PubViewHeader from "page/pub/blog/header/index.jsx"
+import PubViewHeader from "page/pub/header/index.jsx"
 import NotFoundPage from "page/notfound/index.jsx"
-
-import utils from "utils/utils.jsx"
 import blogService from "service/blog.jsx"
 
 import BraftEditor from 'braft-editor'
