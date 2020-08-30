@@ -1,6 +1,6 @@
 import React from "react";
 import { Image, Card, Button } from 'semantic-ui-react'
-import {Redirect,withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import "./index.scss"
 
 import utils from "utils/utils.jsx"
@@ -15,7 +15,7 @@ class NotFoundPage extends React.Component {
     }
 
     onClickHomePage() {
-
+        window.location.href = '/?redirect=' + encodeURIComponent(window.location.pathname);
     }
 
     render() {
@@ -44,8 +44,6 @@ class NotFoundPage extends React.Component {
                     </div>
                 </Card.Content>
             </Card>
-
-            // <Image src='http://localhost:9000/images/timg.gif' size='small' rounded={true} centered={true}/>
         )
     }
 }

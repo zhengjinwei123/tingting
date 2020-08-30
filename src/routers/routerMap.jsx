@@ -40,7 +40,7 @@ class MyPublicRouter extends React.Component {
 class MyRouter extends React.Component {
 
     checkAuth(pathName) {
-        if (pathName === "/" || pathName === "/login") {
+        if (pathName === "/admin" || pathName === "/admin/login") {
             return true;
         }
 
@@ -71,7 +71,7 @@ class MyRouter extends React.Component {
             } else {
                 return (
                     <div>
-                        <Redirect to="/" />
+                        <Redirect to="/admin" />
                     </div>
                 )
             }
@@ -79,7 +79,7 @@ class MyRouter extends React.Component {
         } else {
             return (
                 <div>
-                    <Redirect to="/login" />
+                    <Redirect to="/admin/login" />
                 </div>
             )
         }
@@ -91,12 +91,12 @@ class RouterMap extends React.Component {
         let LayoutRouter = (
             <Layout menuActions={ this.props.menuActions } menuList={ this.props.menuList }>
                 <Switch>
-                    <Route exact path="/" component={Home}/>
-                    <Route path="/user-new" component={UserNew} />
-                    <Route path="/user-auth-manage" component={UserAuthManage} />
-                    <Route path="/user-query" component={UserQuery} />
-                    <Route path="/blog-new" component={BlogNew} />
-                    <Route path="/blog-manage" component={BlogList} />
+                    <Route exact path="/admin" component={Home}/>
+                    <Route path="/admin/user-new" component={UserNew} />
+                    <Route path="/admin/user-auth-manage" component={UserAuthManage} />
+                    <Route path="/admin/user-query" component={UserQuery} />
+                    <Route path="/admin/blog-new" component={BlogNew} />
+                    <Route path="/admin/blog-manage" component={BlogList} />
                     <Route component={Error}/>
                 </Switch>
             </Layout>
@@ -104,7 +104,7 @@ class RouterMap extends React.Component {
 
         let PublicRouter = (
             <Switch>
-                <Route exact path="/pup" component={PubHomePage} />
+                <Route exact path="/" component={PubHomePage} />
                 <Route path="/pup/blog/:blog_id" component={PubBlogView}/>
                 <Route component={NotFoundPage}/>
             </Switch>
@@ -114,11 +114,11 @@ class RouterMap extends React.Component {
             return (
                 <Router>
                     <Switch>
-                        <Route path="/login" >
+                        <Route  path="/admin/login" >
                             <Login />
                         </Route>
-                        <MyPublicRouter path="/pup" render={ props => PublicRouter} />
-                        <MyRouter path="/" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} />
                     </Switch>
                 </Router>
             )
@@ -126,11 +126,11 @@ class RouterMap extends React.Component {
             return (
                 <RouterHash>
                     <Switch>
-                        <Route path="/login" >
+                        <Route path="/admin/login" >
                             <Login />
                         </Route>
-                        <MyPublicRouter path="/pub" render={ props => PublicRouter} />
-                        <MyRouter path="/" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} />
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
                     </Switch>
                 </RouterHash>
             )

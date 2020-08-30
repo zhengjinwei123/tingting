@@ -6,7 +6,7 @@ import (
 	"errors"
 )
 
-const PER_PAGE_NUM  = 2
+const PER_PAGE_NUM  = 5
 
 type DBPageHelper struct {
 	LastId int

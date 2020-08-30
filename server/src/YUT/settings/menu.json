@@ -2,35 +2,35 @@
   "menulist" : [
     [
       "100,资源管理,fa-files-o,#",
-      "101,图片上传,fa-circle-o,/photo-upload",
-      "102,视频上传,fa-circle-o,/media-upload",
-      "103,资源管理,fa-circle-o,/media-manage"
+      "101,图片上传,fa-circle-o,/admin/photo-upload",
+      "102,视频上传,fa-circle-o,/admin/media-upload",
+      "103,资源管理,fa-circle-o,/admin/media-manage"
     ],
     [
       "200,数据统计,fa-pie-chart,#",
-      "201,数据分析,fa-circle-o,/data-analyse",
-      "202,数据查询,fa-circle-o,/data-query"
+      "201,数据分析,fa-circle-o,/admin/data-analyse",
+      "202,数据查询,fa-circle-o,/admin/data-query"
     ],
     [
       "300,博客,fa-laptop,#",
-      "301,写博客,fa-circle-o,/blog-new",
-      "302,博客管理,fa-circle-o,/blog-manage"
+      "301,写博客,fa-circle-o,/admin/blog-new",
+      "302,博客管理,fa-circle-o,/admin/blog-manage"
     ],
     [
       "400,用户,fa-edit,#",
-      "401,新建用户,fa-circle-o,/user-new",
-      "402,权限管理,fa-circle-o,/user-auth-manage",
-      "403,用户查询,fa-circle-o,/user-query"
+      "401,新建用户,fa-circle-o,/admin/user-new",
+      "402,权限管理,fa-circle-o,/admin/user-auth-manage",
+      "403,用户查询,fa-circle-o,/admin/user-query"
     ],
     [
       "500,广告,fa-table,#",
-      "501,新建,fa-circle-o,/advert-new",
-      "502,管理,fa-circle-o,/advert-query"
+      "501,新建,fa-circle-o,/admin/advert-new",
+      "502,管理,fa-circle-o,/admin/advert-query"
     ],
     [
       "600,游戏,fa-folder,#",
-      "601,列表,fa-circle-o,/game-list",
-      "602,管理,fa-circle-o,/game-manage"
+      "601,列表,fa-circle-o,/admin/game-list",
+      "602,管理,fa-circle-o,/admin/game-manage"
     ]
   ],
   "requestlist": [

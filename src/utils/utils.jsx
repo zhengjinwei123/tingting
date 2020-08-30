@@ -71,7 +71,7 @@ class Utils{
         console.log("redirectLogin")
         this.clearStorage();
 
-        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        window.location.href = '/admin/login?redirect=' + encodeURIComponent(window.location.pathname);
     }
 
     redirect(url) {
@@ -209,9 +209,6 @@ class Utils{
         return "http://"+host+"/images/"+image_name;
     }
 
-    redirectPubHomePage() {
-
-    }
 }
 
 export default (Utils.getInstance());

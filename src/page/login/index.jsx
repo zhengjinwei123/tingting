@@ -14,7 +14,7 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            redirect: utils.getUrlParams('redirect') || '/'
+            redirect: utils.getUrlParams('redirect') || '/admin'
         }
     }
 
