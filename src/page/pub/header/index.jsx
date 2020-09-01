@@ -1,9 +1,11 @@
 import React from "react"
-import { Button, Search, List, Transition, Label, Image} from 'semantic-ui-react'
+import {withRouter} from "react-router-dom";
+import { Button, Search, List, Transition, Label, Popup, Icon} from 'semantic-ui-react'
 
-
+import $ from "jquery"
 import utils from "utils/utils.jsx"
 import "./index.scss"
+
 
 const transitions = [
     "fly left",
@@ -37,17 +39,30 @@ class PubViewHeader extends React.Component {
 
     onRightBtnClick(t) {
         console.log(t)
+        window.location.href = t;
     }
+
 
     onClickPubHome() {
         window.location.href = '/?redirect=' + encodeURIComponent(window.location.pathname);
     }
 
     render() {
+
+        const windowWidth = $(window).width();
+
+        let transition_label_width = "big"
+        if (windowWidth <= 768) {
+            transition_label_width = "small"
+        }
+
         return (
             <div className={"view-top-bar"}>
                 <div className={"left-block"}>
-                    <Button  primary className={"float-left"} circular icon='home' onClick={() => this.onClickPubHome() }/>
+                    <Popup content='点击前往首页' trigger={
+                        <Button  primary className={"float-left"} circular icon='home' onClick={() => this.onClickPubHome() }/>
+                    } />
+
                     <Search
                         className={"float-left"}
                         loading={false}
@@ -64,7 +79,7 @@ class PubViewHeader extends React.Component {
                         visible={this.state.visible}
                     >
 
-                        <Label as='a' image size={"big"}>
+                        <Label as={"a"} image size={transition_label_width}>
                             <img src={utils.imageHost("home.jpg")} />
                             价值空间，充分挖掘自己的价值
                         </Label>
@@ -78,20 +93,30 @@ class PubViewHeader extends React.Component {
                         <List.Item>
                             <List.Content>
                                 <List.Header>
-                                    <Label as='a' color={"teal"} image onClick={() => this.onRightBtnClick("github")}>
-                                        <img src={utils.imageHost("github.jpg")} />
-                                        Github
-                                    </Label>
+                                    <Popup content='点击前往Github首页' trigger={
+                                        <Button basic color='teal' icon={<Icon name={"github alternate"} size={"large"} />} onClick={() => this.onRightBtnClick("https://github.com/zhengjinwei123")} />
+                                    } />
+
                                 </List.Header>
                             </List.Content>
                         </List.Item>
                         <List.Item>
                             <List.Content>
                                 <List.Header>
-                                    <Label as='a' color={"teal"} image onClick={() => this.onRightBtnClick("csdn") }>
-                                        <img src={utils.imageHost("csdn.jpg")} />
-                                        CSDN
-                                    </Label>
+                                    <Popup content='点击前往fork代码' trigger={
+                                        <Button basic color='teal' icon={<Icon name={"share alternate"} size={"large"} />} onClick={() => this.onRightBtnClick("https://github.com/zhengjinwei123/tingting")} />
+                                    } />
+
+                                </List.Header>
+                            </List.Content>
+                        </List.Item>
+                        <List.Item>
+                            <List.Content>
+                                <List.Header>
+                                    <Popup content='点击前往管理后台' trigger={
+                                        <Button basic color='teal' icon={<Icon name={"tachometer alternate"} size={"large"} />} onClick={() => this.onRightBtnClick("/admin")} />
+                                    } />
+
                                 </List.Header>
                             </List.Content>
                         </List.Item>
@@ -103,4 +128,4 @@ class PubViewHeader extends React.Component {
     }
 }
 
-export default PubViewHeader
+export default withRouter(PubViewHeader)

@@ -3,6 +3,8 @@ import React from "react"
 import PubViewHeader from "page/pub/header/index.jsx"
 import NotFoundPage from "page/notfound/index.jsx"
 import blogService from "service/blog.jsx"
+import PubViewLeftBar from "page/pub/blog/leftbar/index.jsx"
+import PubViewRightBar from "page/pub/blog/rightbar/index.jsx";
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/output.css'
@@ -10,7 +12,7 @@ import 'braft-editor/dist/output.css'
 import ReactMarkdown from "react-markdown"
 import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
 
-import "./index.scss"
+import "../index.scss"
 
 
 class PubBlogView extends React.Component {
@@ -83,25 +85,29 @@ class PubBlogView extends React.Component {
         return (
             <div>
                 <PubViewHeader />
-                <div className={"container"} id="zjw">
-                    {
-                        this.isMarkdown() ?  <ReactMarkdown
-                                source={html}
-                                escapeHtml={false}
-                                renderers={{
-                                    code: CodeBlock,
-                                }}
-                            />
-                            :
-                            <BraftEditor
-                                stripPastedStyles={true}
-                                contentClassName={"braft-content"}
-                                readOnly={true}
-                                controls={[]}
-                                value={this.state.editor}
-                            />
+                <div className={"blog-view-container"}>
+                    <PubViewLeftBar className={"left-bar float-left"}/>
+                    <div className={"container float-left"} id="zjw">
+                        {
+                            this.isMarkdown() ?  <ReactMarkdown
+                                    source={html}
+                                    escapeHtml={false}
+                                    renderers={{
+                                        code: CodeBlock,
+                                    }}
+                                />
+                                :
+                                <BraftEditor
+                                    stripPastedStyles={true}
+                                    contentClassName={"braft-content"}
+                                    readOnly={true}
+                                    controls={[]}
+                                    value={this.state.editor}
+                                />
 
-                    }
+                        }
+                    </div>
+                    <PubViewRightBar className={"right-bar float-right"}/>
                 </div>
             </div>
         )
