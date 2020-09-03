@@ -204,9 +204,22 @@ class Utils{
         return YY + MM + DD +" "+hh + mm + ss;
     }
 
+    uploadedImageHost(image_path) {
+        let host = process.env.IMAGE_HOST;
+        return "http://"+host+"/"+image_path;
+    }
+
     imageHost(image_name) {
         let host = process.env.IMAGE_HOST;
         return "http://"+host+"/images/"+image_name;
+    }
+
+    uploadImageHost() {
+
+        // return "/api/user/upload-image";
+
+        let host = process.env.API_HOST;
+        return "http://"+host+"/api/user/upload-image";
     }
 
 }

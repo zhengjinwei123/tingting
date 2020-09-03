@@ -7,6 +7,7 @@ import (
 	"YUT/service/blogservice"
 	"YUT/utils"
 	"context"
+	"fmt"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"log"
@@ -67,10 +68,13 @@ func main() {
 
 	go httpServer.ListenAndServe()
 
+	fmt.Println("api server start", serverConf.Http)
+
 	go func() {
 		p, _ := filepath.Abs(filepath.Dir("./public/"))
 
 		http.Handle("/", http.FileServer(http.Dir(p)))
+		fmt.Println("static server start:", 9000)
 		http.ListenAndServe(":9000", nil)
 	}()
 

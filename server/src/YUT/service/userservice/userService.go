@@ -5,9 +5,16 @@ import (
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
+	"YUT/utils/fileutils"
 	"YUT/utils/orm"
+	"fmt"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
 )
 
 func UserLogin(w http.ResponseWriter, r *http.Request) {
@@ -213,6 +220,97 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 		response.ResponseError(w)
 		return
 	}
+
+	response.ResponseSuccess(w)
+}
+
+func DelImage(w http.ResponseWriter, r *http.Request) {
+	request := &netproto.NetUserImageDelRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	response := &netproto.NetResponse{}
+
+	p, _ := filepath.Abs(filepath.Dir("./public/"))
+	file_path := p + "/upload/" + username + "/" + request.ImageName
+
+	if !fileutils.Exists(file_path) {
+		response.Msg = "file not exists";
+		response.ResponseError(w)
+		return
+	}
+
+	if err = fileutils.RmFile(file_path); err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func UploadImage(w http.ResponseWriter, r *http.Request) {
+
+	response := &netproto.NetUserImageUploadResponse{}
+
+	p, _ := filepath.Abs(filepath.Dir("./public/"))
+
+	err := r.ParseMultipartForm(32 << 20);
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	username := r.FormValue("username")
+	if username == "" {
+		response.Msg = "invalid request,please login first"
+		response.ResponseError(w)
+		return
+	}
+
+	file, header, err := r.FormFile("upload_file");
+	defer file.Close();
+	if err != nil {
+		log.Fatal(err);
+	}
+	uploadDir := p + "/upload/" + username + "/"
+	//创建上传目录
+	os.Mkdir(uploadDir, os.ModePerm);
+	//创建上传文件
+
+	ss := strings.Split(header.Filename, ".")
+	if len(ss) < 2 {
+		response.Msg = "invalid file format,file no suffix"
+		response.ResponseError(w)
+		return
+	}
+	datetime := time.Now().Format("2006-01-02-15-04-05")
+
+	newFileName := fmt.Sprintf("%s_%s.%s", ss[0], datetime, ss[len(ss)-1])
+
+	filePath := uploadDir + newFileName
+	if fileutils.Exists(filePath) {
+		response.Msg = "file " + newFileName + " exists"
+		response.ResponseError(w)
+		return
+	}
+
+	cur, err := os.Create(filePath);
+	defer cur.Close();
+	if err != nil {
+		log.Fatal(err);
+	}
+	//把上传文件数据拷贝到我们新建的文件
+	io.Copy(cur, file);
+
+	response.ImagePath = "/upload/"+username+"/"+newFileName
 
 	response.ResponseSuccess(w)
 }

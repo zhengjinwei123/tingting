@@ -13,6 +13,10 @@ type SResponse struct {
 }
 
 func outputJson(data interface{}, status int, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
+
 	resp := &SResponse{
 		Data: data,
 		Status: status,
@@ -392,4 +396,25 @@ func (this *NetGetBlogPagenateListResponse) ResponseError(writer http.ResponseWr
 
 func (this *NetGetBlogPagenateListResponse) ResponseSuccess(writer http.ResponseWriter) {
 	outputJson(*this, 0, writer)
+}
+
+// image upload
+type NetUserImageUploadResponse struct {
+	NetResponse
+
+	ImagePath string `json:"image_path"`
+}
+
+func (this *NetUserImageUploadResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetUserImageUploadResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// image del
+type NetUserImageDelRequest struct {
+	ImageName string `http:"image_name"`
 }

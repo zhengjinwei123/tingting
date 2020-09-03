@@ -48,6 +48,8 @@
       "2004,/user/update,用户更新",
       "2005,/user/menulist,用户菜单",
       "2006,/user/update-password,用户密码修改",
+      "2007,/user/upload-image,上传图片",
+      "2008,/user/del-image,上传图片",
 
       "3000,#,H5游戏",
       "3001,/h5game/list,h5游戏列表",

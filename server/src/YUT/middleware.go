@@ -12,6 +12,7 @@ import (
 
 func ApiMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
 		_ = r.ParseForm()
 
 		var d string = ""
@@ -30,7 +31,8 @@ func ApiMiddleware(next http.Handler) http.Handler {
 
 		if !userManager.GetUsrSessionMgr().UserHasLogin(r) {
 			if r.URL.Path != "/api/user/login" &&
-				r.URL.Path != "/api/user/logout" {
+				r.URL.Path != "/api/user/logout" &&
+				r.URL.Path != "/api/user/upload-image" {
 				resp := &netproto.NetNotLoginResponse{}
 				resp.Msg = "Not Allow Request, Please Login First"
 				resp.ResponseError(w)

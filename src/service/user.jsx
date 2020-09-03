@@ -124,6 +124,15 @@ class UserService {
             url: '/api/user/menulist'
         });
     }
+
+    delImage(image_name) {
+        return utils.request({
+            url: '/api/user/del-image',
+            data: {
+                image_name: image_name,
+            }
+        });
+    }
 }
 
 export default UserService.getInstance()
