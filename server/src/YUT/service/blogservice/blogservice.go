@@ -40,6 +40,7 @@ func GetBlog(w http.ResponseWriter, r *http.Request) {
 
 	response.Content = dbblog.Content
 	response.Type = dbblog.BlogType
+	response.UserName = dbblog.UserName
 
 	response.ResponseSuccess(w)
 }

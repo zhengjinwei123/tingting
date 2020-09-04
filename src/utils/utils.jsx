@@ -204,6 +204,11 @@ class Utils{
         return YY + MM + DD +" "+hh + mm + ss;
     }
 
+    uploadedImageHostByUserName(username, image_name) {
+        let host = process.env.IMAGE_HOST;
+        return "http://"+host+"/upload/"+username + "/" + image_name;
+    }
+
     uploadedImageHost(image_path) {
         let host = process.env.IMAGE_HOST;
         return "http://"+host+"/"+image_path;

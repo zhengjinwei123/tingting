@@ -5,6 +5,7 @@ import (
 	"YUT/manager/configManager"
 	"YUT/manager/mysqlManager"
 	"YUT/service/blogservice"
+	"YUT/service/userservice"
 	"YUT/utils"
 	"context"
 	"fmt"
@@ -44,6 +45,10 @@ func main() {
 		r.Route("/blog/{blog_id}", func(r chi.Router) {
 			r.Use(PubBlogMiddleware)
 			r.Post("/", blogservice.GetBlog)
+		})
+
+		r.Route("/user", func(r chi.Router) {
+			r.Post("/profile", userservice.GetProfile)
 		})
 	})
 

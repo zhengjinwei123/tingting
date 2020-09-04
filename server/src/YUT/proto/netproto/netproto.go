@@ -350,6 +350,7 @@ type NetPubBlogGetResponse struct {
 
 	Content string `json:"content"`
 	Type int `json:"type"`
+	UserName string `json:"username"`
 }
 
 func (this *NetPubBlogGetResponse) ResponseError(writer http.ResponseWriter) {
@@ -417,4 +418,36 @@ func (this *NetUserImageUploadResponse) ResponseSuccess(writer http.ResponseWrit
 // image del
 type NetUserImageDelRequest struct {
 	ImageName string `http:"image_name"`
+}
+
+// update profile
+type NetUserUpdateProfileRequest struct {
+	NickName string `http:"nickname"`
+	UserDesc string `http:"userdesc"`
+	Sex int `http:"sex"`
+	WxImageName string `http:"wx_image"`
+	ZfImageName string `http:"zf_image"`
+}
+
+// get profile
+type NetUserProfileRequest struct {
+	UserName string `http:"username"`
+}
+type NetUserProfileResponse struct {
+	NetResponse
+
+	NickName string `json:"nickname"`
+	Sex int `json:"sex"`
+	UserDesc string `json:"userdesc"`
+	WXImage string `json:"wx_image"`
+	ZFImage string `json:"zf_image"`
+}
+
+func (this *NetUserProfileResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetUserProfileResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
 }

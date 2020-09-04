@@ -100,6 +100,29 @@ class UserService {
         })
     }
 
+    updateProfile(username, nickname, sex, userdesc, wx_image, zf_image) {
+        return utils.request({
+            url: '/api/user/update-profile',
+            data: {
+                username: username,
+                nickname: nickname,
+                userdesc: userdesc,
+                sex: sex,
+                wx_image: wx_image,
+                zf_image: zf_image
+            }
+        })
+    }
+
+    getProfile(username) {
+        return utils.request({
+            url: '/pub/user/profile',
+            data: {
+                username: username,
+            }
+        })
+    }
+
     deleteUser(username) {
         return utils.request({
             url: '/api/user/delete',

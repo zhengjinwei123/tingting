@@ -20,7 +20,8 @@
       "400,用户,fa-edit,#",
       "401,新建用户,fa-circle-o,/admin/user-new",
       "402,权限管理,fa-circle-o,/admin/user-auth-manage",
-      "403,用户查询,fa-circle-o,/admin/user-query"
+      "403,用户查询,fa-circle-o,/admin/user-query",
+      "404,基础信息,fa-circle-o,/admin/user-profile"
     ],
     [
       "500,广告,fa-table,#",
@@ -50,6 +51,7 @@
       "2006,/user/update-password,用户密码修改",
       "2007,/user/upload-image,上传图片",
       "2008,/user/del-image,上传图片",
+      "2009,/user/update-profile,更新基础信息",
 
       "3000,#,H5游戏",
       "3001,/h5game/list,h5游戏列表",

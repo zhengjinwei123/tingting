@@ -20,6 +20,7 @@ import { connect } from "react-redux"
 import { bindActionCreators } from "redux";
 import * as userinfoActions from "actions/userinfo.jsx";
 import * as menuActions from "actions/menulist.jsx";
+import UserProfile from "page/user-profile/index.jsx";
 
 
 class MyPublicRouter extends React.Component {
@@ -95,6 +96,7 @@ class RouterMap extends React.Component {
                     <Route path="/admin/user-new" component={UserNew} />
                     <Route path="/admin/user-auth-manage" component={UserAuthManage} />
                     <Route path="/admin/user-query" component={UserQuery} />
+                    <Route path="/admin/user-profile" component={UserProfile} />
                     <Route path="/admin/blog-new" component={BlogNew} />
                     <Route path="/admin/blog-manage" component={BlogList} />
                     <Route component={Error}/>

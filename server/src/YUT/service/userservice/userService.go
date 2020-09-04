@@ -225,6 +225,8 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 }
 
 func DelImage(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
 	request := &netproto.NetUserImageDelRequest{}
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
@@ -253,6 +255,58 @@ func DelImage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.ResponseSuccess(w)
+}
+
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserUpdateProfileRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = dbuserservice.UserUpdateProfile(username, request.NickName,
+		request.Sex, request.UserDesc, request.WxImageName, request.ZfImageName)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	request := &netproto.NetUserProfileRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetUserProfileResponse{}
+
+	var dbProfile dbproto.DBUserProfile
+    err = dbuserservice.GetUserProfile(request.UserName, &dbProfile)
+    if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+    	return
+	}
+
+    response.NickName = dbProfile.NickName
+    response.UserDesc = dbProfile.UserDesc
+    response.Sex = dbProfile.Sex
+    response.WXImage = dbProfile.WXImage
+    response.ZFImage = dbProfile.ZFImage
+
+    response.ResponseSuccess(w)
 }
 
 func UploadImage(w http.ResponseWriter, r *http.Request) {

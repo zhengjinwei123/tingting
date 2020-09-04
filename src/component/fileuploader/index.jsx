@@ -38,10 +38,8 @@ class FileUploader extends React.Component {
         this.state = {
             choose: "",
             choose_image: utils.imageHost("null_image.png"),
-            show_progress_bar: false,
             progress_percent: 0,
             success: false,
-
         }
     }
 
@@ -58,9 +56,7 @@ class FileUploader extends React.Component {
     }
 
     onStartUpLoad() {
-        this.setState({
-            show_progress_bar: true
-        })
+        this.BarRef && this.BarRef.open()
     }
     onUploading(percent) {
         this.setState({
@@ -72,11 +68,12 @@ class FileUploader extends React.Component {
         this.setState({
             success
         })
+
+        this.BarRef && this.BarRef.close()
     }
 
     resetBar() {
         this.setState({
-            show_progress_bar: false,
             progress_percent: 0,
         })
     }
@@ -158,8 +155,10 @@ class FileUploader extends React.Component {
                 this.onStartUpLoad(filename)
             },
             uploading : (progress) => {
-                console.log("uploading", progress)
-                this.onUploading(progress.loaded / progress.total)
+                var percent = Math.floor( progress.loaded / progress.total * 100);
+
+                console.log('loading...',percent)
+                this.onUploading(percent)
             },
             chooseAndUpload : false,
             uploadSuccess : (res) => {
@@ -189,17 +188,21 @@ class FileUploader extends React.Component {
             uploadError : (err) => {
                 console.log("uploadError", err)
                 this.resetBar();
+                this.BarRef && this.BarRef.close()
             }
         }
         return (
             <FileUpload options={options}>
+
                 <Input
-                    ref="chooseBtn"
+                    className={"upload-input"}
+                    ref={"chooseBtn"}
                     value={this.state.choose}
-                    icon={<Icon name='upload' inverted circular link/>}
+                    iconPosition='left'
+                    icon={<Icon name='folder'/>}
                     placeholder='请选择图片...'
                 />
-                <Button primary ref="uploadBtn">上传</Button>
+                <Button className={"upload-btn"} positive ref={"uploadBtn"}>上传</Button>
 
                 <div>
                     <Image src={this.state.choose_image} size='tiny' />
@@ -208,11 +211,8 @@ class FileUploader extends React.Component {
                     }
                 </div>
 
-                <CommonModal show={this.state.show_progress_bar}>
-                    <Progress  percent={this.state.progress_percent} indicating>
-                        Uploading Files
-                    </Progress>
-
+                <CommonModal onRef={(ref) => this.BarRef = ref } tips={"上传图片..."}>
+                    <Progress  percent={this.state.progress_percent} indicating />
                 </CommonModal>
             </FileUpload>
         )

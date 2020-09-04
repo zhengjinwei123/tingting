@@ -5,6 +5,19 @@ type DBUserInfo struct {
 	Password string `db:"password"`
 	Email string `db:"email"`
 	GroupId int `db:"group_id"`
+	NickName string `db:"nickname"`
+	UserDesc string `db:"userdesc"`
+	WXImage string `db:"wx_rcode_img"`
+	ZFImage string `db:"zf_rcode_img"`
+	Sex int `db:"sex"`
+}
+
+type DBUserProfile struct {
+	NickName string `db:"nickname"`
+	UserDesc string `db:"userdesc"`
+	WXImage string `db:"wx_rcode_img"`
+	ZFImage string `db:"zf_rcode_img"`
+	Sex int `db:"sex"`
 }
 
 type DBGroupInfo struct {

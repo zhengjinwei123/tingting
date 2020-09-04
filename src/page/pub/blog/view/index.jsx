@@ -22,6 +22,7 @@ class PubBlogView extends React.Component {
         this.state = {
             content: "",
             type: 0,
+            author: "",
             editor: null,
             not_found: false
         }
@@ -38,7 +39,8 @@ class PubBlogView extends React.Component {
 
             this.setState({
                 content: res.content,
-                type: res.type
+                type: res.type,
+                author: res.username
             })
 
         }, err => {
@@ -107,7 +109,7 @@ class PubBlogView extends React.Component {
 
                         }
                     </div>
-                    <PubViewRightBar className={"right-bar float-right"}/>
+                    <PubViewRightBar className={"right-bar float-right"} author={this.state.author}/>
                 </div>
             </div>
         )

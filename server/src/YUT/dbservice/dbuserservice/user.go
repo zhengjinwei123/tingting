@@ -95,6 +95,34 @@ func UserUpdatePassword(username string, password string) error {
 	return nil
 }
 
+func UserUpdateProfile(username string, nickname string, sex int, userdesc string, wx_image string, zf_image string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err, n := proxy.Update(fmt.Sprintf("update `%s` set `nickname`='%s'," +
+		"`userdesc`='%s'," +
+		"`wx_rcode_img`='%s'," +
+		"`zf_rcode_img`='%s'," +
+		"`sex`=%d where `username`='%s'",
+		table_name, nickname, userdesc, wx_image, zf_image, sex, username))
+
+	if err != nil {
+		return err
+	}
+	if n <= 0 {
+		return errors.New("data not changed")
+	}
+
+	return nil
+}
+
+func GetUserProfile(username string, user_info *dbproto.DBUserProfile) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err := proxy.QueryOne(fmt.Sprintf("select `nickname`,`userdesc`,`wx_rcode_img`,`zf_rcode_img`,`sex` from `%s` where username='%s'",
+		table_name, username), user_info)
+	return err
+}
+
 
 func GetUserList(user_list *[]*dbproto.DBUserInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()

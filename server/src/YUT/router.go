@@ -21,6 +21,7 @@ func UserRouter() http.Handler {
 	r.Post("/update-password", userservice.UpdatePassword)
 	r.Post("/upload-image", userservice.UploadImage)
 	r.Post("/del-image", userservice.DelImage)
+	r.Post("/update-profile", userservice.UpdateProfile)
 
 	return r
 }
