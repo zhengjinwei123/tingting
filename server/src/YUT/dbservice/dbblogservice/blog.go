@@ -57,6 +57,40 @@ func GetBlog(blog_id int, blogInfo *dbproto.DBBlogAllInfo) error {
 	return err
 }
 
+func GetUserBlogsByStatus(username string, status int, blogList *[]*dbproto.DBBlogAllInfo) error {
+	proxy := mysqlManager.GetMysqlProxy()
+
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s` where `username`='?' and `status`=%d",
+		table_name, username, status), blogList)
+	return err
+}
+
+
+func OneKeyPublish(username string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+	err, _ := proxy.Update(fmt.Sprintf("update `%s` set `status`=%d, `publish_tm`=%d, " +
+		"`url`=concat('/pup/blog/', cast(`id` as char)) where `username`='%s' and `status`=%d",
+		table_name, 1, time.Now().Unix(), username, 0))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func OneKeyClose(username string) error {
+	proxy := mysqlManager.GetMysqlProxy()
+	err, _ := proxy.Update(fmt.Sprintf("update `%s` set `status`=%d " +
+		"where `username`='%s' and `status`=%d",
+		table_name, 0, username, 1))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+
 func GetUserBlogList(username string, blogList *[]*dbproto.DBBlogAllInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 

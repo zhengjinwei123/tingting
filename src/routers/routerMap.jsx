@@ -13,6 +13,7 @@ import BlogNew from "page/blog/new-blog/index.jsx"
 import BlogList from "page/blog/blog-list/index.jsx";
 import PubBlogView from "page/pub/blog/view/index.jsx";
 import PubHomePage from "page/pub/index.jsx";
+import ImageUpload from "page/res/image-upload/index.jsx"
 
 import userService from "service/user.jsx";
 
@@ -99,6 +100,7 @@ class RouterMap extends React.Component {
                     <Route path="/admin/user-profile" component={UserProfile} />
                     <Route path="/admin/blog-new" component={BlogNew} />
                     <Route path="/admin/blog-manage" component={BlogList} />
+                    <Route path="/admin/photo-upload" component={ImageUpload} />
                     <Route component={Error}/>
                 </Switch>
             </Layout>

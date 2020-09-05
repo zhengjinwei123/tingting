@@ -163,6 +163,36 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 	response.ResponseSuccess(w)
 }
 
+func OneKeyPublish(w http.ResponseWriter, r *http.Request) {
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	err := dbblogservice.OneKeyPublish(username)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func OneKeyClose(w http.ResponseWriter, r *http.Request) {
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	err := dbblogservice.OneKeyClose(username)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
 func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 

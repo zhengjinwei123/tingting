@@ -114,6 +114,18 @@ class UserService {
         })
     }
 
+    // res_type = img/music/video
+    uploadRes(res_type, res_name, res_desc) {
+        return utils.request({
+            url: '/api/user/upload-res',
+            data: {
+                res_type: res_type,
+                res_name: res_name,
+                res_desc: res_desc
+            }
+        })
+    }
+
     getProfile(username) {
         return utils.request({
             url: '/pub/user/profile',

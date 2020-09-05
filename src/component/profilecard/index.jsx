@@ -50,18 +50,24 @@ export default class ProfileCard extends React.Component {
         }
     }
 
-    reload() {
+    reload(callback) {
         userService.getProfile(this.props.author).then(res => {
 
+            let profile = {
+                nickname: res.nickname,
+                sex: res.sex,
+                userdesc: res.userdesc,
+                wx_image: utils.uploadedImageHostByUserName(this.props.author, res.wx_image),
+                zf_image: utils.uploadedImageHostByUserName(this.props.author, res.zf_image)
+            }
             this.setState({
-                profile: {
-                    nickname: res.nickname,
-                    sex: res.sex,
-                    userdesc: res.userdesc,
-                    wx_image: utils.uploadedImageHostByUserName(this.props.author, res.wx_image),
-                    zf_image: utils.uploadedImageHostByUserName(this.props.author, res.zf_image)
-                }
+                profile: profile
             })
+
+            profile.wx_image_name = res.wx_image
+            profile.zf_image_name = res.zf_image
+
+            if (callback) callback(profile)
         })
     }
 

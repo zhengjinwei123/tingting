@@ -1,6 +1,6 @@
 import React  from 'react';
 
-import {Button, Dimmer, Loader, Message, Modal, Segment} from 'semantic-ui-react'
+import {Button, Modal} from 'semantic-ui-react'
 
 import "./index.scss"
 
@@ -15,21 +15,13 @@ export default class CommonModal extends React.Component {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps) {
-        // this.setState({
-        //     show: nextProps.show
-        // })
-    }
-
     open() {
-        console.log("open bar")
         this.setState({
             show: true
         })
     }
 
     close() {
-        console.log("close bar")
         this.setState({
             show: false
         })
@@ -47,7 +39,7 @@ export default class CommonModal extends React.Component {
             <Modal
                 closeOnDimmerClick={false}
                 className={ "child" }
-                size={"big"}
+                size={"large"}
                 open={ this.state.show }
             >
                 <Modal.Header>

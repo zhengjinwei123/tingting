@@ -4,7 +4,7 @@ import FileUploadProgress  from 'react-fileupload-progress';
 // import FileUpload from "react-fileupload-provisional"
 import FileUpload from "component/fileuploader/reactfileuploader.jsx";
 
-import {Button, Icon, Image, Input,Progress,Segment} from "semantic-ui-react";
+import {Button, Icon, Image, Input, Progress} from "semantic-ui-react";
 import utils from "utils/utils.jsx";
 
 import CommonModal from "component/common-modal/index.jsx";
@@ -40,7 +40,22 @@ class FileUploader extends React.Component {
             choose_image: utils.imageHost("null_image.png"),
             progress_percent: 0,
             success: false,
+            tag: false
         }
+    }
+
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        if (nextProps.defaultValue && !this.state.tag) {
+
+            console.log("UNSAFE_componentWillReceiveProps", nextProps.defaultValue, nextProps.defaultImage)
+            this.setState({
+                tag: true,
+                success: true,
+                choose: nextProps.defaultValue,
+                choose_image: nextProps.defaultImage
+            })
+        }
+
     }
 
     onChooseFile(filename) {
@@ -79,6 +94,7 @@ class FileUploader extends React.Component {
     }
 
     delImage(callback) {
+
         if (!this.state.success) {
             if (callback) callback()
             return;
@@ -149,21 +165,15 @@ class FileUploader extends React.Component {
                 return false
             },
             doUpload : (files,mill) => {
-
                 let filename = typeof files == 'string' ? files : (files.length ? files[0].name : "");
-                console.log("doupload",filename)
                 this.onStartUpLoad(filename)
             },
             uploading : (progress) => {
                 var percent = Math.floor( progress.loaded / progress.total * 100);
-
-                console.log('loading...',percent)
                 this.onUploading(percent)
             },
             chooseAndUpload : false,
             uploadSuccess : (res) => {
-                console.log("onSuccess", res)
-
                 if (res.status === -1) {
                     utils.errorTips(res.data.msg)
                 } else {
@@ -173,6 +183,7 @@ class FileUploader extends React.Component {
                         return;
                     }
                     let imageName = tmp[tmp.length-1]
+
                     this.setState({
                         choose_image: utils.uploadedImageHost(res.data.image_path),
                         choose: imageName
@@ -202,12 +213,12 @@ class FileUploader extends React.Component {
                     icon={<Icon name='folder'/>}
                     placeholder='请选择图片...'
                 />
-                <Button className={"upload-btn"} positive ref={"uploadBtn"}>上传</Button>
+                <Button className={"upload-btn"}  ref={"uploadBtn"}>上传</Button>
 
-                <div>
-                    <Image src={this.state.choose_image} size='tiny' />
+                <div className={"img-container"}>
+                    <Image src={this.state.choose_image} size='tiny' className={"img"} />
                     {
-                        this.state.success ? <Button color={"red"} icon={"delete"} onClick={() => this.delImage() } /> : ""
+                        this.state.success ? <Button size="mini" color={"red"} icon={"delete"} onClick={() => this.delImage() } className={"btn"}/> : ""
                     }
                 </div>
 

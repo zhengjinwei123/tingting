@@ -22,8 +22,7 @@ class Home extends React.Component {
         const square = { width: 175, height: 175 }
 
         return (
-            <div id="page-wrapper">
-                <PageTitle title="首页"/>
+            <PageTitle title="首页">
                 <div className={"color-box"}>
                     <Link to="#">
                         <Segment circular style={square} inverted color={"teal"} >
@@ -59,27 +58,26 @@ class Home extends React.Component {
                 </div>
                 <div className={"color-box"}>
                     <Link to="#">
-                    <Segment circular style={square} inverted color={"violet"}>
-                        <Header as='h2'>
-                            总收入
-                            <Header.Subheader>{this.state.moneyCount} 元</Header.Subheader>
-                        </Header>
-                    </Segment>
+                        <Segment circular style={square} inverted color={"violet"}>
+                            <Header as='h2'>
+                                总收入
+                                <Header.Subheader>{this.state.moneyCount} 元</Header.Subheader>
+                            </Header>
+                        </Segment>
                     </Link>
                 </div>
 
                 <div className={"color-box"}>
                     <Link to="#">
-                    <Segment circular style={square} inverted color={"green"}>
-                        <Header as='h2'>
-                            发布博客总数
-                            <Header.Subheader>{this.state.publishBlogCount}</Header.Subheader>
-                        </Header>
-                    </Segment>
+                        <Segment circular style={square} inverted color={"green"}>
+                            <Header as='h2'>
+                                发布博客总数
+                                <Header.Subheader>{this.state.publishBlogCount}</Header.Subheader>
+                            </Header>
+                        </Segment>
                     </Link>
                 </div>
-
-            </div>
+            </PageTitle>
         )
     }
 }

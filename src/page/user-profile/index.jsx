@@ -2,7 +2,7 @@ import React from "react"
 import {withRouter} from "react-router-dom";
 
 import {FileUploader} from "component/fileuploader/index.jsx";
-import {Button, Card, Divider, Form, Grid, Image, Label, Segment} from 'semantic-ui-react'
+import { Divider, Form, Grid, Icon, Segment} from 'semantic-ui-react'
 
 import "./index.scss"
 import PageTitle from "component/pagetitle/index.jsx";
@@ -22,14 +22,29 @@ class UserProfile extends React.Component {
             userdesc: "",
             wx_img: "",
             zf_img: "",
+            wx_img_name: "",
+            zf_img_name: ""
         }
+    }
+
+    componentDidMount() {
+
+        this.profileCardRef.reload((profile) => {
+            this.setState({
+                nickname: profile.nickname,
+                sex: profile.sex,
+                userdesc: profile.userdesc,
+                wx_img: profile.wx_image,
+                zf_img: profile.zf_image,
+                wx_img_name: profile.wx_image_name,
+                zf_img_name: profile.zf_image_name,
+            })
+        });
     }
 
     onInputChange(e) {
         let inputValue = e.target.value,
             inputName = e.target.name;
-
-        // console.log(inputName, inputValue)
 
         if (inputName === "userdesc" && inputValue.trim().length > 50) {
             utils.errorTips("简介长度太长了，不能超过50个文字")
@@ -46,7 +61,6 @@ class UserProfile extends React.Component {
         })
     }
     onSexChange(e, data) {
-        console.log("sex", data.value)
         this.setState({
             sex: data.value
         })
@@ -57,16 +71,13 @@ class UserProfile extends React.Component {
 
         if (type === "wx") {
             this.setState({
-                wx_img: filename
+                wx_img_name: filename
             })
         } else {
             this.setState({
-                zf_img: filename
+                zf_img_name: filename
             })
         }
-
-
-        console.log("onUploadSuccess onUploadImage", type, filename)
     }
 
     onSubmit() {
@@ -81,11 +92,11 @@ class UserProfile extends React.Component {
             return;
         }
 
-        if (this.state.wx_img === "") {
+        if (this.state.wx_img_name === "") {
             utils.errorTips("请上传微信二维码")
             return;
         }
-        if (this.state.zf_img === "") {
+        if (this.state.zf_img_name === "") {
             utils.errorTips("请上传微信支付二维码")
             return;
         }
@@ -94,13 +105,11 @@ class UserProfile extends React.Component {
 
         userService.updateProfile(username, this.state.nickname,
             this.state.sex, this.state.userdesc,
-            this.state.wx_img, this.state.zf_img).then(res => {
+            this.state.wx_img_name, this.state.zf_img_name).then(res => {
 
             this.profileCardRef.reload();
 
                 utils.successTips("更新成功")
-        }, err => {
-
         })
     }
 
@@ -109,14 +118,13 @@ class UserProfile extends React.Component {
         let username = userService.getUserInfo().username
 
         return (
-            <div id="page-wrapper">
-                <PageTitle title="基础信息录入"/>
-
+            <PageTitle title="基础信息录入">
                 <Segment>
                     <Grid columns={2}>
                         <Grid.Column>
                             <Form>
                                 <Form.Input
+                                    defaultValue={this.state.nickname}
                                     name={"nickname"}
                                     icon='user'
                                     iconPosition='left'
@@ -125,6 +133,7 @@ class UserProfile extends React.Component {
                                     onChange={ e => this.onInputChange(e) }
                                 />
                                 <Form.TextArea
+                                    defaultValue={this.state.userdesc}
                                     name={"userdesc"}
                                     label='简介'
                                     placeholder='简介'
@@ -136,7 +145,7 @@ class UserProfile extends React.Component {
                                     placeholder='选择性别'
                                     fluid
                                     selection
-                                    defaultValue={1}
+                                    value={this.state.sex}
                                     options={[
                                         {
                                             key: 'm',
@@ -154,13 +163,13 @@ class UserProfile extends React.Component {
 
                                 <Form.Field>
                                     <label>微信二维码:</label>
-                                    <FileUploader onUploadSuccess={(filename) => this.onUploadSuccess("wx", filename)}/>
+                                    <FileUploader onUploadSuccess={(filename) => this.onUploadSuccess("wx", filename)} defaultValue={this.state.wx_img_name} defaultImage={this.state.wx_img}/>
                                 </Form.Field>
 
 
                                 <Form.Field>
                                     <label>微信支付收钱码:</label>
-                                    <FileUploader onUploadSuccess={(filename) => this.onUploadSuccess("zf", filename)}/>
+                                    <FileUploader onUploadSuccess={(filename) => this.onUploadSuccess("zf", filename)} defaultValue={this.state.zf_img_name} defaultImage={this.state.zf_img}/>
                                 </Form.Field>
 
                                 <br/>
@@ -174,9 +183,11 @@ class UserProfile extends React.Component {
                         </Grid.Column>
                     </Grid>
 
-                    <Divider vertical>Or</Divider>
+                    <Divider vertical>
+                        <Icon name={"settings"}/>
+                    </Divider>
                 </Segment>
-            </div>
+            </PageTitle>
         )
     }
 }

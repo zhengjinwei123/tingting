@@ -79,8 +79,7 @@ class UserNew extends React.Component {
 
     render() {
         return (
-            <div id="page-wrapper">
-                <PageTitle title="新建用户"/>
+            <PageTitle title="新建用户">
 
                 <div className="container">
                     <div className="panel panel-default register-pannel">
@@ -143,10 +142,9 @@ class UserNew extends React.Component {
 
                     </div>
                 </div>
+            </PageTitle>
 
-
-            </div>
-        )
+    )
     }
 }
 export default withRouter(UserNew)

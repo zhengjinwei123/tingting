@@ -109,7 +109,7 @@ class NavSide extends React.Component {
                         <li className="header"><h3 className="text-red"><i className="fa fa-dashboard fa-fw fa-left"></i>价值空间</h3></li>
 
                         <li className="treeview">
-                            <NavLink exact to="/">
+                            <NavLink exact to="/admin">
                                 <i className="fa fa-home text-yellow"></i><span>首页</span>
                             </NavLink>
                         </li>

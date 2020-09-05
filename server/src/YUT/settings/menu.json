@@ -52,6 +52,7 @@
       "2007,/user/upload-image,上传图片",
       "2008,/user/del-image,上传图片",
       "2009,/user/update-profile,更新基础信息",
+      "2010,/user/upload-res,上传资源",
 
       "3000,#,H5游戏",
       "3001,/h5game/list,h5游戏列表",
@@ -68,6 +69,8 @@
       "4006,/blog/user-blogs,用户博客列表",
       "4007,/blog/user-categories,用户博客列表",
       "4008,/blog/user-blogs-pagenate,用户博客列表-分页",
+      "4009,/blog/onekey-publish,一键发布",
+      "4010,/blog/onekey-close,一键关闭",
 
       "5000,#,广告",
       "5001,/advert/new,广告新建",

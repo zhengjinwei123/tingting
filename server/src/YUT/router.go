@@ -22,6 +22,7 @@ func UserRouter() http.Handler {
 	r.Post("/upload-image", userservice.UploadImage)
 	r.Post("/del-image", userservice.DelImage)
 	r.Post("/update-profile", userservice.UpdateProfile)
+	r.Post("/upload-res", userservice.UploadRes)
 
 	return r
 }
@@ -49,6 +50,8 @@ func BlogRouter() http.Handler {
 	r.Post("/user-blogs", blogservice.GetBlogList)
 	r.Post("/user-categories", blogservice.GetUserCategories)
 	r.Post("/user-blogs-pagenate", blogservice.GetBlogPageNateSearch)
+	r.Post("/onekey-publish", blogservice.OneKeyPublish)
+	r.Post("/onekey-close", blogservice.OneKeyClose)
 
 	return r
 }

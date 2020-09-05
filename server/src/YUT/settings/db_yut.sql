@@ -31,6 +31,18 @@ insert into t_group(`id`,`desc`,`menus`,`auths`) VALUES(1,"管理员",
 
 insert into t_user(`username`,`password`,`email`, `group_id`) VALUES("admin", "e10adc3949ba59abbe56e057f20f883e", "2538698032@qq.com", 1);
 
+drop table if exists `t_user_res`;
+CREATE TABLE `t_user_res` (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `username` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '作者',
+    `res_type` tinyint(2) NOT NULL DEFAULT 0 COMMENT 'img: 1 music:2 video:3',
+    `res_desc` varchar(500) NOT NULL DEFAULT '' COMMENT '描述',
+    `res_name` varchar(256) NOT NULL DEFAULT '' COMMENT '资源名称',
+    `create_tm` bigint(20) NOT NULL DEFAULT 0 COMMENT '创建时间戳',
+    `update_tm` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP  COMMENT '更新时间',
+     PRIMARY KEY (`id`),
+    KEY `idx_username_type_createtm` (`username`,`res_type`,`create_tm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists `t_blog_category`;
 CREATE TABLE `t_blog_category` (

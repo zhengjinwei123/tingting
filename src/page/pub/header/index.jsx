@@ -12,6 +12,8 @@ const transitions = [
     "fly right"
 ]
 
+let timerId = 0;
+
 class PubViewHeader extends React.Component {
     constructor(props) {
         super(props);
@@ -21,12 +23,19 @@ class PubViewHeader extends React.Component {
             transitions_index: 0,
 
         }
-        setInterval(() => {
+        timerId = setInterval(() => {
             this.setState({
                 visible: !this.state.visible,
                 transitions_index: this.state.transitions_index === 0 ? 1 : 0
             })
         }, 2000)
+    }
+
+    componentWillUnmount() {
+        if (timerId) {
+            clearInterval(timerId)
+        }
+        this.setState = ()=>false;
     }
 
     handleSearchChange() {
