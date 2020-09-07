@@ -4,14 +4,14 @@ import (
 	"YUT/manager/authManager"
 	"YUT/manager/configManager"
 	"YUT/manager/mysqlManager"
+	"YUT/manager/userManager"
 	"YUT/service/blogservice"
 	"YUT/service/userservice"
 	"YUT/utils"
 	"context"
-	"fmt"
+	l4g "github.com/alecthomas/log4go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -22,7 +22,12 @@ import (
 
 var g_signal = make(chan os.Signal, 1)
 
+
+
 func main() {
+
+	configManager.InitL4g()
+	defer configManager.CloseL4g()
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -73,26 +78,26 @@ func main() {
 
 	go httpServer.ListenAndServe()
 
-	fmt.Println("api server start", serverConf.Http)
+	l4g.Debug("api server start %s", serverConf.Http)
 
-	go func() {
-		p, _ := filepath.Abs(filepath.Dir("./public/"))
+	p, _ := filepath.Abs(filepath.Dir("./public/"))
+	staticServ := &http.Server{Addr: ":9000", Handler: http.FileServer(http.Dir(p))}
+	l4g.Debug("static server start: %d", 9000)
 
-		http.Handle("/", http.FileServer(http.Dir(p)))
-		fmt.Println("static server start:", 9000)
-		http.ListenAndServe(":9000", nil)
-	}()
 
-	listenSignal(context.Background(), httpServer)
+	go staticServ.ListenAndServe()
+
+	listenSignal(context.Background(), httpServer, staticServ)
 }
 
-
-func listenSignal(ctx context.Context, httpSrv *http.Server) {
+func listenSignal(ctx context.Context, httpSrv *http.Server, httpStaticSrv *http.Server) {
 	signal.Notify(g_signal, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGHUP, syscall.SIGINT)
 
 	select {
 	case sig := <- g_signal:
-		log.Printf("catch signal %s \n", sig.String())
+		l4g.Warn("catch signal %s \n", sig.String())
+		userManager.GetUsrSessionMgr().OnShutDown()
 		httpSrv.Shutdown(ctx)
+		httpStaticSrv.Shutdown(ctx)
 	}
 }

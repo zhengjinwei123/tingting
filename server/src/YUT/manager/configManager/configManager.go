@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	l4g "github.com/alecthomas/log4go"
 )
 
 type xmlMysql struct {
@@ -40,4 +41,13 @@ func GetServerConfig() (*ServerConfig, error) {
 		return nil, errors.New(fmt.Sprintf("load server config %v failed: %v \n", *configFile, err))
 	}
 	return svrConf, nil
+}
+
+var logXml = flag.String("l4g", "./settings/log.xml", "")
+func InitL4g() {
+	l4g.LoadConfiguration(*logXml)
+	l4g.Debug("l4g start...")
+}
+func CloseL4g() {
+	l4g.Close()
 }

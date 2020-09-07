@@ -5,9 +5,9 @@ import (
 	"YUT/proto/netproto"
 	"context"
 	"github.com/go-chi/chi"
-	"log"
 	"net/http"
 	"strconv"
+	l4g "github.com/alecthomas/log4go"
 )
 
 func ApiMiddleware(next http.Handler) http.Handler {
@@ -20,7 +20,7 @@ func ApiMiddleware(next http.Handler) http.Handler {
 			d = r.PostForm.Encode()
 		}
 
-		log.Printf("request ===> url:[%s] method:[%s] data:[%s]", r.URL.Path, r.Method, d)
+		l4g.Debug("request ===> url:[%s] method:[%s] data:[%s]", r.URL.Path, r.Method, d)
 
 		if r.Method != "POST" {
 			resp := &netproto.NetNotLoginResponse{}
@@ -58,7 +58,7 @@ func PubBlogMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		blog_id := chi.URLParam(r, "blog_id")
 
-		log.Println("PubBlogMiddleware:", blog_id)
+		l4g.Debug("PubBlogMiddleware:", blog_id)
 		// redis 缓存获取,缓存存在,直接返回
 
 		id, err := strconv.Atoi(blog_id)
@@ -68,7 +68,7 @@ func PubBlogMiddleware(next http.Handler) http.Handler {
 			resp.ResponseError(w)
 			return
 		}
-		log.Println("PubBlogMiddleware:", blog_id)
+		l4g.Debug("PubBlogMiddleware:", blog_id)
 
 		ctx := context.WithValue(r.Context(), "id", id)
 		next.ServeHTTP(w, r.WithContext(ctx))

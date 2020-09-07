@@ -2,7 +2,9 @@ package mysqlManager
 
 import (
 	 "database/sql"
+	"errors"
 	"fmt"
+	l4g "github.com/alecthomas/log4go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"log"
@@ -16,18 +18,20 @@ func (this *mysqlProxy) Init(addr string) error {
 	var err error
 	this.proxy, err = sqlx.Open("mysql", addr)
 	if err != nil {
-		log.Printf("init mysql error: %s %v \n", addr, err)
+		l4g.Error("init mysql error: %s %v \n", addr, err)
 		return err;
 	}
 
-	return nil
+	err = this.proxy.Ping()
+
+	return err
 }
 
 func (this *mysqlProxy) Close() {
 	if this.proxy != nil {
 		err := this.proxy.Close()
 		if err != nil {
-			log.Printf("close mysql error: %v \n", err)
+			l4g.Error("close mysql error: %v \n", err)
 		}
 		this.proxy = nil
 	}
@@ -35,7 +39,7 @@ func (this *mysqlProxy) Close() {
 
 func (this *mysqlProxy) Insert(sql string) error {
 	if _, err := this.proxy.Exec(sql); err != nil {
-		log.Printf("Exec mysql error: %s %v \n", sql, err)
+		l4g.Error("Exec mysql error: %s %v \n", sql, err)
 		return err
 	}
 	return nil
@@ -119,6 +123,55 @@ func (this *mysqlProxy) clearTransaction(tx *sqlx.Tx) {
 	if err != sql.ErrTxDone && err != nil {
 		log.Println(err)
 	}
+}
+
+func mysql_escape(source string) (string, error) {
+	var j int = 0
+	if len(source) == 0 {
+		return "", errors.New("source is null")
+	}
+	tempStr := source[:]
+	desc := make([]byte, len(tempStr)*2)
+	for i := 0; i < len(tempStr); i++ {
+		flag := false
+		var escape byte
+		switch tempStr[i] {
+		case '\r':
+			flag = true
+			escape = '\r'
+			break
+		case '\n':
+			flag = true
+			escape = '\n'
+			break
+		case '\\':
+			flag = true
+			escape = '\\'
+			break
+		case '\'':
+			flag = true
+			escape = '\''
+			break
+		case '"':
+			flag = true
+			escape = '"'
+			break
+		case '\032':
+			flag = true
+			escape = 'Z'
+			break
+		default:
+		}
+		if flag {
+			desc[j] = '\\'
+			desc[j+1] = escape
+			j = j + 2
+		} else {
+			desc[j] = tempStr[i]
+			j = j + 1
+		}
+	}
+	return string(desc[0:j]), nil
 }
 
 func (this *mysqlProxy) UpdateMulti(sql []string) (error) {

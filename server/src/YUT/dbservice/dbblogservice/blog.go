@@ -13,7 +13,7 @@ const table_name = "t_blog"
 func AddBlog(username string, category_id int, content string, blog_name string, blog_type int) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`username`,`category_id`, `name`,`content`,`create_tm`,`type`) values('%s', '%d', '%s','%s',%d,%d)",
+	err := proxy.Insert(fmt.Sprintf("insert into `%s` (`username`,`category_id`, `name`,`content`,`create_tm`,`type`) values('%s', '%d', '%s','`%s`',%d,%d)",
 		table_name, username, category_id, blog_name, content, time.Now().Unix(), blog_type))
 
 	return err
@@ -51,8 +51,10 @@ func UpdateBlog(blog_id int, content string, blog_name string, category_id int) 
 func GetBlog(blog_id int, blogInfo *dbproto.DBBlogAllInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.QueryOne(fmt.Sprintf("select * from `%s` where id=%d",
-		table_name, blog_id), blogInfo)
+	sql := fmt.Sprintf("select A.*, B.`desc` as article_cls FROM (select * from t_blog where id=%d) as A " +
+		"LEFT JOIN (select `category_id`,`desc`,`username` from t_blog_category) as B ON A.`category_id`=B.`category_id` " +
+		"WHERE B.`category_id` IS NOT NULL", blog_id)
+	err := proxy.QueryOne(sql, blogInfo)
 
 	return err
 }

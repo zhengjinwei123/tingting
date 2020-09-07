@@ -49,4 +49,5 @@ type DBBlogAllInfo struct {
 	CreateTm int `db:"create_tm"`
 	PublishTm int `db:"publish_tm"`
 	UpdateTm string `db:"update_tm"`
+	ArticleCls string `db:"article_cls"`
 }

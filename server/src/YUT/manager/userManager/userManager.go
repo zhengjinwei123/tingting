@@ -7,25 +7,66 @@ import (
 	"YUT/manager/menuManager"
 	"YUT/proto"
 	"YUT/proto/dbproto"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"sync"
+	l4g "github.com/alecthomas/log4go"
 )
 
 
 type UsrSessionManager struct {
 	menuList map[string][]*proto.Menu
 	authList map[string]map[string]*proto.ReqUrl
+	userMap map[string]*proto.UserInfo
 }
 
 func NewUsrSessionMgr() *UsrSessionManager {
 	usrMgr := &UsrSessionManager{}
 	usrMgr.menuList = make(map[string][]*proto.Menu, 0)
 	usrMgr.authList = make(map[string]map[string]*proto.ReqUrl, 0)
+	usrMgr.userMap = make(map[string]*proto.UserInfo, 0)
 
 	return usrMgr
+}
+
+func  (this *UsrSessionManager) OnShutDown() {
+	for username, _ := range this.menuList {
+		this.clearMenu(username)
+	}
+	for username, _:= range this.authList {
+		this.clearAuth(username)
+	}
+	for username, _ := range this.userMap {
+		this.RemoveUser(username)
+	}
+}
+
+func (this *UsrSessionManager) addUser(dbUser *dbproto.DBUserInfo) {
+	_, ok := this.userMap[dbUser.UserName];
+	if ok {
+		delete(this.userMap, dbUser.UserName)
+	}
+
+
+	newUser := &proto.UserInfo{
+		UserName: dbUser.UserName,
+		NickName: dbUser.NickName,
+		Email: dbUser.Email,
+	}
+	this.userMap[dbUser.UserName] = newUser
+}
+
+func (this *UsrSessionManager) RemoveUser(username string) {
+	_, ok := this.userMap[username];
+	if ok {
+		delete(this.userMap, username)
+	}
+}
+
+func (this *UsrSessionManager) ValidUser(username string) bool {
+	_, ok := this.userMap[username];
+	return ok
 }
 
 func (this *UsrSessionManager) loadAuth(r *http.Request) {
@@ -44,12 +85,12 @@ func (this *UsrSessionManager) loadAuth(r *http.Request) {
 	var dbGroupInfo dbproto.DBGroupInfo
 	err := dbgroupservice.GetAuthList(groupId, &dbGroupInfo)
 	if err != nil {
-		log.Printf("GetAuthList err %s\n", err.Error())
+		l4g.Error("GetAuthList err %s\n", err.Error())
 		return
 	}
 	authIds := strings.Split(dbGroupInfo.AuthStr, ",")
 	if len(authIds) == 0 {
-		log.Printf(" GetAuthList err: auths id is empty\n")
+		l4g.Error(" GetAuthList err: auths id is empty\n")
 		return
 	}
 
@@ -114,13 +155,13 @@ func (this *UsrSessionManager) loadMenu(r *http.Request) {
 	var dbGroupInfo dbproto.DBGroupInfo
 	err := dbgroupservice.GetMenuList(groupId, &dbGroupInfo)
 	if err != nil {
-		log.Printf(" GetMenuList err %s\n", err.Error())
+		l4g.Error(" GetMenuList err %s\n", err.Error())
 		return
 	}
 
 	menuIds := strings.Split(dbGroupInfo.MenuStr, ",")
 	if len(menuIds) == 0 {
-		log.Printf(" GetMenuList err: menu id is empty\n")
+		l4g.Error(" GetMenuList err: menu id is empty\n")
 		return
 	}
 
@@ -165,9 +206,9 @@ func (this *UsrSessionManager) GetMenuList(r *http.Request) []*proto.Menu {
 	return nil
 }
 
-func (this *UsrSessionManager) SetUserLogin(userName string, groupId int, w http.ResponseWriter, r *http.Request) error {
+func (this *UsrSessionManager) SetUserLogin(dbUser *dbproto.DBUserInfo, groupId int, w http.ResponseWriter, r *http.Request) error {
 	session, _ := manager.Store.Get(r, "session-key")
-	session.Values["username"] = userName
+	session.Values["username"] = dbUser.UserName
 	session.Values["group_id"] = groupId
 	err := session.Save(r, w)
 
@@ -176,6 +217,8 @@ func (this *UsrSessionManager) SetUserLogin(userName string, groupId int, w http
 	// load auth
 	this.loadAuth(r)
 
+	this.addUser(dbUser)
+
 	return err
 }
 
@@ -183,6 +226,7 @@ func (this *UsrSessionManager) SetUserLogout(w http.ResponseWriter, r *http.Requ
 	userName := this.GetUserName(r)
 	this.clearMenu(userName)
 	this.clearAuth(userName)
+	this.RemoveUser(userName)
 
 	return this.clearSessions(w, r)
 }

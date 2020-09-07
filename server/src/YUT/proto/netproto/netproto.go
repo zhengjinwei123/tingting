@@ -348,6 +348,10 @@ type NetBlogPublishRequest struct {
 type NetPubBlogGetResponse struct {
 	NetResponse
 
+	ArticleName string `json:"article_name"`
+	ArticleCls string `json:"article_cls"`
+	PublishTm int `json:"publish_tm"`
+	UpdateTm string `json:"update_tm"`
 	Content string `json:"content"`
 	Type int `json:"type"`
 	UserName string `json:"username"`

@@ -66,14 +66,14 @@ class PubViewHeader extends React.Component {
         }
 
         return (
-            <div className={"view-top-bar"}>
+            <nav className={"view-top-bar"}>
                 <div className={"left-block"}>
                     <Popup content='点击前往首页' trigger={
                         <Button  primary className={"float-left"} circular icon='home' onClick={() => this.onClickPubHome() }/>
                     } />
 
                     <Search
-                        className={"float-left"}
+                        className={"mySearch"}
                         loading={false}
                         onResultSelect={(e, data) => this.onResultSelect(e, data)}
                         onSearchChange={() => this.handleSearchChange()}
@@ -82,17 +82,17 @@ class PubViewHeader extends React.Component {
                     />
                 </div>
                 <div className={"center-block"}>
-                    <Transition
-                        animation={transitions[this.state.transitions_index]}
-                        duration={800}
-                        visible={this.state.visible}
-                    >
+                    {/*<Transition*/}
+                    {/*    animation={transitions[this.state.transitions_index]}*/}
+                    {/*    duration={800}*/}
+                    {/*    visible={this.state.visible}*/}
+                    {/*>*/}
 
-                        <Label as={"a"} image size={transition_label_width}>
-                            <img src={utils.imageHost("home.jpg")} />
-                            价值空间，充分挖掘自己的价值
-                        </Label>
-                    </Transition>
+                    {/*    <Label as={"a"} image size={transition_label_width}>*/}
+                    {/*        <img src={utils.imageHost("home.jpg")} />*/}
+                    {/*        价值空间，充分挖掘自己的价值*/}
+                    {/*    </Label>*/}
+                    {/*</Transition>*/}
 
 
                 </div>
@@ -132,7 +132,7 @@ class PubViewHeader extends React.Component {
                     </List>
 
                 </div>
-            </div>
+            </nav>
         )
     }
 }

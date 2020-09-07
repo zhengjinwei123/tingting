@@ -9,7 +9,7 @@ import (
 	"YUT/proto/netproto"
 	"YUT/utils/orm"
 	"fmt"
-	"log"
+	l4g "github.com/alecthomas/log4go"
 	"net/http"
 )
 
@@ -38,6 +38,10 @@ func GetBlog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	response.UpdateTm = dbblog.UpdateTm
+	response.PublishTm = dbblog.PublishTm
+	response.ArticleCls = dbblog.ArticleCls
+	response.ArticleName = dbblog.BlogName
 	response.Content = dbblog.Content
 	response.Type = dbblog.BlogType
 	response.UserName = dbblog.UserName
@@ -51,7 +55,7 @@ func AddBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogAddRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -101,7 +105,7 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogUpdateRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -122,7 +126,7 @@ func DeleteBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogDeleteRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -146,7 +150,7 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -200,7 +204,7 @@ func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 	pageHelper := dbpagehelper.NewPageHelper(request.LastId, request.CurPage)
@@ -281,7 +285,7 @@ func PublishBlog(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 

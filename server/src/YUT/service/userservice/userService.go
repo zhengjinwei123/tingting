@@ -9,6 +9,7 @@ import (
 	"YUT/utils/orm"
 	"fmt"
 	"io"
+	l4g "github.com/alecthomas/log4go"
 	"log"
 	"net/http"
 	"os"
@@ -23,7 +24,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -43,7 +44,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = userManager.GetUsrSessionMgr().SetUserLogin(request.UserName, dbUser.GroupId, w, r)
+	err = userManager.GetUsrSessionMgr().SetUserLogin(&dbUser, dbUser.GroupId, w, r)
 	if err != nil {
 		response.Msg = "user login failed"
 		response.ResponseError(w)
@@ -70,7 +71,7 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -142,7 +143,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -172,7 +173,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -202,7 +203,7 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -231,7 +232,7 @@ func DelImage(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -268,7 +269,7 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 	response := &netproto.NetResponse{}
@@ -291,7 +292,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 	response := &netproto.NetUserProfileResponse{}
@@ -340,7 +341,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	}
 	uploadDir := p + "/upload/" + username + "/"
 	//创建上传目录
-	os.Mkdir(uploadDir, os.ModePerm);
+	_ = os.Mkdir(uploadDir, os.ModePerm);
 	//创建上传文件
 
 	ss := strings.Split(header.Filename, ".")

@@ -6,11 +6,15 @@ import blogService from "service/blog.jsx"
 import PubViewLeftBar from "page/pub/blog/leftbar/index.jsx"
 import PubViewRightBar from "page/pub/blog/rightbar/index.jsx";
 
+import { Message, Header, Segment, Label } from 'semantic-ui-react'
+
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/output.css'
 
 import ReactMarkdown from "react-markdown"
 import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
+
+import utils from  "utils/utils.jsx"
 
 import "../index.scss"
 
@@ -23,6 +27,11 @@ class PubBlogView extends React.Component {
             content: "",
             type: 0,
             author: "",
+            article_name: "",
+            article_cls : "",
+            publish_tm : 0,
+            update_tm : "",
+
             editor: null,
             not_found: false
         }
@@ -31,6 +40,7 @@ class PubBlogView extends React.Component {
     componentDidMount() {
 
         blogService.getBlog(this.props.match.params.blog_id).then(res => {
+            console.log("blog", res)
             if (res.type === 1) {
                 this.setState({
                     editor:  BraftEditor.createEditorState(res.content)
@@ -40,7 +50,11 @@ class PubBlogView extends React.Component {
             this.setState({
                 content: res.content,
                 type: res.type,
-                author: res.username
+                author: res.username,
+                article_name: res.article_name,
+                article_cls: res.article_cls,
+                publish_tm: utils.formatDate(res.publish_tm),
+                update_tm : res.update_tm
             })
 
         }, err => {
@@ -85,32 +99,59 @@ class PubBlogView extends React.Component {
         }
 
         return (
-            <div>
+            <div className={"container-fluid justify-content-md-center"}>
                 <PubViewHeader />
-                <div className={"blog-view-container"}>
-                    <PubViewLeftBar className={"left-bar float-left"}/>
-                    <div className={"container float-left"} id="zjw">
-                        {
-                            this.isMarkdown() ?  <ReactMarkdown
-                                    source={html}
-                                    escapeHtml={false}
-                                    renderers={{
-                                        code: CodeBlock,
-                                    }}
-                                />
-                                :
-                                <BraftEditor
-                                    stripPastedStyles={true}
-                                    contentClassName={"braft-content"}
-                                    readOnly={true}
-                                    controls={[]}
-                                    value={this.state.editor}
-                                />
 
-                        }
-                    </div>
-                    <PubViewRightBar className={"right-bar float-right"} author={this.state.author}/>
+                <div className={"article-container"}>
+                    <Segment padded>
+                        <Label attached='top' className={"article-header "}>
+                            <Header as='h2'>
+                                {this.state.article_name}
+                                <div className={"float-right"}>
+                                    <Label as='a' color='blue'>
+                                        分类: {this.state.article_cls}
+                                    </Label>
+                                    <Label as='a' color='orange'>
+                                        作者:{this.state.author}
+                                    </Label>
+                                </div>
+
+                            </Header>
+                        </Label>
+                        <div>
+                            <Label as='a' color='orange' ribbon>
+                                {this.state.publish_tm} 发布
+                            </Label>
+                            <Label as='a' color='red'>
+                               {this.state.update_tm} 更新
+                            </Label>
+                        </div>
+
+                        <Message>
+                            {
+                                this.isMarkdown() ?  <ReactMarkdown
+                                        source={html}
+                                        escapeHtml={true}
+                                        renderers={{
+                                            code: CodeBlock,
+                                        }}
+                                    />
+                                    :
+                                    <BraftEditor
+
+                                        stripPastedStyles={true}
+                                        contentClassName={"braft-content"}
+                                        readOnly={true}
+                                        controls={[]}
+                                        value={this.state.editor}
+                                    />
+
+                            }
+                        </Message>
+                    </Segment>
+
                 </div>
+
             </div>
         )
     }

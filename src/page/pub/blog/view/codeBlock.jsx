@@ -3,7 +3,7 @@ import React, { PureComponent } from "react"
 import PropType from "prop-types"
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
-import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { solarizedlight, vs, vscDarkPlus, ghcolors,xonokai } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
@@ -31,11 +31,11 @@ class CodeBlock  extends PureComponent {
     render() {
         const { language, value } = this.props
         return (
-            <figure className={"highlight"}>
+            <div className={"highlight"}>
                 <SyntaxHighlighter language={language} style={solarizedlight}>
                     {value}
                 </SyntaxHighlighter>
-            </figure>
+            </div>
         )
     }
 }
@@ -46,7 +46,7 @@ CodeBlock.propTypes = {
 }
 
 CodeBlock.defaultProps = {
-    language: null
+    language: ""
 }
 
 export default CodeBlock

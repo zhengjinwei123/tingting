@@ -8,7 +8,7 @@ import (
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
 	"YUT/utils/orm"
-	"log"
+	l4g "github.com/alecthomas/log4go"
 	"net/http"
 )
 
@@ -67,7 +67,7 @@ func GroupAdd(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -90,7 +90,7 @@ func GroupAuthUpdate(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -147,7 +147,7 @@ func GroupDelete(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"log"
+	l4g "github.com/alecthomas/log4go"
 	"strconv"
 	"strings"
 )
@@ -51,7 +51,7 @@ func (this *authManager) Load() error {
 		return nil
 	}
 	if err := utils.LoadJsonConfig(*authFile, requestConf); err != nil {
-		log.Printf("load requestUrl config %v failed: %v \n", *authFile, err)
+		l4g.Error("load requestUrl config %v failed: %v \n", *authFile, err)
 		return err
 	}
 
@@ -60,7 +60,7 @@ func (this *authManager) Load() error {
 			vv := strings.Split(v, ",")
 
 			if len(vv) != 3 {
-				log.Printf("requestUrl init: valid len of menu[%s] \n", v)
+				l4g.Error("requestUrl init: valid len of menu[%s] \n", v)
 				continue;
 			}
 
@@ -72,7 +72,7 @@ func (this *authManager) Load() error {
 
 			_, exists := this.reqMap[id];
 			if exists {
-				log.Printf("requestUrl init:repeated of url: %s \n", url)
+				l4g.Error("requestUrl init:repeated of url: %s \n", url)
 				continue
 			}
 
@@ -92,7 +92,7 @@ func (this *authManager) Load() error {
 		}
 	}
 
-	log.Printf("request url init sucess")
+	l4g.Debug("request url init sucess")
 	return nil
 }
 

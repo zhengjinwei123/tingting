@@ -1,1 +1,3 @@
 node_modules
+server/src/YUT/logs/*
+server/src/YUT/public/*
