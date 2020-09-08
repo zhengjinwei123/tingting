@@ -12,13 +12,14 @@ export default class ProfileCard extends React.Component {
         this.state = {
             show_wx : false,
             show_zf: false,
+            show_card: true,
 
             profile : {
                 nickname: "",
                 sex: 0,
                 userdesc: "",
                 wx_image: "",
-                zf_image: ""
+                zf_image: "",
             }
         }
     }
@@ -51,7 +52,7 @@ export default class ProfileCard extends React.Component {
     }
 
     reload(callback) {
-        userService.getProfile(this.props.author).then(res => {
+        userService.getProfile(this.props.author, false).then(res => {
 
             let profile = {
                 nickname: res.nickname,
@@ -80,6 +81,14 @@ export default class ProfileCard extends React.Component {
        this.reload()
     }
 
+    onClose() {
+        this.setState({
+            show_card: false
+        })
+
+        this.props.onClose();
+    }
+
     render() {
         const profile = this.state.profile;
 
@@ -96,41 +105,41 @@ export default class ProfileCard extends React.Component {
         const head_image = profile.sex === 1 ? "user-man.jpg" : "user-f.jpg"
 
         return (
-            <div>
-                <Card
-                    raised={true}
-                    centered={true}
-                    fluid={true}
-                >
-                    <Image src={utils.imageHost(head_image)} wrapped ui={false} />
-                    <Card.Content>
-                        <Card.Header>
-                            {profile.nickname}
-                        </Card.Header>
-                        <Card.Meta>
-                            <span className='date'>博主</span>
-                        </Card.Meta>
-                        <Card.Description>
-                            {profile.userdesc}
-                        </Card.Description>
-                        <Card.Content extra textAlign={"center"}>
-                            <Button as='div' labelPosition='right' onClick={() => this.onClickAddFriend() }>
-                                <Button icon='weixin' circular color={"green"} />
-                                <Label as='a' basic color='green' pointing='left'>
-                                    加好友
-                                </Label>
-                            </Button>
+            <div className={this.props.className}>
+                {
+                    this.state.show_card ?
+                        <Card
+                            raised={false}
+                            centered={true}
+                            fluid={true}
+                        >
+                            <Image src={utils.imageHost(head_image)} wrapped ui={false}
+                                   fluid
+                                   label={{ as: 'a', corner: 'right', icon: 'delete', onClick: () => this.onClose()}}
+                            />
+                            <Card.Content>
+                                <Card.Header>
+                                    {profile.nickname}
+                                </Card.Header>
+                                <Card.Meta>
+                                    <span className='date'>博主</span>
+                                </Card.Meta>
+                                <Card.Description>
+                                    {profile.userdesc}
+                                </Card.Description>
+                                <Card.Content extra textAlign={"center"}>
+                                    <Button as='div' labelPosition='right' onClick={() => this.onClickAddFriend() }>
+                                        <Button icon='weixin' circular color={"green"} />
+                                    </Button>
 
-                            <Button as='div' labelPosition='left' onClick={() => this.onClickZF()}>
-                                <Label as='a' basic color='blue' pointing='right'>
-                                    请他喝茶
-                                </Label>
-                                <Button icon='weixin' circular color={"blue"} />
-                            </Button>
-                        </Card.Content>
+                                    <Button as='div' labelPosition='left' onClick={() => this.onClickZF()}>
+                                        <Button icon='weixin' circular color={"blue"} />
+                                    </Button>
+                                </Card.Content>
 
-                    </Card.Content>
-                </Card>
+                            </Card.Content>
+                        </Card> : ""
+                }
 
                 <ImagePortal image_size="large" image={wx_image} open={this.state.show_wx} header={"微信扫码加好友"} onClose={() => this.onClosePotal('wx')}/>
                 <ImagePortal image_size="large" image={zf_image} open={this.state.show_zf} header={"微信扫码请他喝茶"} onClose={() => this.onClosePotal('zf')}/>

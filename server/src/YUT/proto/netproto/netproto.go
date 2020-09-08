@@ -382,14 +382,13 @@ type NetBlogDeleteRequest struct {
 // get blog pagenate
 
 type NetGetBlogPagenateSearchRequest struct {
-	LastId  int `http:"last_id"`
 	CurPage int `http:"cur_page"`
 }
 
 type NetGetBlogPagenateListResponse struct {
 	NetResponse
 
-	UserBlogList []*NetBlogAllDetail `json:"bloglist"`
+	UserBlogList []*NetBlogAllDetail `json:"datalist"`
 	CurPage int `json:"cur_page"`
 	TotalPage int `json:"total_page"`
 }
@@ -454,4 +453,49 @@ func (this *NetUserProfileResponse) ResponseError(writer http.ResponseWriter) {
 
 func (this *NetUserProfileResponse) ResponseSuccess(writer http.ResponseWriter) {
 	outputJson(*this, 0, writer)
+}
+
+// user upload res
+type NetUserUploadResRequest struct {
+	ResType int `http:"res_type"`
+	ResName string `http:"res_name"`
+	ResDesc string `http:"res_desc"`
+}
+
+// get res pagenate
+type NetResAllDetail struct {
+	Id int `json:"id"`
+	ResType int `json:"res_type"`
+	ResName string `json:"res_name"`
+	ResDesc string `json:"res_desc"`
+	CreateTm int `json:"create_tm"`
+	UpdateTm string `json:"update_tm"`
+	Url string `json:"url"`
+}
+
+type NetGetUserResPagenateSearchRequest struct {
+	ResType int `http:"res_type"`
+	CurPage int `http:"cur_page"`
+}
+
+type NetGetUserResPagenateSearchReponse struct {
+	NetResponse
+
+	UserResList []*NetResAllDetail `json:"datalist"`
+	CurPage int `json:"cur_page"`
+	TotalPage int `json:"total_page"`
+}
+
+func (this *NetGetUserResPagenateSearchReponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetGetUserResPagenateSearchReponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// delete res
+type NetUserDeleteResRequest struct {
+	Id int `http:"id"`
 }

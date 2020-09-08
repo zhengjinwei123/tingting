@@ -124,7 +124,7 @@ func PageNateTotalCount(username string) (int, error) {
 func PageNateSearchUserBlog(username string, last_id int, limit_num int, blogList *[]*dbproto.DBBlogAllInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	err := proxy.QueryList(fmt.Sprintf("select * from `%s` where `username`='%s' and `id`>%d order by id asc limit %d",
+	err := proxy.QueryList(fmt.Sprintf("select * from `%s` where `username`='%s' order by id asc limit %d,%d",
 		table_name, username, last_id, limit_num), blogList)
 
 	return err

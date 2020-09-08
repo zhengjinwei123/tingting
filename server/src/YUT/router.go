@@ -23,6 +23,8 @@ func UserRouter() http.Handler {
 	r.Post("/del-image", userservice.DelImage)
 	r.Post("/update-profile", userservice.UpdateProfile)
 	r.Post("/upload-res", userservice.UploadRes)
+	r.Post("/reslist-pagenate", userservice.ResListPageNateSearch)
+	r.Post("/res-delete", userservice.ResDelete)
 
 	return r
 }

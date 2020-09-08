@@ -1,6 +1,8 @@
 import utils from "utils/utils.jsx";
 import $ from "jquery"
 
+import CONSTS from "proto/consts.jsx"
+
 class UserService {
     constructor() {
         if (!UserService.instance) {
@@ -114,7 +116,26 @@ class UserService {
         })
     }
 
-    // res_type = img/music/video
+    deleteRes(id) {
+        return utils.request({
+            url: '/api/user/res-delete',
+            data: {
+                id,
+            }
+        })
+    }
+
+
+    uploadResImage(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.IMAGE, res_name, res_desc)
+    }
+    uploadMusic(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.MUSIC, res_name, res_desc)
+    }
+    uploadVideo(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.VIDEO, res_name, res_desc)
+    }
+    // res_type = img1/music2/video3
     uploadRes(res_type, res_name, res_desc) {
         return utils.request({
             url: '/api/user/upload-res',
@@ -126,13 +147,27 @@ class UserService {
         })
     }
 
-    getProfile(username) {
+    getImageList(cur_page) {
+        return this.getResListPageNate(CONSTS.RES_TYPES.IMAGE, cur_page)
+    }
+
+    getResListPageNate(res_type, cur_page) {
+        return utils.request({
+            url: '/api/user/reslist-pagenate',
+            data: {
+                res_type: res_type,
+                cur_page: cur_page
+            }
+        })
+    }
+
+    getProfile(username, show_loading) {
         return utils.request({
             url: '/pub/user/profile',
             data: {
                 username: username,
             }
-        })
+        }, show_loading)
     }
 
     deleteUser(username) {

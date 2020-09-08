@@ -53,6 +53,8 @@
       "2008,/user/del-image,上传图片",
       "2009,/user/update-profile,更新基础信息",
       "2010,/user/upload-res,上传资源",
+      "2011,/user/reslist-pagenate,资源列表",
+      "2012,/user/res-delete,删除资源",
 
       "3000,#,H5游戏",
       "3001,/h5game/list,h5游戏列表",

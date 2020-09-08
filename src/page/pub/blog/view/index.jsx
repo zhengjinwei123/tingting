@@ -6,7 +6,7 @@ import blogService from "service/blog.jsx"
 import PubViewLeftBar from "page/pub/blog/leftbar/index.jsx"
 import PubViewRightBar from "page/pub/blog/rightbar/index.jsx";
 
-import { Message, Header, Segment, Label } from 'semantic-ui-react'
+import {Message, Header, Segment, Label, Icon, Transition, Button,Popup} from 'semantic-ui-react'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/output.css'
@@ -17,6 +17,9 @@ import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
 import utils from  "utils/utils.jsx"
 
 import "../index.scss"
+import $ from "jquery";
+import ProfileCard from "component/profilecard/index.jsx";
+
 
 
 class PubBlogView extends React.Component {
@@ -33,11 +36,63 @@ class PubBlogView extends React.Component {
             update_tm : "",
 
             editor: null,
-            not_found: false
+            not_found: false,
+
+            clientInnerWidth: 0,
+            show_profile: true,
+
+            show_nav_btn: false
+        }
+
+        this.scrollIntervalTimer = 0;
+    }
+
+    handleResize(e) {
+        this.setState({
+            clientInnerWidth: e.target.innerWidth
+        })
+    }
+
+    handleScroll() {
+
+        let scrollt = document.documentElement.scrollTop + document.body.scrollTop;
+
+        if (scrollt > 100) {
+            this.setState({
+                show_nav_btn: true,
+                show_profile: false,
+            })
+        } else {
+            this.setState({
+                show_nav_btn: false,
+                show_profile: true
+            })
         }
     }
 
+    backTop() {
+
+        this.scrollIntervalTimer = setInterval(() => {
+            if (document.documentElement.scrollTop > 0) {
+                document.documentElement.scrollTop -= 50
+            } else {
+                clearInterval(this.scrollIntervalTimer)
+                this.setState({
+                    show_profile: true
+                })
+            }
+        }, 10)
+    }
+
+    componentWillMount() {
+        window.addEventListener("scroll", this.handleScroll.bind(this), true)
+    }
+
     componentDidMount() {
+        this.setState({
+            clientInnerWidth : document.documentElement.clientWidth
+        })
+        window.addEventListener('resize', this.handleResize.bind(this)) //监听窗口大小改变
 
         blogService.getBlog(this.props.match.params.blog_id).then(res => {
             console.log("blog", res)
@@ -76,6 +131,12 @@ class PubBlogView extends React.Component {
         return this.state.type !== 0
     }
 
+    onCloseProfile(show) {
+        this.setState({
+            show_profile: show
+        })
+    }
+
     render() {
         let html = "";
 
@@ -98,6 +159,7 @@ class PubBlogView extends React.Component {
             )
         }
 
+
         return (
             <div className={"container-fluid justify-content-md-center"}>
                 <PubViewHeader />
@@ -109,10 +171,10 @@ class PubBlogView extends React.Component {
                                 {this.state.article_name}
                                 <div className={"float-right"}>
                                     <Label as='a' color='blue'>
-                                        分类: {this.state.article_cls}
+                                        <Icon name={"sitemap"}/>分类: {this.state.article_cls}
                                     </Label>
                                     <Label as='a' color='orange'>
-                                        作者:{this.state.author}
+                                        <Icon name={"bookmark"}/>作者:{this.state.author}
                                     </Label>
                                 </div>
 
@@ -120,18 +182,23 @@ class PubBlogView extends React.Component {
                         </Label>
                         <div>
                             <Label as='a' color='orange' ribbon>
-                                {this.state.publish_tm} 发布
+                                <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
                             </Label>
-                            <Label as='a' color='red'>
-                               {this.state.update_tm} 更新
+                            <Label as='a' color='red' tag>
+                                <Icon name={"clock"}/>{this.state.update_tm} 更新
+                            </Label>
+                            <Label as='a' color='blue'>
+                                <Icon name={"eye"}/>{400} 阅读
                             </Label>
                         </div>
 
+
                         <Message>
                             {
-                                this.isMarkdown() ?  <ReactMarkdown
+                                this.isMarkdown() ?
+                                    <ReactMarkdown
                                         source={html}
-                                        escapeHtml={true}
+                                        escapeHtml={false}
                                         renderers={{
                                             code: CodeBlock,
                                         }}
@@ -149,9 +216,28 @@ class PubBlogView extends React.Component {
                             }
                         </Message>
                     </Segment>
-
                 </div>
+                <div>
 
+                    {
+                        !this.state.show_profile ?
+                            <Popup content={"作者信息"}
+                                   trigger={<Button className={"profile-btn"}  circular icon='heart' color={"pink"} onClick={() => this.onCloseProfile(true)}/>} /> :
+                            <ProfileCard
+                                author={this.state.author} className={"profile-container"} onClose={() => this.onCloseProfile(false)} />
+                    }
+
+                    {
+                        this.state.show_nav_btn ?
+                            <Popup content='返回顶部'
+                                   trigger={ <Button className={"back-top-nav"}  circular icon='angle double up' color={"blue"} onClick={() => this.backTop()}/> } />
+                            : ""
+                    }
+
+                    <div className={"advert-container"}>
+
+                    </div>
+                </div>
             </div>
         )
     }

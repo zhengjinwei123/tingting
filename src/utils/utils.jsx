@@ -23,9 +23,14 @@ class Utils{
         return this.instance;
     }
 
-    request(options) {
+    request(options, show_loading) {
         console.log("request:", options)
-        this.openLoading();
+
+        if (show_loading === undefined) {
+            show_loading = true
+        }
+
+        show_loading && this.openLoading();
         return new Promise((resolve, reject) => {
 
             if (options.url !== "/api/user/login") {

@@ -1,6 +1,8 @@
 package userservice
 
 import (
+	"YUT/dbservice/dbpagehelper"
+	"YUT/dbservice/dbuserresservice"
 	"YUT/dbservice/dbuserservice"
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
@@ -240,16 +242,8 @@ func DelImage(w http.ResponseWriter, r *http.Request) {
 
 	response := &netproto.NetResponse{}
 
-	p, _ := filepath.Abs(filepath.Dir("./public/"))
-	file_path := p + "/upload/" + username + "/" + request.ImageName
-
-	if !fileutils.Exists(file_path) {
-		response.Msg = "file not exists";
-		response.ResponseError(w)
-		return
-	}
-
-	if err = fileutils.RmFile(file_path); err != nil {
+	err = helperDelUserImage(username, request.ImageName)
+	if err != nil {
 		response.Msg = err.Error()
 		response.ResponseError(w)
 		return
@@ -259,7 +253,99 @@ func DelImage(w http.ResponseWriter, r *http.Request) {
 }
 
 func UploadRes(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
 
+	request := &netproto.NetUserUploadResRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = dbuserresservice.UploadRes(username, request.ResType, request.ResName, request.ResDesc)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	response.ResponseSuccess(w)
+}
+
+func ResDelete(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	request := &netproto.NetUserDeleteResRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	var dbRes dbproto.DBUserResInfo
+	err = dbuserresservice.GetUserResById(request.Id, &dbRes)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = helperDelUserImage(username, dbRes.ResName)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	err = dbuserresservice.DeleteRes(username, request.Id)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	response.ResponseSuccess(w)
+}
+
+func ResListPageNateSearch(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGetUserResPagenateSearchRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	pageHelper := dbpagehelper.NewPageHelper(request.CurPage)
+
+	response := &netproto.NetGetUserResPagenateSearchReponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	var dbResList []*dbproto.DBUserResInfo
+	err = pageHelper.SearchUserRes(username,request.ResType, &dbResList)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseSuccess(w)
+		return;
+	}
+
+	response.CurPage = pageHelper.CurPage;
+	response.TotalPage = pageHelper.TotalPage()
+	for _, v := range dbResList {
+		detail := netproto.NetResAllDetail{
+			Id: v.Id,
+			ResType: v.ResType,
+			ResDesc: v.ResDesc,
+			ResName: v.ResName,
+			CreateTm: v.CreateTm,
+			UpdateTm: v.UpdateTm,
+			Url: helperGetImagePath(username, v.ResName),
+		}
+
+		response.UserResList = append(response.UserResList, &detail)
+	}
+	response.ResponseSuccess(w)
 }
 
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
@@ -316,6 +402,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 
 func UploadImage(w http.ResponseWriter, r *http.Request) {
 
+
 	response := &netproto.NetUserImageUploadResponse{}
 
 	p, _ := filepath.Abs(filepath.Dir("./public/"))
@@ -328,7 +415,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	username := r.FormValue("username")
-	if username == "" {
+	if username == "" || !userManager.GetUsrSessionMgr().ValidUser(username) {
 		response.Msg = "invalid request,please login first"
 		response.ResponseError(w)
 		return
@@ -337,7 +424,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	file, header, err := r.FormFile("upload_file");
 	defer file.Close();
 	if err != nil {
-		log.Fatal(err);
+		l4g.Error("%s", err.Error())
 	}
 	uploadDir := p + "/upload/" + username + "/"
 	//创建上传目录
@@ -369,7 +456,7 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	//把上传文件数据拷贝到我们新建的文件
 	io.Copy(cur, file);
 
-	response.ImagePath = "/upload/"+username+"/"+newFileName
+	response.ImagePath = helperGetImagePath(username, newFileName) //"/upload/"+username+"/"+newFileName
 
 	response.ResponseSuccess(w)
 }

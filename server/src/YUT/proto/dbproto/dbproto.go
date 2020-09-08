@@ -51,3 +51,13 @@ type DBBlogAllInfo struct {
 	UpdateTm string `db:"update_tm"`
 	ArticleCls string `db:"article_cls"`
 }
+
+type DBUserResInfo struct {
+	Id int `db:"id"`
+	UserName string `db:"username"`
+	ResType int `db:"res_type"`
+	ResDesc string `db:"res_desc"`
+	ResName string `db:"res_name"`
+	CreateTm int `db:"create_tm"`
+	UpdateTm string `db:"update_tm"`
+}

@@ -21,10 +21,6 @@ class BlogList extends React.Component {
 
             cur_page: 1,
             total_page: 0,
-
-            page_info: {
-                1: 0
-            }
         }
     }
 
@@ -33,23 +29,20 @@ class BlogList extends React.Component {
     }
 
     loadBlogs() {
-
-        const lastId = this.state.page_info[this.state.cur_page] ? this.state.page_info[this.state.cur_page].last_id : this.state.last_id;
-
-        blogService.getUserBlogsPageNate(lastId, this.state.cur_page).then(res => {
-            if (res.bloglist && res.bloglist.length) {
-                let last_id = res.bloglist[res.bloglist.length-1].id
-
-                let next_page = res.cur_page + 1
-                let pageInfo = this.state.page_info
-                pageInfo[next_page] = {}
-                pageInfo[next_page].last_id = last_id
+        blogService.getUserBlogsPageNate(this.state.cur_page).then(res => {
+            if (res.datalist && res.datalist.length) {
 
                 this.setState({
-                    blog_list: res.bloglist,
+                    blog_list: res.datalist,
                     cur_page: res.cur_page,
                     total_page: res.total_page,
-                    page_info: pageInfo
+                })
+            } else {
+
+                this.setState({
+                    blog_list: [],
+                    cur_page: 1,
+                    total_page: 0,
                 })
             }
         })

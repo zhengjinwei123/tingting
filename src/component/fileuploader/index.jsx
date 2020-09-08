@@ -1,7 +1,5 @@
 import React from "react"
-import FileUploadProgress  from 'react-fileupload-progress';
 
-// import FileUpload from "react-fileupload-provisional"
 import FileUpload from "component/fileuploader/reactfileuploader.jsx";
 
 import {Button, Icon, Image, Input, Progress} from "semantic-ui-react";
@@ -13,21 +11,6 @@ import _ from "lodash"
 import "./index.scss"
 import userService from "service/user.jsx";
 
-class ProgressFileUploader extends React.Component {
-    render() {
-        return (
-            <div>
-                <h3>Default style</h3>
-                <FileUploadProgress method={"post"} key='ex1' url='http://localhost:3000/api/upload'
-                                    onProgress={(e, request, progress) => {console.log('progress', e, request, progress);}}
-                                    onLoad={ (e, request) => {console.log('load', e, request);}}
-                                    onError={ (e, request) => {console.log('error', e, request);}}
-                                    onAbort={ (e, request) => {console.log('abort', e, request);}}
-                />
-            </div>
-        )
-    }
-}
 
 
 class FileUploader extends React.Component {
@@ -43,6 +26,23 @@ class FileUploader extends React.Component {
             tag: false
         }
     }
+
+    componentDidMount() {
+        if (this.props.onRef) {
+            this.props.onRef(this)
+        }
+    }
+
+    resetAll() {
+        this.setState({
+            choose: "",
+            choose_image: utils.imageHost("null_image.png"),
+            progress_percent: 0,
+            success: false,
+            tag: false
+        })
+    }
+
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.defaultValue && !this.state.tag) {
@@ -91,6 +91,10 @@ class FileUploader extends React.Component {
         this.setState({
             progress_percent: 0,
         })
+    }
+
+    isSuccess() {
+        return this.state.success
     }
 
     delImage(callback) {
@@ -231,6 +235,5 @@ class FileUploader extends React.Component {
 }
 
 export {
-    ProgressFileUploader,
     FileUploader
 }

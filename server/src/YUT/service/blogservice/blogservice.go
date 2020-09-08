@@ -207,7 +207,7 @@ func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
-	pageHelper := dbpagehelper.NewPageHelper(request.LastId, request.CurPage)
+	pageHelper := dbpagehelper.NewPageHelper(request.CurPage)
 
 	response := &netproto.NetGetBlogPagenateListResponse{}
 
