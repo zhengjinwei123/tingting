@@ -1,5 +1,6 @@
 import React from "react"
-import {Divider, Header, Segment, Icon, Button, Grid, Form, TextArea, Table, Label, Pagination, Image} from 'semantic-ui-react'
+import {Divider, Header, Segment,Card,
+    Portal, Popup, Icon, Button, Grid, Form, TextArea, Table, Label, Pagination, Image} from 'semantic-ui-react'
 
 import PageTitle from "component/pagetitle/index.jsx";
 import {FileUploader} from "component/fileuploader/index.jsx"
@@ -20,6 +21,8 @@ export default class ImageUpload extends React.Component {
             res_list: [],
             cur_page: 1,
             total_page: 0,
+
+            cur_preview_res: null
         }
     }
 
@@ -27,7 +30,6 @@ export default class ImageUpload extends React.Component {
         this.setState({
             image_name: filename
         })
-        console.log("ImageUpload onUploadSuccess", filename)
     }
 
     onChange(e) {
@@ -83,7 +85,6 @@ export default class ImageUpload extends React.Component {
     }
 
     onDelete(id) {
-
         utils.confirmDialog("确认删除？", (agree) => {
             if (agree) {
                 userService.deleteRes(id).then(res => {
@@ -92,11 +93,6 @@ export default class ImageUpload extends React.Component {
                 })
             }
         }, "删除图片")
-
-    }
-
-    onEdit(resInfo) {
-        console.log("onEdit", resInfo)
     }
 
     onPageChange(e, data) {
@@ -104,6 +100,18 @@ export default class ImageUpload extends React.Component {
             cur_page: data.activePage,
         }, () => {
             this.loadImages()
+        })
+    }
+
+    handleCloseImagePreview() {
+        this.setState({
+            cur_preview_res: null
+        })
+    }
+
+    onPreview(res) {
+        this.setState({
+            cur_preview_res: res
         })
     }
 
@@ -181,16 +189,20 @@ export default class ImageUpload extends React.Component {
                                                 <Table.Cell>{res.res_name}</Table.Cell>
                                                 <Table.Cell>{res.res_desc}</Table.Cell>
                                                 <Table.Cell>
-                                                    <Image size="mini" src={url}/>
+                                                    <Popup
+                                                        content={"点击预览"}
+                                                        trigger={
+                                                            <Image
+                                                                className={"my-image-preview"}
+                                                                size="mini" src={url} onClick={() => this.onPreview(res) }/>
+                                                        }/>
+
                                                 </Table.Cell>
                                                 <Table.Cell>{utils.formatDate(res.create_tm) }</Table.Cell>
                                                 <Table.Cell>{res.update_tm}</Table.Cell>
                                                 <Table.Cell>
                                                     <Button negative onClick={() => this.onDelete(res.id)}>
                                                         <Icon name='delete' />删除
-                                                    </Button>
-                                                    <Button color={"linkedin"} onClick={() => this.onEdit(res) } >
-                                                        <Icon name='edit' />修改
                                                     </Button>
                                                 </Table.Cell>
                                             </Table.Row>
@@ -213,6 +225,38 @@ export default class ImageUpload extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Portal
+                    open={this.state.cur_preview_res !== null}
+                    closeOnTriggerClick
+                    openOnTriggerClick
+                    onClose={ () => this.handleCloseImagePreview()}
+                >
+                    <Segment
+                        padded
+                        style={{
+                            maxHeight: "500px",
+                            left: '40%',
+                            position: 'fixed',
+                            top: '10%',
+                            zIndex: 1000,
+                            overflow: "auto"
+                        }}
+                    >
+                        {
+                            this.state.cur_preview_res ?
+                                <div>
+                                    <Label attached='top'>{this.state.cur_preview_res.res_desc}</Label>
+                                    <Card>
+                                        <Image size="medium" src={ utils.uploadedImageHost(this.state.cur_preview_res.url)} wrapped ui={false} />
+                                        <Card.Content>
+                                            <Card.Header>{this.state.cur_preview_res.res_name}</Card.Header>
+                                        </Card.Content>
+                                    </Card>
+                                </div> : ""
+                        }
+
+                    </Segment>
+                </Portal>
             </PageTitle>
         )
     }

@@ -12,6 +12,7 @@ import utils from "utils/utils.jsx"
 
 import _ from "lodash"
 
+import "./index.scss"
 const transitions = [
     'browse',
     'browse right',

@@ -141,8 +141,8 @@ export default class ProfileCard extends React.Component {
                         </Card> : ""
                 }
 
-                <ImagePortal image_size="large" image={wx_image} open={this.state.show_wx} header={"微信扫码加好友"} onClose={() => this.onClosePotal('wx')}/>
-                <ImagePortal image_size="large" image={zf_image} open={this.state.show_zf} header={"微信扫码请他喝茶"} onClose={() => this.onClosePotal('zf')}/>
+                <ImagePortal image_size="medium" image={wx_image} open={this.state.show_wx} header={"微信扫码加好友"} onClose={() => this.onClosePotal('wx')}/>
+                <ImagePortal image_size="medium" image={zf_image} open={this.state.show_zf} header={"微信扫码请他喝茶"} onClose={() => this.onClosePotal('zf')}/>
             </div>
         )
     }

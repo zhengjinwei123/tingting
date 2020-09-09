@@ -1,9 +1,18 @@
 .container-fluid {
   padding-top: 60px;
   width: 100%;
+  justify-content: center !important;
 
-  .justify-content-md-center {
-    justify-content: center !important;
+
+  .advert-container {
+    //position: absolute;
+    float: left;
+    width: calc(40% - 10px);
+    height: 1000px;
+    border-left: 1px solid #eeeeee;
+    border-right: 1px solid #eeeeee;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 
   .article-container {
@@ -11,8 +20,21 @@
     padding-right: 15px;
 
     width: 60%;
-    position: absolute;
+    //position: absolute;
+    float: left;
     left: 0;
+
+    .top-advert {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
 
     .article-header {
       background-color: #f1f8ff;
@@ -81,7 +103,7 @@
   .profile-container {
     position: fixed;
     left: calc(60% - 135px);
-    top: 120px;
+    top: calc(120px + 200px);
     width: 120px;
     height: 100px;
   }
@@ -89,7 +111,7 @@
   .profile-btn {
     position: fixed;
     left: calc(60% - 15px - 40px);
-    top: 120px;
+    top: calc(120px + 200px);
     width: 40px;
     height: 40px;
   }
@@ -100,14 +122,6 @@
     bottom: 200px;
     width: 40px;
     height: 40px;
-  }
-
-  .advert-container {
-    position: absolute;
-    right: 0;
-    width: 40%;
-
-
   }
 }
 
@@ -123,12 +137,25 @@
     padding-right: 15px;
     margin-left: auto;
     margin-right: auto;
+    justify-content: center !important;
 
-    .justify-content-md-center {
-      justify-content: center !important;
+    .advert-container {
+      width: calc(100% - 30px);
+      float: right;
+      padding: 10px 10px;
+      height: 1000px;
+      background-color: #333333;
+      border-left: 1px solid #eeeeee;
+      border-right: 1px solid #eeeeee;
+      overflow: auto;
+      margin-left: 15px;
+      margin-right: 15px;
+      margin-top: 15px;
+      border-radius: 4px;
     }
 
     .article-container {
+      float: left;
       width: 100%;
       overflow: auto;
 
@@ -190,7 +217,7 @@
     .profile-container {
       position: fixed;
       left: calc(100% - 135px);
-      top: 120px;
+      top: calc(120px + 200px);
       width: 120px;
       height: 100px;
     }
@@ -198,7 +225,7 @@
     .profile-btn {
       position: fixed;
       left: calc(100% - 15px - 40px);
-      top: 120px;
+      top: calc(120px + 200px);
       width: 40px;
       height: 40px;
     }

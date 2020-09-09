@@ -7,6 +7,7 @@ import (
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
+	"YUT/utils"
 	"YUT/utils/orm"
 	"fmt"
 	l4g "github.com/alecthomas/log4go"
@@ -42,7 +43,7 @@ func GetBlog(w http.ResponseWriter, r *http.Request) {
 	response.PublishTm = dbblog.PublishTm
 	response.ArticleCls = dbblog.ArticleCls
 	response.ArticleName = dbblog.BlogName
-	response.Content = dbblog.Content
+	response.Content = utils.Stripslashes(dbblog.Content)
 	response.Type = dbblog.BlogType
 	response.UserName = dbblog.UserName
 
@@ -62,7 +63,7 @@ func AddBlog(w http.ResponseWriter, r *http.Request) {
 	response := &netproto.NetResponse{}
 
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
-	err = dbblogservice.AddBlog(username, request.CategoryId, request.Content, request.BlogName, request.BlogType)
+	err = dbblogservice.AddBlog(username, request.CategoryId, utils.Addslashes(request.Content), request.BlogName, request.BlogType)
 
 	if err != nil {
 		response.Msg = err.Error()
@@ -110,7 +111,7 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := &netproto.NetResponse{}
-	err = dbblogservice.UpdateBlog(request.BlogId, request.Content, request.BlogName, request.CategoryId)
+	err = dbblogservice.UpdateBlog(request.BlogId, utils.Addslashes(request.Content), request.BlogName, request.CategoryId)
 
 	if err != nil {
 		response.Msg = err.Error()
@@ -231,7 +232,7 @@ func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 			BlogName: v.BlogName,
 			BlogUrl: v.BlogUrl,
 			CategoryId: v.CategoryId,
-			Content: v.Content,
+			Content: utils.Stripslashes(v.Content),
 			CreateTm: v.CreateTm,
 			UpdateTm: v.UpdateTm,
 			PublishTm: v.PublishTm,
@@ -266,7 +267,7 @@ func GetBlogList(w http.ResponseWriter, r *http.Request) {
 			BlogName: v.BlogName,
 			BlogUrl: v.BlogUrl,
 			CategoryId: v.CategoryId,
-			Content: v.Content,
+			Content: utils.Stripslashes(v.Content),
 			CreateTm: v.CreateTm,
 			UpdateTm: v.UpdateTm,
 			PublishTm: v.PublishTm,

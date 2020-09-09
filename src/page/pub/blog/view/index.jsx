@@ -6,7 +6,7 @@ import blogService from "service/blog.jsx"
 import PubViewLeftBar from "page/pub/blog/leftbar/index.jsx"
 import PubViewRightBar from "page/pub/blog/rightbar/index.jsx";
 
-import {Message, Header, Segment, Label, Icon, Transition, Button,Popup} from 'semantic-ui-react'
+import {Message, Header, Segment, Label, Icon, Image, Button,Popup, Advertisement} from 'semantic-ui-react'
 
 import BraftEditor from 'braft-editor'
 import 'braft-editor/dist/output.css'
@@ -19,6 +19,7 @@ import utils from  "utils/utils.jsx"
 import "../index.scss"
 import $ from "jquery";
 import ProfileCard from "component/profilecard/index.jsx";
+import TopAdvert from "page/pub/topadvert/index.jsx";
 
 
 
@@ -45,6 +46,10 @@ class PubBlogView extends React.Component {
         }
 
         this.scrollIntervalTimer = 0;
+    }
+
+    componentWillUnmount() {
+        this.setState = ()=>false;
     }
 
     handleResize(e) {
@@ -161,64 +166,65 @@ class PubBlogView extends React.Component {
 
 
         return (
-            <div className={"container-fluid justify-content-md-center"}>
+            <div>
                 <PubViewHeader />
+                <div className={"container-fluid"}>
+                    <div className={"article-container"}>
 
-                <div className={"article-container"}>
-                    <Segment padded>
-                        <Label attached='top' className={"article-header "}>
-                            <Header as='h2'>
-                                {this.state.article_name}
-                                <div className={"float-right"}>
-                                    <Label as='a' color='blue'>
-                                        <Icon name={"sitemap"}/>分类: {this.state.article_cls}
-                                    </Label>
-                                    <Label as='a' color='orange'>
-                                        <Icon name={"bookmark"}/>作者:{this.state.author}
-                                    </Label>
-                                </div>
+                        <TopAdvert className={"top-advert"} />
 
-                            </Header>
-                        </Label>
-                        <div>
-                            <Label as='a' color='orange' ribbon>
-                                <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
+                        <Segment padded>
+                            <Label attached='top' className={"article-header "}>
+                                <Header as='h2'>
+                                    {this.state.article_name}
+                                    <div className={"float-right"}>
+                                        <Label as='a' color='blue'>
+                                            <Icon name={"sitemap"}/>分类: {this.state.article_cls}
+                                        </Label>
+                                        <Label as='a' color='orange'>
+                                            <Icon name={"bookmark"}/>作者:{this.state.author}
+                                        </Label>
+                                    </div>
+
+                                </Header>
                             </Label>
-                            <Label as='a' color='red' tag>
-                                <Icon name={"clock"}/>{this.state.update_tm} 更新
-                            </Label>
-                            <Label as='a' color='blue'>
-                                <Icon name={"eye"}/>{400} 阅读
-                            </Label>
-                        </div>
+                            <div>
+                                <Label as='a' color='orange' ribbon>
+                                    <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
+                                </Label>
+                                <Label as='a' color='red' tag>
+                                    <Icon name={"clock"}/>{this.state.update_tm} 更新
+                                </Label>
+                                <Label as='a' color='blue'>
+                                    <Icon name={"eye"}/>{400} 阅读
+                                </Label>
+                            </div>
 
 
-                        <Message>
-                            {
-                                this.isMarkdown() ?
-                                    <ReactMarkdown
-                                        source={html}
-                                        escapeHtml={false}
-                                        renderers={{
-                                            code: CodeBlock,
-                                        }}
-                                    />
-                                    :
-                                    <BraftEditor
+                            <Message>
+                                {
+                                    this.isMarkdown() ?
+                                        <ReactMarkdown
+                                            source={html}
+                                            escapeHtml={false}
+                                            renderers={{
+                                                code: CodeBlock,
+                                            }}
+                                        />
+                                        :
+                                        <BraftEditor
 
-                                        stripPastedStyles={true}
-                                        contentClassName={"braft-content"}
-                                        readOnly={true}
-                                        controls={[]}
-                                        value={this.state.editor}
-                                    />
+                                            stripPastedStyles={true}
+                                            contentClassName={"braft-content"}
+                                            readOnly={true}
+                                            controls={[]}
+                                            value={this.state.editor}
+                                        />
 
-                            }
-                        </Message>
-                    </Segment>
-                </div>
-                <div>
-
+                                }
+                            </Message>
+                        </Segment>
+                    </div>
                     {
                         !this.state.show_profile ?
                             <Popup content={"作者信息"}

@@ -4,10 +4,13 @@ import (
 	"YUT/manager/userManager"
 	"YUT/proto/netproto"
 	"context"
+	l4g "github.com/alecthomas/log4go"
 	"github.com/go-chi/chi"
 	"net/http"
+	"net/url"
+	"regexp"
 	"strconv"
-	l4g "github.com/alecthomas/log4go"
+	"strings"
 )
 
 func ApiMiddleware(next http.Handler) http.Handler {
@@ -72,5 +75,42 @@ func PubBlogMiddleware(next http.Handler) http.Handler {
 
 		ctx := context.WithValue(r.Context(), "id", id)
 		next.ServeHTTP(w, r.WithContext(ctx))
+	})
+}
+
+func isValidReferer(referer string) bool {
+	reg := regexp.MustCompile(`^http://(.*?):(\d{4})(.*?)$`)
+	params := reg.FindStringSubmatch(referer)
+
+	if len(params) >= 3 && params[1] == "localhost" && params[2] == "8086" {
+		return true
+	}
+
+	return false
+}
+
+func StaticMiddleware(prefix string, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if p := strings.TrimPrefix(r.URL.Path, prefix); len(p) < len(r.URL.Path) {
+			r2 := new(http.Request)
+			*r2 = *r
+			r2.URL = new(url.URL)
+			*r2.URL = *r.URL
+			r2.URL.Path = p
+
+			if !isValidReferer(r2.Referer()) {
+				resp := &netproto.NetResponse{}
+				resp.Msg = r.URL.Path +  " 404 not found"
+				resp.ResponseError(w)
+				return
+			}
+
+			next.ServeHTTP(w, r2)
+		} else {
+			resp := &netproto.NetResponse{}
+			resp.Msg = r.URL.Path +  " 404 not found"
+			resp.ResponseError(w)
+			return
+		}
 	})
 }

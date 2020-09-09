@@ -80,8 +80,15 @@ func main() {
 
 	l4g.Debug("api server start %s", serverConf.Http)
 
+
+
 	p, _ := filepath.Abs(filepath.Dir("./public/"))
-	staticServ := &http.Server{Addr: ":9000", Handler: http.FileServer(http.Dir(p))}
+	m := http.NewServeMux()
+	fs := http.FileServer(http.Dir(p))
+	//m.Handle("/", http.StripPrefix("/", fs))
+	m.Handle("/", StaticMiddleware("/", fs))
+
+	staticServ := &http.Server{Addr: ":9000", Handler: m}
 	l4g.Debug("static server start: %d", 9000)
 
 

@@ -7,7 +7,7 @@ import (
 )
 
 func helperGetImagePath(username string, image_name string) string {
-	return "upload/"+username+"/"+image_name
+	return "/upload/"+username+"/"+image_name
 }
 
 func helperDelUserImage(username string, image_name string) error {
@@ -15,7 +15,7 @@ func helperDelUserImage(username string, image_name string) error {
 	file_path := p + helperGetImagePath(username, image_name) //"/upload/" + username + "/" + request.ImageName
 
 	if !fileutils.Exists(file_path) {
-		return errors.New("file not exists")
+		return errors.New(file_path + " file not exists")
 	}
 
 	if err := fileutils.RmFile(file_path); err != nil {

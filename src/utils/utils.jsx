@@ -23,6 +23,11 @@ class Utils{
         return this.instance;
     }
 
+    isApiRequest(url) {
+       let pattern = /^\/api\/.*?/
+        return pattern.test(url)
+    }
+
     request(options, show_loading) {
         console.log("request:", options)
 
@@ -33,10 +38,14 @@ class Utils{
         show_loading && this.openLoading();
         return new Promise((resolve, reject) => {
 
-            if (options.url !== "/api/user/login") {
-                if (!userService.checkUserHasLogin()) {
-                    reject("error: please login first")
-                    return
+
+            if (this.isApiRequest(options.url)) {
+                console.log("api request")
+                if (options.url !== "/api/user/login") {
+                    if (!userService.checkUserHasLogin()) {
+                        reject("error: please login first")
+                        return
+                    }
                 }
             }
 
