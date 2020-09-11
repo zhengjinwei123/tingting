@@ -72,7 +72,7 @@ class Login extends React.Component {
                   userService.checkUserHasLogin() ? <Redirect to="/"></Redirect> :
                   <div className="col-md-4 col-md-offset-4 login-wrapper">
                         <div className="panel panel-default login-panel">
-                            <div className="panel-heading"><i className="fa fa-home fa-fw fa-2x fa-left text-info"></i>欢迎登录 - 价值空间</div>
+                            <div className="panel-heading"><i className="fa fa-home fa-fw fa-2x fa-left text-info"></i>欢迎登录 - { process.env.WEB_NAME }</div>
                             <div className="panel-body">
                                 <div>
                                     <div className="form-group">

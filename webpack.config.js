@@ -119,6 +119,7 @@ module.exports = {
                 WEBPACK_ENV: JSON.stringify("dev"),
                 IMAGE_HOST: JSON.stringify("127.0.0.1:9000"),
                 API_HOST: JSON.stringify("127.0.0.1:8089"),
+                WEB_NAME: JSON.stringify("小码哥")
             }
         }),
         new webpack.HotModuleReplacementPlugin(),

@@ -7,7 +7,7 @@ class PageTitle extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        document.title = "价值空间 - " + this.props.title
+        document.title = process.env.WEB_NAME + " - " +  this.props.title
     }
 
     render() {

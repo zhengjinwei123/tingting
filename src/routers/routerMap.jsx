@@ -29,7 +29,7 @@ import PubViewHeader from "page/pub/header/index.jsx"
 class MyPublicRouter extends React.Component {
 
     UNSAFE_componentWillMount() {
-        document.title = "价值空间-博客"
+        document.title = process.env.WEB_NAME + " 博客在线"
     }
 
     render() {
