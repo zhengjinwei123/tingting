@@ -20,6 +20,11 @@ CREATE TABLE `t_user` (
   `wx_rcode_img` varchar(100) NOT NULL DEFAULT '' COMMENT '微信二维码',
   `zf_rcode_img` varchar(100) NOT NULL DEFAULT '' COMMENT '支付二维码',
   `sex` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别',
+  `birthday` bigint(20) NOT NULL DEFAULT 0 COMMENT '年龄',
+  `point` int(10) NOT NULL DEFAULT 0 COMMENT '积分',
+  `level` tinyint(2) NOT NULL DEFAULT 0 COMMENT '等级',
+  `vip_level` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'vip等级',
+  `create_tm` bigint(20) NOT NULL DEFAULT 0 COMMENT '创建时间戳',
   PRIMARY KEY (`username`),
   FOREIGN KEY(`group_id`) REFERENCES `t_group`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -30,6 +35,15 @@ insert into t_group(`id`,`desc`,`menus`,`auths`) VALUES(1,"管理员",
 
 
 insert into t_user(`username`,`password`,`email`, `group_id`) VALUES("admin", "e10adc3949ba59abbe56e057f20f883e", "2538698032@qq.com", 1);
+
+-- 粉丝
+drop table if exists `t_friends`;
+CREATE TABLE `t_user_friends` (
+    `username` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+    `friend_name` varchar(40) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '' COMMENT '用户名',
+    `create_tm` bigint(20) NOT NULL DEFAULT 0 COMMENT '创建时间戳',
+    PRIMARY KEY (`username`,`friend_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 drop table if exists `t_user_res`;
 CREATE TABLE `t_user_res` (

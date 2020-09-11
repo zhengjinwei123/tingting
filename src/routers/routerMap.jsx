@@ -23,6 +23,8 @@ import * as userinfoActions from "actions/userinfo.jsx";
 import * as menuActions from "actions/menulist.jsx";
 import UserProfile from "page/user-profile/index.jsx";
 
+import PubViewHeader from "page/pub/header/index.jsx"
+
 
 class MyPublicRouter extends React.Component {
 
@@ -107,11 +109,13 @@ class RouterMap extends React.Component {
         )
 
         let PublicRouter = (
-            <Switch>
-                <Route exact path="/" component={PubHomePage} />
-                <Route path="/pup/blog/:blog_id" component={PubBlogView}/>
-                <Route component={NotFoundPage}/>
-            </Switch>
+            <PubViewHeader menuActions={ this.props.menuActions}>
+                <Switch>
+                    <Route exact path="/" component={PubHomePage} />
+                    <Route path="/pup/blog/:blog_id" component={PubBlogView} />
+                    <Route component={NotFoundPage}/>
+                </Switch>
+            </PubViewHeader>
         )
 
         if (process.env.WEBPACK_ENV === "dev") {
@@ -121,8 +125,8 @@ class RouterMap extends React.Component {
                         <Route  path="/admin/login" >
                             <Login />
                         </Route>
-                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
-                        <MyPublicRouter path="/" render={ props => PublicRouter} />
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
                     </Switch>
                 </Router>
             )
@@ -133,8 +137,8 @@ class RouterMap extends React.Component {
                         <Route path="/admin/login" >
                             <Login />
                         </Route>
-                        <MyPublicRouter path="/" render={ props => PublicRouter} />
-                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList }/>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} menuList={ this.props.menuList }/>
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuActions={ this.props.menuActions }/>
                     </Switch>
                 </RouterHash>
             )

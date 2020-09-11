@@ -42,6 +42,7 @@ type DBBlogAllInfo struct {
 	Status int `db:"status"`
 	BlogType int `db:"type"`
 	UserName string `db:"username"`
+	NickName string `db:"nickname"`
 	BlogName string `db:"name"`
 	BlogUrl string `db:"url"`
 	CategoryId int `db:"category_id"`

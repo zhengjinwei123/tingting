@@ -51,10 +51,12 @@ func UpdateBlog(blog_id int, content string, blog_name string, category_id int) 
 func GetBlog(blog_id int, blogInfo *dbproto.DBBlogAllInfo) error {
 	proxy := mysqlManager.GetMysqlProxy()
 
-	sql := fmt.Sprintf("select A.*, B.`desc` as article_cls FROM (select * from t_blog where id=%d) as A " +
+	sql := fmt.Sprintf("select C.*, D.`nickname` as nickname from (select A.*, B.`desc` as article_cls FROM (select * from t_blog where id=%d) as A " +
 		"LEFT JOIN (select `category_id`,`desc`,`username` from t_blog_category) as B ON A.`category_id`=B.`category_id` " +
-		"WHERE B.`category_id` IS NOT NULL", blog_id)
+		"WHERE B.`category_id` IS NOT NULL) as C JOIN (select `nickname`,`username` from t_user) as D ON C.`username`=D.`username`", blog_id)
 	err := proxy.QueryOne(sql, blogInfo)
+
+	fmt.Println(sql)
 
 	return err
 }

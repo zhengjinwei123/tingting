@@ -89,6 +89,30 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 	response.ResponseSuccess(w)
 }
 
+func UserRegisterPup(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserRegisterRequest{}
+
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetResponse{}
+
+	err = dbuserservice.RegisterUser(request.UserName, request.Password, request.Email, 2)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
 func MenuList(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 

@@ -11,7 +11,7 @@ export default class PubHomePage extends React.Component {
     render() {
         return (
             <div>
-                <PubViewHeader />
+                {/*<PubViewHeader />*/}
                 <div className={"pub-container"}>
                     PubHomePage
                 </div>

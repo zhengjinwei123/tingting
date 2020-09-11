@@ -5,6 +5,7 @@ import utils from "utils/utils.jsx";
 import userService from "service/user.jsx";
 import {Redirect,withRouter} from "react-router-dom";
 import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
+import RegistUser from "page/pub/register-user/index.jsx";
 
 
 class Login extends React.Component {
@@ -14,8 +15,15 @@ class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
-            redirect: utils.getUrlParams('redirect') || '/admin'
+            redirect: utils.getUrlParams('redirect') || '/admin',
+            show_register_modal: false
         }
+    }
+
+    showRegisterModal(show) {
+        this.setState({
+            show_register_modal: show
+        })
     }
 
     componentDidMount() {
@@ -90,7 +98,7 @@ class Login extends React.Component {
                                         </div>
                                     </div>
                                     <div className="form-group centered">
-                                        <Button positive onClick={e => {this.onSubmit(e)}}>
+                                        <Button positive onClick={e => {this.showRegisterModal(true)}}>
                                             注册
                                         </Button>
                                         <Button negative onClick={e => {this.onSubmit(e)}}>
@@ -105,6 +113,7 @@ class Login extends React.Component {
                         </div>
                     </div>
               }
+              <RegistUser show={this.state.show_register_modal} onClose={() => this.showRegisterModal(false)}/>
           </div>
       )
     }

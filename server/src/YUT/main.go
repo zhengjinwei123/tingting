@@ -54,6 +54,7 @@ func main() {
 
 		r.Route("/user", func(r chi.Router) {
 			r.Post("/profile", userservice.GetProfile)
+			r.Post("/register", userservice.UserRegisterPup)
 		})
 	})
 

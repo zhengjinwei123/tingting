@@ -50,7 +50,7 @@
       "2005,/user/menulist,用户菜单",
       "2006,/user/update-password,用户密码修改",
       "2007,/user/upload-image,上传图片",
-      "2008,/user/del-image,上传图片",
+      "2008,/user/del-image,删除图片",
       "2009,/user/update-profile,更新基础信息",
       "2010,/user/upload-res,上传资源",
       "2011,/user/reslist-pagenate,资源列表",

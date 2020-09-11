@@ -16,8 +16,8 @@ import { Label, Segment } from 'semantic-ui-react'
 import _ from "lodash"
 
 const styles = [
-    monokaiSublime,
-    // solarizedlight,
+    // monokaiSublime,
+    solarizedlight,
     // github,
     // atomOneDark,
     // xonokai
@@ -61,18 +61,26 @@ class CodeBlock  extends PureComponent {
         const { language, value } = this.props
 
         return (
-            <Segment padded>
-                <Label color='red' attached='top left'>{language}</Label>
-                <div className={"highlight"}>
-                    <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
-                                       wrapLines={true}
-                                       showLineNumbers={true}
-                                       showInlineLineNumbers={true}>
-                        {value}
-                    </SyntaxHighlighter>
-                </div>
-            </Segment>
+            // <Segment padded>
+            //     <Label color='red' attached='top left'>{language}</Label>
+            //     <div className={"highlight"}>
+            //         <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
+            //                            wrapLines={true}
+            //                            showLineNumbers={true}
+            //                            showInlineLineNumbers={true}>
+            //             {value}
+            //         </SyntaxHighlighter>
+            //     </div>
+            // </Segment>
 
+            <div className={"highlight"}>
+                <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
+                                   wrapLines={true}
+                                   showLineNumbers={true}
+                                   showInlineLineNumbers={true}>
+                    {value}
+                </SyntaxHighlighter>
+            </div>
 
         )
     }

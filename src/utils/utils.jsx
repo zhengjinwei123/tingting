@@ -38,9 +38,7 @@ class Utils{
         show_loading && this.openLoading();
         return new Promise((resolve, reject) => {
 
-
             if (this.isApiRequest(options.url)) {
-                console.log("api request")
                 if (options.url !== "/api/user/login") {
                     if (!userService.checkUserHasLogin()) {
                         reject("error: please login first")

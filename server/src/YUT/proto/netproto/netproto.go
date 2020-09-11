@@ -355,6 +355,7 @@ type NetPubBlogGetResponse struct {
 	Content string `json:"content"`
 	Type int `json:"type"`
 	UserName string `json:"username"`
+	NickName string `json:"nickname"`
 }
 
 func (this *NetPubBlogGetResponse) ResponseError(writer http.ResponseWriter) {

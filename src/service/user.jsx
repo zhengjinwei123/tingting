@@ -25,6 +25,13 @@ class UserService {
         });
     }
 
+    pupRegister(register_info) {
+        return utils.request({
+            url : '/pub/user/register',
+            data: register_info
+        });
+    }
+
     register(register_info) {
         return utils.request({
             url : '/api/user/register',

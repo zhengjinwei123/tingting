@@ -21,6 +21,9 @@ import $ from "jquery";
 import ProfileCard from "component/profilecard/index.jsx";
 import TopAdvert from "page/pub/topadvert/index.jsx";
 
+import AuthorCard from "page/pub/blog/authorcard/index.jsx";
+import {withRouter} from "react-router-dom";
+
 
 
 class PubBlogView extends React.Component {
@@ -31,6 +34,7 @@ class PubBlogView extends React.Component {
             content: "",
             type: 0,
             author: "",
+            nickname: "",
             article_name: "",
             article_cls : "",
             publish_tm : 0,
@@ -111,6 +115,7 @@ class PubBlogView extends React.Component {
                 content: res.content,
                 type: res.type,
                 author: res.username,
+                nickname: res.nickname,
                 article_name: res.article_name,
                 article_cls: res.article_cls,
                 publish_tm: utils.formatDate(res.publish_tm),
@@ -164,10 +169,9 @@ class PubBlogView extends React.Component {
             )
         }
 
-
         return (
             <div>
-                <PubViewHeader />
+                {/*<PubViewHeader />*/}
                 <div className={"container-fluid"}>
                     <div className={"article-container"}>
 
@@ -181,25 +185,18 @@ class PubBlogView extends React.Component {
                                         <Label as='a' color='blue'>
                                             <Icon name={"sitemap"}/>分类: {this.state.article_cls}
                                         </Label>
+                                        <Label as='a' color='blue'>
+                                            <Icon name={"eye"}/>{400} 阅读
+                                        </Label>
                                         <Label as='a' color='orange'>
-                                            <Icon name={"bookmark"}/>作者:{this.state.author}
+                                            <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
+                                        </Label>
+                                        <Label as='a' color='red'>
+                                            <Icon name={"clock"}/>{this.state.update_tm} 更新
                                         </Label>
                                     </div>
-
                                 </Header>
                             </Label>
-                            <div>
-                                <Label as='a' color='orange' ribbon>
-                                    <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
-                                </Label>
-                                <Label as='a' color='red' tag>
-                                    <Icon name={"clock"}/>{this.state.update_tm} 更新
-                                </Label>
-                                <Label as='a' color='blue'>
-                                    <Icon name={"eye"}/>{400} 阅读
-                                </Label>
-                            </div>
-
 
                             <Message>
                                 {
@@ -241,7 +238,7 @@ class PubBlogView extends React.Component {
                     }
 
                     <div className={"advert-container"}>
-
+                        <AuthorCard className={"author-card"} author={this.state.author}/>
                     </div>
                 </div>
             </div>
@@ -250,4 +247,4 @@ class PubBlogView extends React.Component {
 }
 
 
-export default PubBlogView
+export default withRouter(PubBlogView)
