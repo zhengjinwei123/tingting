@@ -2,19 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="302d8510-2107-4346-bd75-6e80ed061582" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/windows_amd64/github.com/go-chi/chi.a" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/windows_amd64/github.com/go-chi/chi.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/windows_amd64/github.com/go-sql-driver/mysql.a" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/windows_amd64/github.com/go-sql-driver/mysql.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/windows_amd64/github.com/gorilla/sessions.a" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/windows_amd64/github.com/gorilla/sessions.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/windows_amd64/github.com/jmoiron/sqlx.a" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/windows_amd64/github.com/jmoiron/sqlx.a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/YUT/YUT.exe" beforeDir="false" afterPath="$PROJECT_DIR$/src/YUT/YUT.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/YUT/settings/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/YUT/settings/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/go-sql-driver/mysql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/github.com/gorilla/sessions" beforeDir="false" afterPath="$PROJECT_DIR$/src/github.com/gorilla/sessions" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../src/page/blog/new-blog/addBlogModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../src/page/blog/new-blog/addBlogModal.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../webpack.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../webpack.config.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,10 +96,10 @@
     <proxy>https://mirros.aliyun.com/goproxy/</proxy>
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1598686797276">
+    <state x="463" y="118" key="FileChooserDialogImpl" timestamp="1599373644560">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1598686797276" />
+    <state x="463" y="118" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1599373644560" />
     <state x="184" y="0" key="SettingsEditor" timestamp="1598686906103">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
