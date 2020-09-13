@@ -1,8 +1,8 @@
 import React from "react"
-import {Link, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
+
 import "./index.scss"
 import PageTitle from "component/pagetitle/index.jsx";
-import $ from "jquery"
 import userService from "service/user.jsx";
 import globalService from "service/global.jsx";
 import utils from "utils/utils.jsx"
@@ -16,15 +16,13 @@ class UserNew extends React.Component {
             password: '',
             email: '',
             group_id: '',
-            groupList: []
+            groupList: [],
         }
     }
 
     onInputChange(e) {
         let inputValue = e.target.value,
             inputName = e.target.name;
-
-        console.log(inputName, inputValue)
 
         this.setState({
             [inputName] : inputValue
@@ -79,8 +77,7 @@ class UserNew extends React.Component {
 
     render() {
         return (
-            <div id="page-wrapper">
-                <PageTitle title="新建用户"/>
+            <PageTitle title="新建用户">
 
                 <div className="container">
                     <div className="panel panel-default register-pannel">
@@ -92,10 +89,10 @@ class UserNew extends React.Component {
                                     <div className="input-group margin-bottom-sm">
                                         <span className="input-group-addon"><i className="fa fa-user fa-fw"></i></span>
                                         <input type="input"
-                                           className="form-control"
-                                           name="username"
-                                           placeholder="输入用户名"
-                                           onChange={ e => this.onInputChange(e) } />
+                                               className="form-control"
+                                               name="username"
+                                               placeholder="输入用户名"
+                                               onChange={ e => this.onInputChange(e) } />
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -137,14 +134,15 @@ class UserNew extends React.Component {
                                     </div>
                                 </div>
 
-                                <button type="submit" className="btn btn-primary btn-block" onClick={e => this.onRegister(e) }>注册</button>
+                                <button type="submit" className="btn btn-primary btn-block" onClick={(e) => this.onRegister(e) }>确认注册</button>
                             </form>
                         </div>
 
                     </div>
                 </div>
-            </div>
-        )
+            </PageTitle>
+
+    )
     }
 }
 export default withRouter(UserNew)

@@ -1,13 +1,23 @@
 package userservice
 
 import (
+	"YUT/dbservice/dbpagehelper"
+	"YUT/dbservice/dbuserresservice"
 	"YUT/dbservice/dbuserservice"
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
+	"YUT/utils/fileutils"
 	"YUT/utils/orm"
+	"fmt"
+	"io"
+	l4g "github.com/alecthomas/log4go"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
 )
 
 func UserLogin(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +26,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -36,7 +46,7 @@ func UserLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = userManager.GetUsrSessionMgr().SetUserLogin(request.UserName, dbUser.GroupId, w, r)
+	err = userManager.GetUsrSessionMgr().SetUserLogin(&dbUser, dbUser.GroupId, w, r)
 	if err != nil {
 		response.Msg = "user login failed"
 		response.ResponseError(w)
@@ -63,13 +73,37 @@ func UserRegister(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
 	response := &netproto.NetResponse{}
 
 	err = dbuserservice.RegisterUser(request.UserName, request.Password, request.Email, request.GroupId)
+	if err != nil {
+		response.Msg = err.Error();
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func UserRegisterPup(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserRegisterRequest{}
+
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	response := &netproto.NetResponse{}
+
+	err = dbuserservice.RegisterUser(request.UserName, request.Password, request.Email, 2)
 	if err != nil {
 		response.Msg = err.Error();
 		response.ResponseError(w)
@@ -135,7 +169,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -165,7 +199,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -195,7 +229,7 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -213,6 +247,240 @@ func UpdatePassword(w http.ResponseWriter, r *http.Request) {
 		response.ResponseError(w)
 		return
 	}
+
+	response.ResponseSuccess(w)
+}
+
+func DelImage(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserImageDelRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	response := &netproto.NetResponse{}
+
+	err = helperDelUserImage(username, request.ImageName)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func UploadRes(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserUploadResRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = dbuserresservice.UploadRes(username, request.ResType, request.ResName, request.ResDesc)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	response.ResponseSuccess(w)
+}
+
+func ResDelete(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	request := &netproto.NetUserDeleteResRequest{}
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	var dbRes dbproto.DBUserResInfo
+	err = dbuserresservice.GetUserResById(request.Id, &dbRes)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = helperDelUserImage(username, dbRes.ResName)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	err = dbuserresservice.DeleteRes(username, request.Id)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+	response.ResponseSuccess(w)
+}
+
+func ResListPageNateSearch(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetGetUserResPagenateSearchRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	pageHelper := dbpagehelper.NewPageHelper(request.CurPage)
+
+	response := &netproto.NetGetUserResPagenateSearchReponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	var dbResList []*dbproto.DBUserResInfo
+	err = pageHelper.SearchUserRes(username,request.ResType, &dbResList)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseSuccess(w)
+		return;
+	}
+
+	response.CurPage = pageHelper.CurPage;
+	response.TotalPage = pageHelper.TotalPage()
+	for _, v := range dbResList {
+		detail := netproto.NetResAllDetail{
+			Id: v.Id,
+			ResType: v.ResType,
+			ResDesc: v.ResDesc,
+			ResName: v.ResName,
+			CreateTm: v.CreateTm,
+			UpdateTm: v.UpdateTm,
+			Url: helperGetImagePath(username, v.ResName),
+		}
+
+		response.UserResList = append(response.UserResList, &detail)
+	}
+	response.ResponseSuccess(w)
+}
+
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+
+	request := &netproto.NetUserUpdateProfileRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+	err = dbuserservice.UserUpdateProfile(username, request.NickName,
+		request.Sex, request.UserDesc, request.WxImageName, request.ZfImageName)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	_ = r.ParseForm()
+	request := &netproto.NetUserProfileRequest{}
+
+	err := orm.UnmarshalHttpValues(request, r.PostForm)
+	if err != nil {
+		_ = l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		return
+	}
+	response := &netproto.NetUserProfileResponse{}
+
+	var dbProfile dbproto.DBUserProfile
+    err = dbuserservice.GetUserProfile(request.UserName, &dbProfile)
+    if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+    	return
+	}
+
+    response.NickName = dbProfile.NickName
+    response.UserDesc = dbProfile.UserDesc
+    response.Sex = dbProfile.Sex
+    response.WXImage = dbProfile.WXImage
+    response.ZFImage = dbProfile.ZFImage
+
+    response.ResponseSuccess(w)
+}
+
+func UploadImage(w http.ResponseWriter, r *http.Request) {
+
+
+	response := &netproto.NetUserImageUploadResponse{}
+
+	p, _ := filepath.Abs(filepath.Dir("./public/"))
+
+	err := r.ParseMultipartForm(32 << 20);
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	username := r.FormValue("username")
+	if username == "" || !userManager.GetUsrSessionMgr().ValidUser(username) {
+		response.Msg = "invalid request,please login first"
+		response.ResponseError(w)
+		return
+	}
+
+	file, header, err := r.FormFile("upload_file");
+	defer file.Close();
+	if err != nil {
+		l4g.Error("%s", err.Error())
+	}
+	uploadDir := p + "/upload/" + username + "/"
+	//创建上传目录
+	_ = os.Mkdir(uploadDir, os.ModePerm);
+	//创建上传文件
+
+	ss := strings.Split(header.Filename, ".")
+	if len(ss) < 2 {
+		response.Msg = "invalid file format,file no suffix"
+		response.ResponseError(w)
+		return
+	}
+	datetime := time.Now().Format("2006-01-02-15-04-05")
+
+	newFileName := fmt.Sprintf("%s_%s.%s", ss[0], datetime, ss[len(ss)-1])
+
+	filePath := uploadDir + newFileName
+	if fileutils.Exists(filePath) {
+		response.Msg = "file " + newFileName + " exists"
+		response.ResponseError(w)
+		return
+	}
+
+	cur, err := os.Create(filePath);
+	defer cur.Close();
+	if err != nil {
+		log.Fatal(err);
+	}
+	//把上传文件数据拷贝到我们新建的文件
+	io.Copy(cur, file);
+
+	response.ImagePath = helperGetImagePath(username, newFileName) //"/upload/"+username+"/"+newFileName
 
 	response.ResponseSuccess(w)
 }

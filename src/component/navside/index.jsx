@@ -106,10 +106,10 @@ class NavSide extends React.Component {
             <aside className="main-sidebar">
                 <section className="sidebar">
                     <ul className="sidebar-menu">
-                        <li className="header"><h3 className="text-red"><i className="fa fa-dashboard fa-fw fa-left"></i>价值空间</h3></li>
+                        <li className="header"><h3 className="text-red"><i className="fa fa-dashboard fa-fw fa-left"></i>{ process.env.WEB_NAME}</h3></li>
 
                         <li className="treeview">
-                            <NavLink exact to="/">
+                            <NavLink exact to="/admin">
                                 <i className="fa fa-home text-yellow"></i><span>首页</span>
                             </NavLink>
                         </li>

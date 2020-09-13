@@ -13,6 +13,10 @@ type SResponse struct {
 }
 
 func outputJson(data interface{}, status int, w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
+
 	resp := &SResponse{
 		Data: data,
 		Status: status,
@@ -344,8 +348,14 @@ type NetBlogPublishRequest struct {
 type NetPubBlogGetResponse struct {
 	NetResponse
 
+	ArticleName string `json:"article_name"`
+	ArticleCls string `json:"article_cls"`
+	PublishTm int `json:"publish_tm"`
+	UpdateTm string `json:"update_tm"`
 	Content string `json:"content"`
 	Type int `json:"type"`
+	UserName string `json:"username"`
+	NickName string `json:"nickname"`
 }
 
 func (this *NetPubBlogGetResponse) ResponseError(writer http.ResponseWriter) {
@@ -373,14 +383,13 @@ type NetBlogDeleteRequest struct {
 // get blog pagenate
 
 type NetGetBlogPagenateSearchRequest struct {
-	LastId  int `http:"last_id"`
 	CurPage int `http:"cur_page"`
 }
 
 type NetGetBlogPagenateListResponse struct {
 	NetResponse
 
-	UserBlogList []*NetBlogAllDetail `json:"bloglist"`
+	UserBlogList []*NetBlogAllDetail `json:"datalist"`
 	CurPage int `json:"cur_page"`
 	TotalPage int `json:"total_page"`
 }
@@ -392,4 +401,102 @@ func (this *NetGetBlogPagenateListResponse) ResponseError(writer http.ResponseWr
 
 func (this *NetGetBlogPagenateListResponse) ResponseSuccess(writer http.ResponseWriter) {
 	outputJson(*this, 0, writer)
+}
+
+// image upload
+type NetUserImageUploadResponse struct {
+	NetResponse
+
+	ImagePath string `json:"image_path"`
+}
+
+func (this *NetUserImageUploadResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetUserImageUploadResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// image del
+type NetUserImageDelRequest struct {
+	ImageName string `http:"image_name"`
+}
+
+// update profile
+type NetUserUpdateProfileRequest struct {
+	NickName string `http:"nickname"`
+	UserDesc string `http:"userdesc"`
+	Sex int `http:"sex"`
+	WxImageName string `http:"wx_image"`
+	ZfImageName string `http:"zf_image"`
+}
+
+// get profile
+type NetUserProfileRequest struct {
+	UserName string `http:"username"`
+}
+type NetUserProfileResponse struct {
+	NetResponse
+
+	NickName string `json:"nickname"`
+	Sex int `json:"sex"`
+	UserDesc string `json:"userdesc"`
+	WXImage string `json:"wx_image"`
+	ZFImage string `json:"zf_image"`
+}
+
+func (this *NetUserProfileResponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetUserProfileResponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// user upload res
+type NetUserUploadResRequest struct {
+	ResType int `http:"res_type"`
+	ResName string `http:"res_name"`
+	ResDesc string `http:"res_desc"`
+}
+
+// get res pagenate
+type NetResAllDetail struct {
+	Id int `json:"id"`
+	ResType int `json:"res_type"`
+	ResName string `json:"res_name"`
+	ResDesc string `json:"res_desc"`
+	CreateTm int `json:"create_tm"`
+	UpdateTm string `json:"update_tm"`
+	Url string `json:"url"`
+}
+
+type NetGetUserResPagenateSearchRequest struct {
+	ResType int `http:"res_type"`
+	CurPage int `http:"cur_page"`
+}
+
+type NetGetUserResPagenateSearchReponse struct {
+	NetResponse
+
+	UserResList []*NetResAllDetail `json:"datalist"`
+	CurPage int `json:"cur_page"`
+	TotalPage int `json:"total_page"`
+}
+
+func (this *NetGetUserResPagenateSearchReponse) ResponseError(writer http.ResponseWriter) {
+	outputJson(*this, NET_STATUS_UNKNOWN, writer)
+
+}
+
+func (this *NetGetUserResPagenateSearchReponse) ResponseSuccess(writer http.ResponseWriter) {
+	outputJson(*this, 0, writer)
+}
+
+// delete res
+type NetUserDeleteResRequest struct {
+	Id int `http:"id"`
 }

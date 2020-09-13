@@ -24,6 +24,8 @@ module.exports = {
             actions: path.resolve(__dirname, "src/actions"),
             reducers: path.resolve(__dirname, "src/reducers"),
             store: path.resolve(__dirname, "src/store"),
+
+            // react: path.resolve(__dirname, "node_modules/react-fileupload/node_modules", "react")
         }
     },
     module: {
@@ -116,22 +118,28 @@ module.exports = {
             'process.env': {
                 WEBPACK_ENV: JSON.stringify("dev"),
                 IMAGE_HOST: JSON.stringify("127.0.0.1:9000"),
+                API_HOST: JSON.stringify("127.0.0.1:8089"),
+                WEB_NAME: JSON.stringify("小码哥")
             }
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin(),
     ],
     devServer: {
+        hot: true,
         port:8086,
         historyApiFallback: {
             index: '/dist/index.html',
         },
         proxy: {
             '/api': {
-                target: 'http://localhost:8087',
+                target: 'http://127.0.0.1:8089',
+                secure: false,
                 changeOrigin: true
             },
             '/pub': {
-                target: 'http://localhost:8087',
-                changeOrigin: true
+                target: 'http://127.0.0.1:8089',
+                changeOrigin: true,
+                secure: false,
             }
         }
     }

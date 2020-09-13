@@ -14,3 +14,9 @@ type ReqUrl struct {
 	Desc string
 	Url string
 }
+
+type UserInfo struct {
+	UserName string
+	NickName string
+	Email string
+}

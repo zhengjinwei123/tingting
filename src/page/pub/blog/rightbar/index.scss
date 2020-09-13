@@ -1,10 +1,5 @@
-.view-right-bar {
-  display: block;
-  margin: 0;
-  padding: 0;
-  float: right;
-  width: 20%;
-  height: 800px;
-  margin-top: 10px;
-  border: 1px solid red;
+.user-card {
+  position: fixed;
+  top: 0;
+  right: 10px;
 }

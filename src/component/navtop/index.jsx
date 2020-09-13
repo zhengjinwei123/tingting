@@ -20,7 +20,7 @@ class NavTop extends React.Component {
     onLogout() {
         userService.logout().then((data) => {
             userService.setUserLogout()
-            this.props.history.push("/login");
+            this.props.history.push("/admin/login");
 
             this.props.menuActions.menuInit({})
         }, err => {
@@ -47,7 +47,7 @@ class NavTop extends React.Component {
                 color: "btn-info"
             },
             {
-                link: "https://github.com/zhengjinwei123",
+                link: "/",
                 desc: "博客首页",
                 color: "btn-success"
             },

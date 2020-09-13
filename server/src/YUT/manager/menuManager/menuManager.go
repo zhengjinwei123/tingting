@@ -4,7 +4,7 @@ import (
 	"YUT/proto"
 	"YUT/utils"
 	"flag"
-	"log"
+	l4g "github.com/alecthomas/log4go"
 	"strconv"
 	"strings"
 )
@@ -23,7 +23,7 @@ func newMenuJsonConfig() *sMenuJsonConfig {
 var menuMap = make(map[int]*proto.Menu, 0)
 func init() {
 	if err := utils.LoadJsonConfig(*menuFile, menuConf); err != nil {
-		log.Printf("load menu config %v failed: %v \n", *menuFile, err)
+		l4g.Error("load menu config %v failed: %v \n", *menuFile, err)
 	}
 
 	sortIndex := 1
@@ -34,7 +34,7 @@ func init() {
 			vv := strings.Split(v, ",")
 
 			if len(vv) != 4 {
-				log.Printf("menu init: valid len of menu[%s] \n", v)
+				l4g.Error("menu init: valid len of menu[%s] \n", v)
 				continue;
 			}
 
@@ -63,7 +63,7 @@ func init() {
 		}
 	}
 
-	log.Printf("menu init sucess")
+	l4g.Debug("menu init success")
 }
 
 // export

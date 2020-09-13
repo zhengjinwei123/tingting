@@ -4,12 +4,14 @@ import (
 	"YUT/manager/authManager"
 	"YUT/manager/configManager"
 	"YUT/manager/mysqlManager"
+	"YUT/manager/userManager"
 	"YUT/service/blogservice"
+	"YUT/service/userservice"
 	"YUT/utils"
 	"context"
+	l4g "github.com/alecthomas/log4go"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -20,7 +22,12 @@ import (
 
 var g_signal = make(chan os.Signal, 1)
 
+
+
 func main() {
+
+	configManager.InitL4g()
+	defer configManager.CloseL4g()
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
@@ -43,6 +50,11 @@ func main() {
 		r.Route("/blog/{blog_id}", func(r chi.Router) {
 			r.Use(PubBlogMiddleware)
 			r.Post("/", blogservice.GetBlog)
+		})
+
+		r.Route("/user", func(r chi.Router) {
+			r.Post("/profile", userservice.GetProfile)
+			r.Post("/register", userservice.UserRegisterPup)
 		})
 	})
 
@@ -67,23 +79,33 @@ func main() {
 
 	go httpServer.ListenAndServe()
 
-	go func() {
-		p, _ := filepath.Abs(filepath.Dir("./public/"))
+	l4g.Debug("api server start %s", serverConf.Http)
 
-		http.Handle("/", http.FileServer(http.Dir(p)))
-		http.ListenAndServe(":9000", nil)
-	}()
 
-	listenSignal(context.Background(), httpServer)
+
+	p, _ := filepath.Abs(filepath.Dir("./public/"))
+	m := http.NewServeMux()
+	fs := http.FileServer(http.Dir(p))
+	//m.Handle("/", http.StripPrefix("/", fs))
+	m.Handle("/", StaticMiddleware("/", fs))
+
+	staticServ := &http.Server{Addr: ":9000", Handler: m}
+	l4g.Debug("static server start: %d", 9000)
+
+
+	go staticServ.ListenAndServe()
+
+	listenSignal(context.Background(), httpServer, staticServ)
 }
 
-
-func listenSignal(ctx context.Context, httpSrv *http.Server) {
+func listenSignal(ctx context.Context, httpSrv *http.Server, httpStaticSrv *http.Server) {
 	signal.Notify(g_signal, os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT, syscall.SIGHUP, syscall.SIGINT)
 
 	select {
 	case sig := <- g_signal:
-		log.Printf("catch signal %s \n", sig.String())
+		l4g.Warn("catch signal %s \n", sig.String())
+		userManager.GetUsrSessionMgr().OnShutDown()
 		httpSrv.Shutdown(ctx)
+		httpStaticSrv.Shutdown(ctx)
 	}
 }

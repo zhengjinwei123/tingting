@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from 'react-router-dom';
 import PageTitle from "component/pagetitle/index.jsx";
-import {Button, Icon, Label, Table, Pagination} from "semantic-ui-react";
+import {Button, Icon, Label, Table, Pagination,Header} from "semantic-ui-react";
 import EditBlogModal from "page/blog/edit-blog/index.jsx";
 
 import "./index.scss"
@@ -21,10 +21,6 @@ class BlogList extends React.Component {
 
             cur_page: 1,
             total_page: 0,
-
-            page_info: {
-                1: 0
-            }
         }
     }
 
@@ -33,31 +29,22 @@ class BlogList extends React.Component {
     }
 
     loadBlogs() {
-
-        const lastId = this.state.page_info[this.state.cur_page] ? this.state.page_info[this.state.cur_page].last_id : this.state.last_id;
-
-        console.log("zjwzjw", this.state.page_info)
-
-        blogService.getUserBlogsPageNate(lastId, this.state.cur_page).then(res => {
-
-            console.log("zjw called page:", res)
-            if (res.bloglist && res.bloglist.length) {
-                let last_id = res.bloglist[res.bloglist.length-1].id
-
-                let next_page = res.cur_page + 1
-                let pageInfo = this.state.page_info
-                pageInfo[next_page] = {}
-                pageInfo[next_page].last_id = last_id
+        blogService.getUserBlogsPageNate(this.state.cur_page).then(res => {
+            if (res.datalist && res.datalist.length) {
 
                 this.setState({
-                    blog_list: res.bloglist,
+                    blog_list: res.datalist,
                     cur_page: res.cur_page,
                     total_page: res.total_page,
-                    page_info: pageInfo
+                })
+            } else {
+
+                this.setState({
+                    blog_list: [],
+                    cur_page: 1,
+                    total_page: 0,
                 })
             }
-        }, err => {
-
         })
     }
 
@@ -102,12 +89,28 @@ class BlogList extends React.Component {
     }
 
     onPageChange(e, data) {
-        console.log(data.activePage)
-
         this.setState({
             cur_page: data.activePage,
         }, () => {
             this.loadBlogs()
+        })
+    }
+
+    onOneKeyPublish() {
+        blogService.oneKeyPublish().then(res => {
+            this.loadBlogs()
+            utils.successTips("发布成功")
+        })
+    }
+
+    onOneKeyClose() {
+        utils.confirmDialog("确认关闭所有博客吗?", (agree) => {
+            if (agree) {
+                blogService.oneKeyClose().then(res => {
+                    this.loadBlogs()
+                    utils.successTips("关闭成功")
+                })
+            }
         })
     }
 
@@ -116,8 +119,17 @@ class BlogList extends React.Component {
         let blogList = this.state.blog_list
 
         return (
-            <div id="page-wrapper">
-                <PageTitle title="博客管理"/>
+            <PageTitle title="博客管理">
+                <Header>
+                    <Button color='facebook' onClick={() => this.onOneKeyPublish()}>
+                        <Icon name='send' /> 一键发布
+                    </Button>
+
+                    <Button color='google plus' onClick={() => this.onOneKeyClose()}>
+                        <Icon name='reply' /> 一键关闭
+                    </Button>
+
+                </Header>
                 <div className="blog-list-pannel">
                     <Table celled  selectable color={"violet"} sortable={true} striped>
                         <Table.Header>
@@ -201,7 +213,7 @@ class BlogList extends React.Component {
                 <div>
                     <EditBlogModal show={ this.state.show_edit_blog } blog={ this.state.cur_blog } onClose={() => this.onCloseEditDialog()} reload={() => this.loadBlogs() }/>
                 </div>
-            </div>
+            </PageTitle>
         )
     }
 }

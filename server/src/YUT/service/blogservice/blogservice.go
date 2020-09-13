@@ -7,9 +7,10 @@ import (
 	"YUT/manager/userManager"
 	"YUT/proto/dbproto"
 	"YUT/proto/netproto"
+	"YUT/utils"
 	"YUT/utils/orm"
 	"fmt"
-	"log"
+	l4g "github.com/alecthomas/log4go"
 	"net/http"
 )
 
@@ -38,8 +39,14 @@ func GetBlog(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.Content = dbblog.Content
+	response.UpdateTm = dbblog.UpdateTm
+	response.PublishTm = dbblog.PublishTm
+	response.ArticleCls = dbblog.ArticleCls
+	response.ArticleName = dbblog.BlogName
+	response.Content = utils.Stripslashes(dbblog.Content)
 	response.Type = dbblog.BlogType
+	response.UserName = dbblog.UserName
+	response.NickName = dbblog.NickName
 
 	response.ResponseSuccess(w)
 }
@@ -50,14 +57,14 @@ func AddBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogAddRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
 	response := &netproto.NetResponse{}
 
 	username := userManager.GetUsrSessionMgr().GetUserName(r)
-	err = dbblogservice.AddBlog(username, request.CategoryId, request.Content, request.BlogName, request.BlogType)
+	err = dbblogservice.AddBlog(username, request.CategoryId, utils.Addslashes(request.Content), request.BlogName, request.BlogType)
 
 	if err != nil {
 		response.Msg = err.Error()
@@ -100,12 +107,12 @@ func UpdateBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogUpdateRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
 	response := &netproto.NetResponse{}
-	err = dbblogservice.UpdateBlog(request.BlogId, request.Content, request.BlogName, request.CategoryId)
+	err = dbblogservice.UpdateBlog(request.BlogId, utils.Addslashes(request.Content), request.BlogName, request.CategoryId)
 
 	if err != nil {
 		response.Msg = err.Error()
@@ -121,7 +128,7 @@ func DeleteBlog(w http.ResponseWriter, r *http.Request) {
 	request := &netproto.NetBlogDeleteRequest{}
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -145,7 +152,7 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 
@@ -162,6 +169,36 @@ func AddCategory(w http.ResponseWriter, r *http.Request) {
 	response.ResponseSuccess(w)
 }
 
+func OneKeyPublish(w http.ResponseWriter, r *http.Request) {
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	err := dbblogservice.OneKeyPublish(username)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
+func OneKeyClose(w http.ResponseWriter, r *http.Request) {
+	response := &netproto.NetResponse{}
+
+	username := userManager.GetUsrSessionMgr().GetUserName(r)
+
+	err := dbblogservice.OneKeyClose(username)
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
+
+	response.ResponseSuccess(w)
+}
+
 func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 	_ = r.ParseForm()
 
@@ -169,10 +206,10 @@ func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
-	pageHelper := dbpagehelper.NewPageHelper(request.LastId, request.CurPage)
+	pageHelper := dbpagehelper.NewPageHelper(request.CurPage)
 
 	response := &netproto.NetGetBlogPagenateListResponse{}
 
@@ -196,7 +233,7 @@ func GetBlogPageNateSearch(w http.ResponseWriter, r *http.Request) {
 			BlogName: v.BlogName,
 			BlogUrl: v.BlogUrl,
 			CategoryId: v.CategoryId,
-			Content: v.Content,
+			Content: utils.Stripslashes(v.Content),
 			CreateTm: v.CreateTm,
 			UpdateTm: v.UpdateTm,
 			PublishTm: v.PublishTm,
@@ -231,7 +268,7 @@ func GetBlogList(w http.ResponseWriter, r *http.Request) {
 			BlogName: v.BlogName,
 			BlogUrl: v.BlogUrl,
 			CategoryId: v.CategoryId,
-			Content: v.Content,
+			Content: utils.Stripslashes(v.Content),
 			CreateTm: v.CreateTm,
 			UpdateTm: v.UpdateTm,
 			PublishTm: v.PublishTm,
@@ -250,7 +287,7 @@ func PublishBlog(w http.ResponseWriter, r *http.Request) {
 
 	err := orm.UnmarshalHttpValues(request, r.PostForm)
 	if err != nil {
-		log.Printf("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
+		l4g.Error("UnmarshalHttpValues error: [%v] %v \n",r.PostForm, err)
 		return
 	}
 

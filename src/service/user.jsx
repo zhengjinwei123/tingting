@@ -1,6 +1,8 @@
 import utils from "utils/utils.jsx";
 import $ from "jquery"
 
+import CONSTS from "proto/consts.jsx"
+
 class UserService {
     constructor() {
         if (!UserService.instance) {
@@ -20,6 +22,13 @@ class UserService {
         return utils.request({
             url: '/api/user/login',
             data: login_info
+        });
+    }
+
+    pupRegister(register_info) {
+        return utils.request({
+            url : '/pub/user/register',
+            data: register_info
         });
     }
 
@@ -100,6 +109,74 @@ class UserService {
         })
     }
 
+    updateProfile(username, nickname, sex, userdesc, wx_image, zf_image) {
+        return utils.request({
+            url: '/api/user/update-profile',
+            data: {
+                username: username,
+                nickname: nickname,
+                userdesc: userdesc,
+                sex: sex,
+                wx_image: wx_image,
+                zf_image: zf_image
+            }
+        })
+    }
+
+    deleteRes(id) {
+        return utils.request({
+            url: '/api/user/res-delete',
+            data: {
+                id,
+            }
+        })
+    }
+
+
+    uploadResImage(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.IMAGE, res_name, res_desc)
+    }
+    uploadMusic(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.MUSIC, res_name, res_desc)
+    }
+    uploadVideo(res_name, res_desc) {
+        return this.uploadRes(CONSTS.RES_TYPES.VIDEO, res_name, res_desc)
+    }
+    // res_type = img1/music2/video3
+    uploadRes(res_type, res_name, res_desc) {
+        return utils.request({
+            url: '/api/user/upload-res',
+            data: {
+                res_type: res_type,
+                res_name: res_name,
+                res_desc: res_desc
+            }
+        })
+    }
+
+    getImageList(cur_page) {
+        return this.getResListPageNate(CONSTS.RES_TYPES.IMAGE, cur_page)
+    }
+
+    getResListPageNate(res_type, cur_page) {
+        return utils.request({
+            url: '/api/user/reslist-pagenate',
+            data: {
+                res_type: res_type,
+                cur_page: cur_page
+            }
+        })
+    }
+
+    getProfile(username, show_loading) {
+        return utils.request({
+            url: '/pub/user/profile',
+            data: {
+                username: username,
+            }
+        }, show_loading)
+    }
+
     deleteUser(username) {
         return utils.request({
             url: '/api/user/delete',
@@ -122,6 +199,15 @@ class UserService {
     getMenus() {
         return utils.request({
             url: '/api/user/menulist'
+        });
+    }
+
+    delImage(image_name) {
+        return utils.request({
+            url: '/api/user/del-image',
+            data: {
+                image_name: image_name,
+            }
         });
     }
 }

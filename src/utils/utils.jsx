@@ -23,15 +23,27 @@ class Utils{
         return this.instance;
     }
 
-    request(options) {
+    isApiRequest(url) {
+       let pattern = /^\/api\/.*?/
+        return pattern.test(url)
+    }
+
+    request(options, show_loading) {
         console.log("request:", options)
-        this.openLoading();
+
+        if (show_loading === undefined) {
+            show_loading = true
+        }
+
+        show_loading && this.openLoading();
         return new Promise((resolve, reject) => {
 
-            if (options.url !== "/api/user/login") {
-                if (!userService.checkUserHasLogin()) {
-                    reject("error: please login first")
-                    return
+            if (this.isApiRequest(options.url)) {
+                if (options.url !== "/api/user/login") {
+                    if (!userService.checkUserHasLogin()) {
+                        reject("error: please login first")
+                        return
+                    }
                 }
             }
 
@@ -71,7 +83,7 @@ class Utils{
         console.log("redirectLogin")
         this.clearStorage();
 
-        window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname);
+        window.location.href = '/admin/login?redirect=' + encodeURIComponent(window.location.pathname);
     }
 
     redirect(url) {
@@ -204,14 +216,29 @@ class Utils{
         return YY + MM + DD +" "+hh + mm + ss;
     }
 
+    uploadedImageHostByUserName(username, image_name) {
+        let host = process.env.IMAGE_HOST;
+        return "http://"+host+"/upload/"+username + "/" + image_name;
+    }
+
+    uploadedImageHost(image_path) {
+        let host = process.env.IMAGE_HOST;
+        return "http://"+host+"/"+image_path;
+    }
+
     imageHost(image_name) {
         let host = process.env.IMAGE_HOST;
         return "http://"+host+"/images/"+image_name;
     }
 
-    redirectPubHomePage() {
+    uploadImageHost() {
 
+        // return "/api/user/upload-image";
+
+        let host = process.env.API_HOST;
+        return "http://"+host+"/api/user/upload-image";
     }
+
 }
 
 export default (Utils.getInstance());

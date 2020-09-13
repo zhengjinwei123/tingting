@@ -1,14 +1,48 @@
 .view-top-bar {
-  background-color: #F5F6F7;
+  background-color: #343a40!important;
+  //background-color: #F5F6F7;
   display: block;
   position: fixed;
   margin: 0;
-  padding: 0;
+  padding: 4px 4px;
   top:0;
   left: 0;
   right:0;
   height: 50px;
-  box-shadow: 4px 4px 5px #888888;
+  box-shadow: 4px 4px 4px #888888;
   z-index: 9999;
+
+  .left-block{
+    float: left;
+  }
+
+  .center-block {
+    position: fixed;
+    top: 0;
+    left: 30%;
+    right: 30%;
+    font-size: 25px;
+    text-align: center;
+    margin-top: 4px;
+  }
+
+  .right-block {
+    float: right;
+    margin-right: 10px;
+  }
+
+  .mySearch {
+    float: left;
+    margin-left: 10px;
+  }
+
+  .float-left {
+    float: left;
+    margin-left: 10px;
+  }
+  .float-right {
+    float: right;
+    margin-right: 10px;
+  }
 }
 

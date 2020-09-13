@@ -116,8 +116,7 @@ class BlogEditor extends React.Component {
         const editorType = this.state.editor_type;
 
         return (
-            <div id="page-wrapper">
-                <PageTitle title="写博客"/>
+            <PageTitle title="写博客">
                 <div>
                     <Button.Group>
                         {
@@ -149,7 +148,7 @@ class BlogEditor extends React.Component {
                         closeDialog={() => this.closeAddDialog() }
                     />
                 </div>
-            </div>
+            </PageTitle>
         )
     }
 }

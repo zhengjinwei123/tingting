@@ -42,11 +42,22 @@ class BlogService {
         })
     }
 
-    getUserBlogsPageNate(last_id, cur_page) {
+    oneKeyPublish() {
+        return utils.request({
+            url: '/api/blog/onekey-publish',
+        })
+    }
+    oneKeyClose() {
+        return utils.request({
+            url: '/api/blog/onekey-close',
+        })
+    }
+
+
+    getUserBlogsPageNate(cur_page) {
         return utils.request({
             url: '/api/blog/user-blogs-pagenate',
             data: {
-                last_id: last_id,
                 cur_page: cur_page
             }
         })

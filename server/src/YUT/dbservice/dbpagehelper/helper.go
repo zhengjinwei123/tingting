@@ -2,14 +2,14 @@ package dbpagehelper
 
 import (
 	"YUT/dbservice/dbblogservice"
+	"YUT/dbservice/dbuserresservice"
 	"YUT/proto/dbproto"
 	"errors"
 )
 
-const PER_PAGE_NUM  = 2
+const PER_PAGE_NUM  = 5
 
 type DBPageHelper struct {
-	LastId int
 	CurPage int
 
 	totalCount int
@@ -17,9 +17,8 @@ type DBPageHelper struct {
 	hasInit bool
 }
 
-func NewPageHelper(last_id int, cur_page int) *DBPageHelper {
+func NewPageHelper(cur_page int) *DBPageHelper {
 	return &DBPageHelper{
-		LastId: last_id,
 		CurPage: cur_page,
 		totalPage: 0,
 		totalCount: 0,
@@ -58,6 +57,23 @@ func (this *DBPageHelper) SearchBlog(username string, blogList *[]*dbproto.DBBlo
 		return errors.New("page not exists")
 	}
 
-	err = dbblogservice.PageNateSearchUserBlog(username, this.LastId, PER_PAGE_NUM, blogList)
+	err = dbblogservice.PageNateSearchUserBlog(username, (this.CurPage-1)*PER_PAGE_NUM, PER_PAGE_NUM, blogList)
+	return err
+}
+
+func (this *DBPageHelper) SearchUserRes(username string, res_type int, resList *[]*dbproto.DBUserResInfo) error {
+	total_count, err := dbuserresservice.PageNateTotalCount(username, res_type)
+	if err != nil {
+		return err
+	}
+
+	this.totalCount = total_count
+
+	total_page := this.TotalPage()
+	if total_page < this.CurPage {
+		return errors.New("page not exists")
+	}
+
+	err = dbuserresservice.PageNateSearch(username, res_type, (this.CurPage-1)*PER_PAGE_NUM, PER_PAGE_NUM, resList)
 	return err
 }

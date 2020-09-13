@@ -3,11 +3,25 @@ import React, { PureComponent } from "react"
 import PropType from "prop-types"
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
-import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { solarizedlight, xonokai} from "react-syntax-highlighter/dist/esm/styles/prism"
+
+import {monokaiSublime, github, atomOneDark} from 'react-syntax-highlighter/dist/esm/styles/hljs/index.js';
 
 import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
 import {jsx, java, php, c, cpp, go, python, vim, docker, json, javascript, xmlDoc, sass, css} from "react-syntax-highlighter/dist/esm/languages/prism";
+
+import { Label, Segment } from 'semantic-ui-react'
+
+import _ from "lodash"
+
+const styles = [
+    // monokaiSublime,
+    solarizedlight,
+    // github,
+    // atomOneDark,
+    // xonokai
+]
 
 class CodeBlock  extends PureComponent {
     componentWillMount() {
@@ -27,15 +41,47 @@ class CodeBlock  extends PureComponent {
         SyntaxHighlighter.registerLanguage('sass', sass)
     }
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            style_idx : 0
+        }
+    }
+
+    componentDidMount() {
+        let idx = _.random(0, styles.length-1)
+
+        this.setState({
+            style_idx: idx
+        })
+    }
 
     render() {
         const { language, value } = this.props
+
         return (
-            <figure className={"highlight"}>
-                <SyntaxHighlighter language={language} style={solarizedlight}>
+            // <Segment padded>
+            //     <Label color='red' attached='top left'>{language}</Label>
+            //     <div className={"highlight"}>
+            //         <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
+            //                            wrapLines={true}
+            //                            showLineNumbers={true}
+            //                            showInlineLineNumbers={true}>
+            //             {value}
+            //         </SyntaxHighlighter>
+            //     </div>
+            // </Segment>
+
+            <div className={"highlight"}>
+                <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
+                                   wrapLines={true}
+                                   showLineNumbers={true}
+                                   showInlineLineNumbers={true}>
                     {value}
                 </SyntaxHighlighter>
-            </figure>
+            </div>
+
         )
     }
 }
@@ -46,7 +92,7 @@ CodeBlock.propTypes = {
 }
 
 CodeBlock.defaultProps = {
-    language: null
+    language: ""
 }
 
 export default CodeBlock

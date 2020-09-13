@@ -199,7 +199,6 @@ class UserQuery extends React.Component {
     }
 
     onDeleteUser(user) {
-
         utils.confirmDialog("确认删除 " + user.username +" 吗?", (agree) => {
             if (agree) {
                 userService.deleteUser(user.username).then(res => {
@@ -212,7 +211,6 @@ class UserQuery extends React.Component {
     }
 
     onUpdatePassword(user) {
-        console.log("onUpdatePassword", user)
         this.setState({
             show_update_password: true,
             update_username: user.username
@@ -222,8 +220,7 @@ class UserQuery extends React.Component {
 
     render() {
         return (
-            <div id="page-wrapper">
-                <PageTitle title="用户列表"/>
+            <PageTitle title="用户列表">
                 <div className="user-list-pannel">
                     <div className="panel panel-default">
                         <div className="panel-body">
@@ -310,7 +307,7 @@ class UserQuery extends React.Component {
                 <div>
                     <UserPasswordDialog show={ this.state.show_update_password } username={ this.state.update_username }/>
                 </div>
-            </div>
+            </PageTitle>
         )
     }
 }

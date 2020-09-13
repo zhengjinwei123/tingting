@@ -32,7 +32,7 @@ class Loading extends React.Component {
                     this.state.show ?
                         <Segment>
                             <Dimmer active inline='centered' page={true}>
-                                <Loader size='large'>Loading</Loader>
+                                <Loader size='large'>小码哥正在努力加载...</Loader>
                             </Dimmer>
                         </Segment> : ""
                 }

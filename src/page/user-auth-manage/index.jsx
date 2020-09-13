@@ -49,25 +49,24 @@ class UserAuthManage extends React.Component {
 
     render() {
         return (
-           <div id="page-wrapper">
-               <PageTitle title="用户权限管理"/>
-               <div className="auth-pannel">
-                   <div className="panel panel-default">
-                       <div className="panel-heading">
-                           <Button inverted color='violet' onClick={() => this.showAdd(true)}>
-                               新增用户组
-                           </Button>
-                       </div>
-                       <div className="panel-body">
-                           <UserAuthTable groupDetailList={ this.state.group_detail_list }/>
-                       </div>
-                   </div>
-               </div>
+            <PageTitle title="用户权限管理">
+                <div className="auth-pannel">
+                    <div className="panel panel-default">
+                        <div className="panel-heading">
+                            <Button inverted color='violet' onClick={() => this.showAdd(true)}>
+                                新增用户组
+                            </Button>
+                        </div>
+                        <div className="panel-body">
+                            <UserAuthTable groupDetailList={ this.state.group_detail_list }/>
+                        </div>
+                    </div>
+                </div>
 
-               <div>
-                   <GroupAddModal show={ this.state.showAdd } updatePage={ () => this.updatePage(true)} />
-               </div>
-           </div>
+                <div>
+                    <GroupAddModal show={ this.state.showAdd } updatePage={ () => this.updatePage(true)} />
+                </div>
+            </PageTitle>
        )
     }
 }
