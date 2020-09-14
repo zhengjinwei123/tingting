@@ -3,15 +3,15 @@ import React, { PureComponent } from "react"
 import PropType from "prop-types"
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
-import { solarizedlight, xonokai} from "react-syntax-highlighter/dist/esm/styles/prism"
+import { solarizedlight} from "react-syntax-highlighter/dist/esm/styles/prism"
 
-import {monokaiSublime, github, atomOneDark} from 'react-syntax-highlighter/dist/esm/styles/hljs/index.js';
+// import {monokaiSublime, github, atomOneDark} from 'react-syntax-highlighter/dist/esm/styles/hljs/index.js';
 
 import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
 import {jsx, java, php, c, cpp, go, python, vim, docker, json, javascript, xmlDoc, sass, css} from "react-syntax-highlighter/dist/esm/languages/prism";
 
-import { Label, Segment } from 'semantic-ui-react'
+// import { Label, Segment } from 'semantic-ui-react'
 
 import _ from "lodash"
 
@@ -61,18 +61,6 @@ class CodeBlock  extends PureComponent {
         const { language, value } = this.props
 
         return (
-            // <Segment padded>
-            //     <Label color='red' attached='top left'>{language}</Label>
-            //     <div className={"highlight"}>
-            //         <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
-            //                            wrapLines={true}
-            //                            showLineNumbers={true}
-            //                            showInlineLineNumbers={true}>
-            //             {value}
-            //         </SyntaxHighlighter>
-            //     </div>
-            // </Segment>
-
             <div className={"highlight"}>
                 <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
                                    wrapLines={true}

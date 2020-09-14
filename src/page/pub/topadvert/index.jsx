@@ -16,19 +16,18 @@ export default class TopAdvert extends React.Component {
         this.state = {
             advert_list: [
                 {
-                    bg: "https://csdnimg.cn/public/publick_img/ad_20200909_toolbar325.jpg",
+                    bg: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600084321595&di=42425d15129c997c393ef2f9470a1b8d&imgtype=0&src=http%3A%2F%2Fpic75.nipic.com%2Ffile%2F20150819%2F1754547_162246812000_2.jpg",
                     to: "https://des.cloud.tencent.com/?utm_campaign=MJTG&utm_source=CSDN&utm_medium=SPDZB#/"
                 },
                 {
-                    bg: "https://csdnimg.cn/public/publick_img/ad_20200909_toolbar325.jpg",
+                    bg: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600084495773&di=af68c7a9dfbc34c67c319e9d6ab40beb&imgtype=0&src=http%3A%2F%2Fpic9.nipic.com%2F20100823%2F3174103_125739006193_2.jpg",
                     to: "https://des.cloud.tencent.com/?utm_campaign=MJTG&utm_source=CSDN&utm_medium=SPDZB#/"
-                }
+                },
             ]
         }
     }
 
     onClick(url) {
-        console.log("hahah")
         utils.redirect(url)
     }
     render() {

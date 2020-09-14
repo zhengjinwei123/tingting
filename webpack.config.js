@@ -2,16 +2,59 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+
+const TerserJSPlugin = require('terser-webpack-plugin');
+
 
 let WEBPACK_ENV = process.env.WEBPACK_ENV || "dev";
 console.log(WEBPACK_ENV)
 
+let plugins = [
+    new HtmlWebpackPlugin({
+        minify: { // 压缩HTML文件
+            removeComments: true, // 移除HTML中的注释
+            collapseWhitespace: true, // 删除空白符与换行符
+            minifyCSS: true// 压缩内联css
+        },
+        hash: true,
+        filename: 'index.html',//输出文件的名称
+        template: path.resolve(__dirname, 'src/index.html'),//模板文件的路径
+        favicon: './favicon.ico'
+    }),
+    new MiniCssExtractPlugin({
+        filename: '[name].[hash].css'
+    }),
+    new webpack.DefinePlugin({
+        'process.env': {
+            NODE_ENV: JSON.stringify(WEBPACK_ENV === "dev" ? "dev" : "production"),
+            WEBPACK_ENV: JSON.stringify(WEBPACK_ENV),
+            IMAGE_HOST: JSON.stringify("127.0.0.1:9000"),
+            API_HOST: JSON.stringify("127.0.0.1:8089"),
+            WEB_NAME: JSON.stringify("小码哥")
+        }
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin({
+        filename: "css/[name].css"
+    })
+]
+
+if (WEBPACK_ENV !== "dev") {
+    plugins.push(new CleanWebpackPlugin())
+}
+
 module.exports = {
+    mode: WEBPACK_ENV === "dev" ? "development" : "production",
     entry: "./src/app.jsx",
     output: {
-        path: path.resolve(__dirname, "dist"),
-        publicPath: WEBPACK_ENV === "dev" ? "/dist/" : "./",
-        filename: "js/app.js"
+        path: path.resolve(__dirname, "./dist"),
+        publicPath:  "/dist/",
+        filename: "[name].bundle.js",
+        chunkFilename: "js/[name].[contenthash:8].chunk.js"
     },
     resolve: {
         alias: {
@@ -24,106 +67,100 @@ module.exports = {
             actions: path.resolve(__dirname, "src/actions"),
             reducers: path.resolve(__dirname, "src/reducers"),
             store: path.resolve(__dirname, "src/store"),
-
-            // react: path.resolve(__dirname, "node_modules/react-fileupload/node_modules", "react")
         }
     },
     module: {
         rules: [
             {
-                test: /\.jsx$/,
-                exclude: /(node_modules)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env', 'react']
+                test: /\.(jsx|js|ts|tsx)$/,
+                exclude: /(node_modules|bower_components)/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['@babel/preset-react'],
+                            plugins: ['@babel/plugin-proposal-class-properties']
+                        }
                     }
-                }
+                ]
             },
             {
                 test: /\.css$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: "css-loader"
+                    fallback: {
+                        loader: "style-loader"
+                    },
+                    use: [
+                        {
+                            loader: "css-loader"
+                        }
+                    ]
                 })
             },
             {
                 test: /\.scss$/,
+                // exclude: /node_modules/,
+                // use:[ 'style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: ["css-loader", "sass-loader"]
+                    use: ["css-loader", 'postcss-loader', "sass-loader"]
                 })
             },
             {
-                test: /\.(png|jpg|gif)$/,
-                use: [
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 8192,
-                            name: 'resource/[name].[ext]'
-                        }
-                    }
-                ]
-            },
-            {
-                test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
-                use: [
-                    {
-                        loader: 'url-loader',
-                        options: {
-                            limit: 8192,
-                            name: 'resource/[name].[ext]'
-                        }
-                    }
-                ]
-            },
-            {
                 test: /\.less$/,
-                use: [
-                    {
-                        loader: "style-loader",
-                    },
-                    {
-                        loader: "css-loader"
-                    },
-                    {
-                        loader: "less-loader",
-                        options: {
-                            lessOptions: {
-                                modifyvars: {
-                                    'primary-color': '#1DA57A',
-                                    'link-color': '#1DA57A',
-                                    'border-radius-base': '2px',
-                                },
-                                javascriptEnabled: true,
-                            }
-                        }
-                    }
-                ]
-            }
+                use:[ 'style-loader', 'css-loader', 'postcss-loader', 'less-loader'],
+            },
+            {
+                test: /\.(png|jpe?g|svg|gif)(\?.*)?$/,
+                loader: "file-loader",
+                options: {
+                    limit: 10000,
+                    name: 'static/img/[name].[hash:7].[ext]'
+                }
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|otf)(\?.*)?$/,
+                loader: "file-loader",
+                options: {
+                    limit: 10000,
+                    name: 'static/fonts/[name].[hash:7].[ext]'
+                }
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: 'static/media/[name].[hash:7].[ext]'
+                }
+            },
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            favicon: './favicon.ico'
-        }),
-        new ExtractTextPlugin('css/[name].css'),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            filename: 'js/base.js'
-        }),
-        new webpack.DefinePlugin({
-            'process.env': {
-                WEBPACK_ENV: JSON.stringify("dev"),
-                IMAGE_HOST: JSON.stringify("127.0.0.1:9000"),
-                API_HOST: JSON.stringify("127.0.0.1:8089"),
-                WEB_NAME: JSON.stringify("小码哥")
-            }
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-    ],
+    optimization: {
+        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        splitChunks: {
+            chunks: 'async',//默认只作用于异步模块，为`all`时对所有模块生效,`initial`对同步模块有效
+            minSize: 30000,//合并前模块文件的体积
+            minChunks: 1,//最少被引用次数
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',//自动命名连接符
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    minChunks:1,//敲黑板
+                    priority: -10//优先级更高
+                },
+                default: {
+                    test: /[\\/]src[\\/]js[\\/]/,
+                    minChunks: 2,//一般为非第三方公共模块
+                    priority: -20,
+                    reuseExistingChunk: true
+                }
+            },
+        }
+    },
+    plugins: plugins,
     devServer: {
         hot: true,
         port:8086,
