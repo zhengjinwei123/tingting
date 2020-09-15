@@ -449,13 +449,25 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		l4g.Error("%s", err.Error())
 	}
+
+	if !fileutils.IsDir(p + "/upload") {
+		err = os.Mkdir(p + "/upload", os.ModePerm);
+		if err != nil {
+			response.Msg = err.Error()
+			response.ResponseError(w)
+			return
+		}
+	}
+
 	uploadDir := p + "/upload/" + username + "/"
 	//创建上传目录
-	err = os.Mkdir(uploadDir, os.ModePerm);
-	if err != nil {
-		response.Msg = err.Error()
-		response.ResponseError(w)
-		return
+	if !fileutils.IsDir(uploadDir) {
+		err = os.Mkdir(uploadDir, os.ModePerm);
+		if err != nil {
+			response.Msg = err.Error()
+			response.ResponseError(w)
+			return
+		}
 	}
 	//创建上传文件
 
