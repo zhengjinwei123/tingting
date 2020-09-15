@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 import RouterMap from "src/routers/routerMap.jsx";
 import md5 from "js-md5"
 
-import "semantic-ui-css/semantic.min.css"
+// import "semantic-ui-css/semantic.min.css"
 
 React.Component.prototype.$md5 = md5
 

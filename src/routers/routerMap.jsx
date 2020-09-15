@@ -1,6 +1,8 @@
 import React from "react"
 import {BrowserRouter as Router, HashRouter as RouterHash, Switch, Route, Redirect} from "react-router-dom"
 
+
+
 import Layout from "component/layout/index.jsx";
 import Home from 'page/home/index.jsx';
 import Error from "page/error/index.jsx";
@@ -25,7 +27,7 @@ import UserProfile from "page/user-profile/index.jsx";
 
 import PubViewHeader from "page/pub/header/index.jsx"
 
-
+console.log("node_env:", process.env.NODE_ENV)
 class MyPublicRouter extends React.Component {
 
     UNSAFE_componentWillMount() {
@@ -119,44 +121,31 @@ class RouterMap extends React.Component {
         )
 
 
-        return (
-            <Router>
-                <Switch>
-                    <Route  path="/admin/login" >
-                        <Login />
-                    </Route>
-                    <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
-                    <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
-                </Switch>
-            </Router>
-        )
-
-
-        // if (process.env.WEBPACK_ENV === "dev") {
-        //     return (
-        //         <Router>
-        //             <Switch>
-        //                 <Route  path="/admin/login" >
-        //                     <Login />
-        //                 </Route>
-        //                 <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
-        //                 <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
-        //             </Switch>
-        //         </Router>
-        //     )
-        // } else {
-        //     return (
-        //         <RouterHash>
-        //             <Switch>
-        //                 <Route path="/admin/login" >
-        //                     <Login />
-        //                 </Route>
-        //                 <MyPublicRouter path="/" render={ props => PublicRouter} menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
-        //                 <MyRouter path="/admin" render={ props => LayoutRouter } menuActions={ this.props.menuActions }/>
-        //             </Switch>
-        //         </RouterHash>
-        //     )
-        // }
+        if (process.env.WEBPACK_ENV === "dev") {
+            return (
+                <Router>
+                    <Switch>
+                        <Route  path="/admin/login" >
+                            <Login />
+                        </Route>
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
+                    </Switch>
+                </Router>
+            )
+        } else {
+            return (
+                <RouterHash>
+                    <Switch>
+                        <Route path="/admin/login" >
+                            <Login />
+                        </Route>
+                        <MyPublicRouter path="/" render={ props => PublicRouter} menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+                        <MyRouter path="/admin" render={ props => LayoutRouter } menuActions={ this.props.menuActions }/>
+                    </Switch>
+                </RouterHash>
+            )
+        }
     }
 }
 

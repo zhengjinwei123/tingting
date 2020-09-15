@@ -1,6 +1,6 @@
 import React from "react"
 import {Link, NavLink } from "react-router-dom";
-import $ from "jquery";
+// import $ from "jquery";
 import userService from "service/user.jsx";
 
 class NavSide extends React.Component {

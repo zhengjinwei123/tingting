@@ -13,12 +13,6 @@ const init_markdown = `
 <p align="center">
   A markdown editor with preview, implemented with React.js and TypeScript.
 </p>
-<p align="center">
-  A markdown editor with preview, implemented with React.js and TypeScript.
-</p>
-<p align="center">
-  A markdown editor with preview, implemented with React.js and TypeScript.
-</p>
 `
 
 const init_braft = `
@@ -34,7 +28,7 @@ class BlogEditor extends React.Component {
         super(props);
 
         this.state = {
-            editor_type: 1, // 1, braft 2 mardown
+            editor_type: 2, // 1, braft 2 mardown
             braft_data: init_braft,
             markdown_data: init_markdown,
 
@@ -119,14 +113,14 @@ class BlogEditor extends React.Component {
             <PageTitle title="写博客">
                 <div>
                     <Button.Group>
-                        {
-                            editorType === 1 ?
-                                <Button color="linkedin" onClick={ () => this.changeEditorType()}>
-                                    <Icon name={"trademark"}/> 切换到 Markdown编辑器
-                                </Button> :  <Button onClick={ () => this.changeEditorType()} positive>
-                                    <Icon name={"code"}/>切换到 富文本编辑器</Button>
-                        }
-                        <Button.Or text='Or' />
+                        {/*{*/}
+                        {/*    editorType === 1 ?*/}
+                        {/*        <Button color="linkedin" onClick={ () => this.changeEditorType()}>*/}
+                        {/*            <Icon name={"trademark"}/> 切换到 Markdown编辑器*/}
+                        {/*        </Button> :  <Button onClick={ () => this.changeEditorType()} positive>*/}
+                        {/*            <Icon name={"code"}/>切换到 富文本编辑器</Button>*/}
+                        {/*}*/}
+                        {/*<Button.Or text='Or' />*/}
                         <Button color={"google plus"} onClick={() => this.upLoadBlog() }>
                             <Icon name={"upload"}/>上传博客</Button>
                     </Button.Group>

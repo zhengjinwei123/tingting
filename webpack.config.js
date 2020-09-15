@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const TerserJSPlugin = require('terser-webpack-plugin');
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 let WEBPACK_ENV = process.env.WEBPACK_ENV || "dev";
@@ -20,10 +21,11 @@ let plugins = [
             collapseWhitespace: true, // 删除空白符与换行符
             minifyCSS: true// 压缩内联css
         },
+        inject: 'body',
         hash: true,
         filename: 'index.html',//输出文件的名称
         template: path.resolve(__dirname, 'src/index.html'),//模板文件的路径
-        favicon: './favicon.ico'
+        favicon: './favicon.ico',
     }),
     new MiniCssExtractPlugin({
         filename: '[name].[hash].css'
@@ -40,15 +42,22 @@ let plugins = [
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin({
         filename: "css/[name].css"
+    }),
+    new webpack.SourceMapDevToolPlugin({
+        filename: '[name].js.map'
     })
 ]
 
 if (WEBPACK_ENV !== "dev") {
-    plugins.push(new CleanWebpackPlugin())
+    console.log("add clean webpack plugin")
+    plugins.unshift(new CleanWebpackPlugin())
 }
 
+var mode= WEBPACK_ENV === "dev" ? "development" : "production"
+
+console.log("mode:", mode)
 module.exports = {
-    mode: WEBPACK_ENV === "dev" ? "development" : "production",
+    mode: mode,
     entry: "./src/app.jsx",
     output: {
         path: path.resolve(__dirname, "./dist"),
@@ -57,6 +66,7 @@ module.exports = {
         chunkFilename: "js/[name].[contenthash:8].chunk.js"
     },
     resolve: {
+        extensions: ['.js'],
         alias: {
             src: path.resolve(__dirname, "src"),
             page: path.resolve(__dirname, "src/page"),
@@ -92,7 +102,9 @@ module.exports = {
                     },
                     use: [
                         {
-                            loader: "css-loader"
+                            loader: "css-loader",
+                        },{
+                            loader: 'postcss-loader',
                         }
                     ]
                 })
@@ -103,8 +115,19 @@ module.exports = {
                 // use:[ 'style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
                 use: ExtractTextPlugin.extract({
                     fallback: "style-loader",
-                    use: ["css-loader", 'postcss-loader', "sass-loader"]
-                })
+                    use: [
+                        {
+                            loader: "css-loader"
+                        },
+                        {
+                            loader: 'postcss-loader',
+                        },
+                        {
+                            loader: "sass-loader"
+                        }
+                        ]
+                }),
+                // exclude: /node_modules/
             },
             {
                 test: /\.less$/,
@@ -114,7 +137,7 @@ module.exports = {
                 test: /\.(png|jpe?g|svg|gif)(\?.*)?$/,
                 loader: "file-loader",
                 options: {
-                    limit: 10000,
+                    limit: 8192,
                     name: 'static/img/[name].[hash:7].[ext]'
                 }
             },
@@ -122,7 +145,7 @@ module.exports = {
                 test: /\.(eot|svg|ttf|woff|woff2|otf)(\?.*)?$/,
                 loader: "file-loader",
                 options: {
-                    limit: 10000,
+                    limit: 8192,
                     name: 'static/fonts/[name].[hash:7].[ext]'
                 }
             },
@@ -137,14 +160,34 @@ module.exports = {
         ]
     },
     optimization: {
+        usedExports: true,
+        minimize: true,
         runtimeChunk: true,
-        minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+        minimizer: [new TerserJSPlugin({
+            terserOptions: {
+                output: {
+                    comments: false,
+                },
+            },
+            extractComments: false,
+        }),
+            new OptimizeCSSAssetsPlugin({})
+        ],
         splitChunks: {
-            chunks: 'all',//默认只作用于异步模块，为`all`时对所有模块生效,`initial`对同步模块有效
-            minSize: 0,//合并前模块文件的体积
-            minChunks: 1,//最少被引用次数
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
+            cacheGroups: {
+                vendor: {
+                    test: /node_modules/,
+                    chunks: "initial",
+                    name: "vendor",
+                    priority: 10
+                },
+                utils: {
+                    chunks: 'initial',
+                    name: 'utils',  // 任意命名
+                    minChunks: 2,   // 引用次数最少两次
+                    minSize: 0    // 只要超出0字节就生成一个新包
+                }
+            }
         }
     },
     plugins: plugins,

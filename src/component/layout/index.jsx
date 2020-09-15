@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import NavTop from "component/navtop/index.jsx";
 import NavSide from "component/navside/index.jsx";
-import $ from "jquery";
+// import $ from "jquery";
 import "./theme.css"
 import "./index.scss"
 import "./sidebar-menu.css"

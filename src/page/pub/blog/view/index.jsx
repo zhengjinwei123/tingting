@@ -17,7 +17,7 @@ import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
 import utils from  "utils/utils.jsx"
 
 import "../index.scss"
-import $ from "jquery";
+// import $ from "jquery";
 import ProfileCard from "component/profilecard/index.jsx";
 import TopAdvert from "page/pub/topadvert/index.jsx";
 

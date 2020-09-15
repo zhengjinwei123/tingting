@@ -1,5 +1,5 @@
 import utils from "utils/utils.jsx";
-import $ from "jquery"
+// import $ from "jquery"
 
 import CONSTS from "proto/consts.jsx"
 

@@ -11,7 +11,7 @@ import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
 import {jsx, java, php, c, cpp, go, python, vim, docker, json, javascript, xmlDoc, sass, css} from "react-syntax-highlighter/dist/esm/languages/prism";
 
-// import { Label, Segment } from 'semantic-ui-react'
+import { Label, Segment } from 'semantic-ui-react'
 
 import _ from "lodash"
 

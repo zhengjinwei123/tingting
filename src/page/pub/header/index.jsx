@@ -4,7 +4,7 @@ import { Button, Search, List, Transition, Label, Popup, Icon} from 'semantic-ui
 
 import RegistUser from "page/pub/register-user/index.jsx";
 
-import $ from "jquery"
+// import $ from "jquery"
 import utils from "utils/utils.jsx"
 import "./index.scss"
 import userService from "service/user.jsx";
