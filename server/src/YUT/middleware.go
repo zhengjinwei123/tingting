@@ -98,16 +98,16 @@ func StaticMiddleware(prefix string, next http.Handler) http.Handler {
 			*r2.URL = *r.URL
 			r2.URL.Path = p
 
-			if !isValidReferer(r2.Referer()) {
-				resp := &netproto.NetResponse{}
-				resp.Msg = r.URL.Path +  " 404 not found"
-				resp.ResponseError(w)
-				return
-			}
+			//if !isValidReferer(r2.Referer()) {
+			//	resp := &netproto.NetResponse{}
+			//	resp.Msg = r.URL.Path +  " 404 not found"
+			//	resp.ResponseError(w)
+			//	return
+			//}
 
-			w.Header().Set("Content-Type", "application/json; charset=utf-8")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.WriteHeader(200)
+			//w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			//w.Header().Set("Access-Control-Allow-Origin", "*")
+			//w.WriteHeader(200)
 
 			next.ServeHTTP(w, r2)
 		} else {
