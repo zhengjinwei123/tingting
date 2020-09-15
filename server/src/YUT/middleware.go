@@ -105,6 +105,10 @@ func StaticMiddleware(prefix string, next http.Handler) http.Handler {
 				return
 			}
 
+			w.Header().Set("Content-Type", "application/json; charset=utf-8")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(200)
+
 			next.ServeHTTP(w, r2)
 		} else {
 			resp := &netproto.NetResponse{}
