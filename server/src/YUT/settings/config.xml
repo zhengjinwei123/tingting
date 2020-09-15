@@ -4,10 +4,10 @@
     <secret_key>123456</secret_key>
 
     <mysql>
-        <host>10.235.102.249</host>
+        <host>127.0.0.1</host>
         <port>3306</port>
         <database>db_yut</database>
         <username>root</username>
-        <password>root</password>
+        <password>zbgame_123</password>
     </mysql>
 </config>
