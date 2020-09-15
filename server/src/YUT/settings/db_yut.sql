@@ -20,11 +20,6 @@ CREATE TABLE `t_user` (
   `wx_rcode_img` varchar(100) NOT NULL DEFAULT '' COMMENT '微信二维码',
   `zf_rcode_img` varchar(100) NOT NULL DEFAULT '' COMMENT '支付二维码',
   `sex` tinyint(1) NOT NULL DEFAULT 0 COMMENT '性别',
-  `birthday` bigint(20) NOT NULL DEFAULT 0 COMMENT '年龄',
-  `point` int(10) NOT NULL DEFAULT 0 COMMENT '积分',
-  `level` tinyint(2) NOT NULL DEFAULT 0 COMMENT '等级',
-  `vip_level` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'vip等级',
-  `create_tm` bigint(20) NOT NULL DEFAULT 0 COMMENT '创建时间戳',
   PRIMARY KEY (`username`),
   FOREIGN KEY(`group_id`) REFERENCES `t_group`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

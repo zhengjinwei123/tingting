@@ -118,31 +118,45 @@ class RouterMap extends React.Component {
             </PubViewHeader>
         )
 
-        if (process.env.WEBPACK_ENV === "dev") {
-            return (
-                <Router>
-                    <Switch>
-                        <Route  path="/admin/login" >
-                            <Login />
-                        </Route>
-                        <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
-                        <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
-                    </Switch>
-                </Router>
-            )
-        } else {
-            return (
-                <RouterHash>
-                    <Switch>
-                        <Route path="/admin/login" >
-                            <Login />
-                        </Route>
-                        <MyPublicRouter path="/" render={ props => PublicRouter} menuList={ this.props.menuList }/>
-                        <MyRouter path="/admin" render={ props => LayoutRouter } menuActions={ this.props.menuActions }/>
-                    </Switch>
-                </RouterHash>
-            )
-        }
+
+        return (
+            <Router>
+                <Switch>
+                    <Route  path="/admin/login" >
+                        <Login />
+                    </Route>
+                    <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+                    <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
+                </Switch>
+            </Router>
+        )
+
+
+        // if (process.env.WEBPACK_ENV === "dev") {
+        //     return (
+        //         <Router>
+        //             <Switch>
+        //                 <Route  path="/admin/login" >
+        //                     <Login />
+        //                 </Route>
+        //                 <MyRouter path="/admin" render={ props => LayoutRouter } menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+        //                 <MyPublicRouter path="/" render={ props => PublicRouter} menuActions={ this.props.menuActions}/>
+        //             </Switch>
+        //         </Router>
+        //     )
+        // } else {
+        //     return (
+        //         <RouterHash>
+        //             <Switch>
+        //                 <Route path="/admin/login" >
+        //                     <Login />
+        //                 </Route>
+        //                 <MyPublicRouter path="/" render={ props => PublicRouter} menuList={ this.props.menuList } menuActions={ this.props.menuActions}/>
+        //                 <MyRouter path="/admin" render={ props => LayoutRouter } menuActions={ this.props.menuActions }/>
+        //             </Switch>
+        //         </RouterHash>
+        //     )
+        // }
     }
 }
 
