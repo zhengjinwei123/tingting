@@ -451,7 +451,12 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	}
 	uploadDir := p + "/upload/" + username + "/"
 	//创建上传目录
-	_ = os.Mkdir(uploadDir, os.ModePerm);
+	err = os.Mkdir(uploadDir, os.ModePerm);
+	if err != nil {
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return
+	}
 	//创建上传文件
 
 	ss := strings.Split(header.Filename, ".")
