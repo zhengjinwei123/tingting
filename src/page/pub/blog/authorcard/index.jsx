@@ -1,6 +1,8 @@
 import React from "react"
 import {List, Image, Divider} from 'semantic-ui-react'
 
+import utils from "utils/utils.jsx"
+
 export default class AuthorCard extends React.Component {
 
     constructor(props) {
@@ -68,7 +70,7 @@ export default class AuthorCard extends React.Component {
                     <List.Item>
                         <List horizontal>
                             <List.Item>
-                                <Image avatar src='http://127.0.0.1:9000/images/user-f.jpg' />
+                                <Image avatar src={utils.imageHost('user-f.jpg')} />
                                 <List.Content>
                                     <List.Header>{this.state.card_info.nickname}</List.Header>
                                     码龄 {this.state.card_info.web_age}
