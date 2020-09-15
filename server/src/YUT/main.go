@@ -29,6 +29,14 @@ func main() {
 	configManager.InitL4g()
 	defer configManager.CloseL4g()
 
+	defer func() {
+		l4g.Info("defer close")
+		if err := recover(); err != nil {
+			l4g.Close()
+			utils.PanicExt("Bug %v", err)
+		}
+	}()
+
 	r := chi.NewRouter()
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
