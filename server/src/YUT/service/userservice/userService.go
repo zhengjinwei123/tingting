@@ -10,9 +10,8 @@ import (
 	"YUT/utils/fileutils"
 	"YUT/utils/orm"
 	"fmt"
-	"io"
 	l4g "github.com/alecthomas/log4go"
-	"log"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -475,7 +474,10 @@ func UploadImage(w http.ResponseWriter, r *http.Request) {
 	cur, err := os.Create(filePath);
 	defer cur.Close();
 	if err != nil {
-		log.Fatal(err);
+		l4g.Error("err: %s", err.Error())
+		response.Msg = err.Error()
+		response.ResponseError(w)
+		return;
 	}
 	//把上传文件数据拷贝到我们新建的文件
 	io.Copy(cur, file);
