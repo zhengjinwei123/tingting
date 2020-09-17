@@ -34,6 +34,7 @@ class MyMarkdownEditor extends React.Component {
     render() {
         return (
             <MarkdownEditor
+                height={800}
                 visble={true}
                 className={"myeditor"}
                 value={this.props.data }

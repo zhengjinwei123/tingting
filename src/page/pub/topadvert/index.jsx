@@ -36,6 +36,7 @@ export default class TopAdvert extends React.Component {
 
                 className={this.props.className}
                 play={true}
+                bullets={false}
                 cancelOnInteraction={false} // should stop playing on user interaction
                 interval={2000}
             >

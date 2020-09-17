@@ -1,7 +1,7 @@
 import React from "react"
 import NotFoundPage from "page/notfound/index.jsx"
 import blogService from "service/blog.jsx"
-import {Message, Header, Segment, Label, Icon, Button,Popup} from 'semantic-ui-react'
+import {Message, Header, Container, Divider, Label, Icon, Button,Popup} from 'semantic-ui-react'
 
 import ReactMarkdown from "react-markdown"
 import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
@@ -162,47 +162,48 @@ class PubBlogView extends React.Component {
 
         return (
             <div>
-                {/*<PubViewHeader />*/}
                 <div className={"container-fluid"}>
+
+
                     <div className={"article-container"}>
 
                         <TopAdvert className={"top-advert"} />
 
-                        <Segment padded>
-                            <Label attached='top' className={"article-header "}>
-                                <Header as='h2'>
-                                    {this.state.article_name}
-                                    <div className={"float-right"}>
-                                        <Label as='a' color='blue'>
-                                            <Icon name={"sitemap"}/>分类: {this.state.article_cls}
-                                        </Label>
-                                        <Label as='a' color='blue'>
-                                            <Icon name={"eye"}/>{400} 阅读
-                                        </Label>
-                                        <Label as='a' color='orange'>
-                                            <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
-                                        </Label>
-                                        <Label as='a' color='red'>
-                                            <Icon name={"clock"}/>{this.state.update_tm} 更新
-                                        </Label>
-                                    </div>
+                        <div className={"article-header"}>
+                            <Container textAlign='center'>
+                                <Header as='h1'>
+                                    { this.state.article_name}
                                 </Header>
-                            </Label>
+                            </Container>
+                            <Container textAlign='center'>
+                                <Label as='a' color='blue'>
+                                    <Icon name={"sitemap"}/>分类: {this.state.article_cls}
+                                </Label>
+                                <Label as='a' color='blue'>
+                                    <Icon name={"eye"}/>{400} 阅读
+                                </Label>
+                                <Label as='a' color='orange'>
+                                    <Icon name={"clock outline"}/>{this.state.publish_tm} 发布
+                                </Label>
+                                <Label as='a' color='red'>
+                                    <Icon name={"clock"}/>{this.state.update_tm} 更新
+                                </Label>
+                            </Container>
+                        </div>
 
-                            <Message>
-                                {
-                                    this.isMarkdown() ?
-                                        <ReactMarkdown
-                                            source={html}
-                                            escapeHtml={false}
-                                            renderers={{
-                                                code: CodeBlock,
-                                            }}
-                                        />
-                                        : ""
-                                }
-                            </Message>
-                        </Segment>
+                        <Message
+                            success
+                            header=''
+                            content={
+                                <ReactMarkdown
+                                    source={html}
+                                    escapeHtml={false}
+                                    renderers={{
+                                        code: CodeBlock,
+                                    }}
+                                />
+                            }
+                        />
                     </div>
                     {
                         !this.state.show_profile ?

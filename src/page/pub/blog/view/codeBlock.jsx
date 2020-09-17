@@ -1,7 +1,9 @@
 import React from "react"
 
 import PropType from "prop-types"
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
+// import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
+
+import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/prism-light.js"
 
 import { prism } from "react-syntax-highlighter/dist/esm/styles/prism"
 
@@ -23,6 +25,7 @@ import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javasc
 import xmlDoc from "react-syntax-highlighter/dist/esm/languages/prism/xml-doc.js"
 import sass from "react-syntax-highlighter/dist/esm/languages/prism/sass.js"
 import css from "react-syntax-highlighter/dist/esm/languages/prism/css.js"
+import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql.js"
 
 import _ from "lodash"
 
@@ -46,6 +49,7 @@ class CodeBlock  extends React.PureComponent {
         SyntaxHighlighter.registerLanguage('xml', xmlDoc)
         SyntaxHighlighter.registerLanguage('css', css)
         SyntaxHighlighter.registerLanguage('sass', sass)
+        SyntaxHighlighter.registerLanguage('sql', sql)
     }
 
     constructor(props) {
@@ -68,14 +72,15 @@ class CodeBlock  extends React.PureComponent {
         const { language, value } = this.props
 
         return (
-            <div className={"highlight"}>
-                <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
-                                   wrapLines={true}
-                                   showLineNumbers={true}
-                                   showInlineLineNumbers={true}>
-                    {value}
-                </SyntaxHighlighter>
-            </div>
+            // <div className={"highlight"}>
+            //
+            // </div>
+
+            <SyntaxHighlighter language={language} style={styles[this.state.style_idx]}
+                               showLineNumbers={true}
+                               lineNumberStyle={{color: '#ddd', fontSize: 15}}>
+                {value}
+            </SyntaxHighlighter>
 
         )
     }

@@ -8,11 +8,7 @@ import AddBlogModal from "page/blog/new-blog/addBlogModal.jsx";
 
 import "./index.scss"
 
-const init_markdown = `
-<p align="center">
-  A markdown editor with preview, implemented with React.js and TypeScript.
-</p>
-`
+const init_markdown = "markdown editor"
 
 import blogService from "service/blog.jsx"
 import utils from "utils/utils.jsx"
