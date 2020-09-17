@@ -54,16 +54,18 @@ let plugins = [
     }),
     new webpack.SourceMapDevToolPlugin({
         filename: '[name].js.map'
-    }),
-    new BundleAnalyserPlugin({
-        analyzerMode: 'server',
-        analyzerPort: 8889,
-        analyzerHost: "127.0.0.1",
-        reportFilename: 'report.html'
     })
 ]
 
 var mode= WEBPACK_ENV === "dev" ? "development" : "production"
+if (mode === "development") {
+    plugins.push(new BundleAnalyserPlugin({
+        analyzerMode: 'server',
+        analyzerPort: 8889,
+        analyzerHost: "127.0.0.1",
+        reportFilename: 'report.html'
+    }))
+}
 
 console.log("mode:", mode)
 module.exports = {
