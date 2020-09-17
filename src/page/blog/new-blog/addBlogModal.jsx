@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, Container, Form, Modal, Dropdown, Icon} from "semantic-ui-react";
+import {Button, Container, Form, Modal, Icon} from "semantic-ui-react";
 import AddCategoryModal from "page/blog/new-blog/addCategoryModal.jsx";
 
 import "./index.scss"

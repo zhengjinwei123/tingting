@@ -4,7 +4,7 @@ import "./index.scss";
 import utils from "utils/utils.jsx";
 import userService from "service/user.jsx";
 import {Redirect,withRouter} from "react-router-dom";
-import { Button, Divider, Form, Grid, Segment } from 'semantic-ui-react'
+import { Button } from 'semantic-ui-react'
 import RegistUser from "page/pub/register-user/index.jsx";
 
 

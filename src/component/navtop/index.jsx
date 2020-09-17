@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, Redirect, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 import userService from "service/user.jsx";
 import utils from "utils/utils.jsx";

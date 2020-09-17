@@ -1,8 +1,6 @@
 import React from "react"
 import {BrowserRouter as Router, HashRouter as RouterHash, Switch, Route, Redirect} from "react-router-dom"
 
-
-
 import Layout from "component/layout/index.jsx";
 import Home from 'page/home/index.jsx';
 import Error from "page/error/index.jsx";

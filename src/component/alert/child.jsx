@@ -1,7 +1,7 @@
-import React, {Component} from "react";
+import React from "react";
 import {Button, Modal, Message} from "semantic-ui-react";
 
-class Child extends Component {
+class Child extends React.Component {
     constructor(props){
         super(props);
         this.state = {

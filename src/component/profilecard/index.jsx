@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, Card, Image, Label} from "semantic-ui-react";
+import {Button, Card, Image } from "semantic-ui-react";
 import utils from "utils/utils.jsx";
 import ImagePortal from "component/image-portal/index.jsx";
 

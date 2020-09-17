@@ -1,5 +1,5 @@
 import React from "react"
-import {Link, withRouter} from "react-router-dom";
+import { withRouter} from "react-router-dom";
 import { Button } from "semantic-ui-react";
 
 import "./index.scss"

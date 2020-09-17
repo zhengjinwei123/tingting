@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React  from 'react'
 
 import {
     Image,
@@ -24,7 +24,7 @@ const transitions = [
     'scale',
 ];
 
-export default class ImagePortal extends Component {
+export default class ImagePortal extends React.Component {
     constructor(props) {
         super(props);
     }

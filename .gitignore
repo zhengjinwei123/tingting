@@ -1,5 +1,3 @@
 node_modules
-dist
 server/src/YUT/logs/*
 server/src/YUT/public/*
-server/src/YUT/settings/config.xml

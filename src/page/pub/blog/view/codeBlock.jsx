@@ -1,29 +1,36 @@
-import React, { PureComponent } from "react"
+import React from "react"
 
 import PropType from "prop-types"
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
-import { solarizedlight} from "react-syntax-highlighter/dist/esm/styles/prism"
+import { prism } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 // import {monokaiSublime, github, atomOneDark} from 'react-syntax-highlighter/dist/esm/styles/hljs/index.js';
 
 import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
-import {jsx, java, php, c, cpp, go, python, vim, docker, json, javascript, xmlDoc, sass, css} from "react-syntax-highlighter/dist/esm/languages/prism";
-
-import { Label, Segment } from 'semantic-ui-react'
+import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx.js"
+import java from "react-syntax-highlighter/dist/esm/languages/prism/java.js"
+import php from "react-syntax-highlighter/dist/esm/languages/prism/php.js"
+import c from "react-syntax-highlighter/dist/esm/languages/prism/c.js"
+import cpp from "react-syntax-highlighter/dist/esm/languages/prism/cpp.js"
+import go from "react-syntax-highlighter/dist/esm/languages/prism/go.js"
+import python from "react-syntax-highlighter/dist/esm/languages/prism/python.js"
+import vim from "react-syntax-highlighter/dist/esm/languages/prism/vim.js"
+import docker from "react-syntax-highlighter/dist/esm/languages/prism/docker.js"
+import json from "react-syntax-highlighter/dist/esm/languages/prism/json.js"
+import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript.js"
+import xmlDoc from "react-syntax-highlighter/dist/esm/languages/prism/xml-doc.js"
+import sass from "react-syntax-highlighter/dist/esm/languages/prism/sass.js"
+import css from "react-syntax-highlighter/dist/esm/languages/prism/css.js"
 
 import _ from "lodash"
 
 const styles = [
-    // monokaiSublime,
-    solarizedlight,
-    // github,
-    // atomOneDark,
-    // xonokai
+    prism,
 ]
 
-class CodeBlock  extends PureComponent {
+class CodeBlock  extends React.PureComponent {
     componentWillMount() {
         SyntaxHighlighter.registerLanguage('jsx', jsx)
         SyntaxHighlighter.registerLanguage('java', java)

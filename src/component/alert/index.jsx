@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { is, fromJS } from 'immutable';
 import ReactDOM from 'react-dom';
 import {TransitionGroup, CSSTransition} from 'react-transition-group';
@@ -9,7 +9,7 @@ import Child from "./child.jsx"
 
 import "./index.scss"
 
-class Dialog extends Component{
+class Dialog extends React.Component {
 
     constructor(props) {
         super(props);

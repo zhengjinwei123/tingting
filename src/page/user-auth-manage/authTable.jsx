@@ -1,6 +1,5 @@
 import React from "react"
-import { Button } from "semantic-ui-react";
-import { Icon, Label, Table } from 'semantic-ui-react'
+import { Icon, Label, Table, Button } from 'semantic-ui-react'
 import GroupAuthEditModal from "page/user-auth-manage/group-auth-edit-modal/index.jsx";
 import globalService from "service/global.jsx";
 

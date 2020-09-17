@@ -3,9 +3,7 @@ import React from "react"
 import BaseModal from "component/basic/modal/index.jsx";
 
 import "./index.scss"
-import {Button, Container, Form, Icon, Modal} from "semantic-ui-react";
-
-import MyBraftEditor from "page/blog/new-blog/braftEditor.jsx";
+import {Button, Form, Modal} from "semantic-ui-react";
 import MyMarkdownEditor from "page/blog/new-blog/markdownEditor.jsx"
 
 import ModalHeader from "component/basic/modal-header/index.jsx"
@@ -137,9 +135,10 @@ class EditBlogModal extends BaseModal {
                             />
                         </Form.Field>
                         <Form.Field>
-                            {
-                                blog.type === 1 ? <MyBraftEditor data={blog.content} onRef={(ref) => this.editorRef = ref }  onChange={(data) => this.onChangeEditor(data) }/> :
-                                    <MyMarkdownEditor data={blog.content} onRef={(ref) => this.editorRef = ref } onChange={(data) => this.onChangeEditor(data) }/>
+                            <MyMarkdownEditor
+                                data={blog.content}
+                                onRef={(ref) => this.editorRef = ref }
+                                onChange={(data) => this.onChangeEditor(data) }/>
                             }
                         </Form.Field>
                     </Form>

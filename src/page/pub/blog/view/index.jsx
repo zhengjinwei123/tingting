@@ -1,15 +1,7 @@
 import React from "react"
-
-import PubViewHeader from "page/pub/header/index.jsx"
 import NotFoundPage from "page/notfound/index.jsx"
 import blogService from "service/blog.jsx"
-import PubViewLeftBar from "page/pub/blog/leftbar/index.jsx"
-import PubViewRightBar from "page/pub/blog/rightbar/index.jsx";
-
-import {Message, Header, Segment, Label, Icon, Image, Button,Popup, Advertisement} from 'semantic-ui-react'
-
-import BraftEditor from 'braft-editor'
-import 'braft-editor/dist/output.css'
+import {Message, Header, Segment, Label, Icon, Button,Popup} from 'semantic-ui-react'
 
 import ReactMarkdown from "react-markdown"
 import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
@@ -17,7 +9,6 @@ import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
 import utils from  "utils/utils.jsx"
 
 import "../index.scss"
-// import $ from "jquery";
 import ProfileCard from "component/profilecard/index.jsx";
 import TopAdvert from "page/pub/topadvert/index.jsx";
 
@@ -208,16 +199,7 @@ class PubBlogView extends React.Component {
                                                 code: CodeBlock,
                                             }}
                                         />
-                                        :
-                                        <BraftEditor
-
-                                            stripPastedStyles={true}
-                                            contentClassName={"braft-content"}
-                                            readOnly={true}
-                                            controls={[]}
-                                            value={this.state.editor}
-                                        />
-
+                                        : ""
                                 }
                             </Message>
                         </Segment>

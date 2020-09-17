@@ -1,11 +1,9 @@
 import React from "react"
 import {withRouter} from "react-router-dom";
-import { Button, Search, List, Transition, Label, Popup, Icon} from 'semantic-ui-react'
+import { Button, Search, List,  Popup, Icon} from 'semantic-ui-react'
 
 import RegistUser from "page/pub/register-user/index.jsx";
 
-// import $ from "jquery"
-import utils from "utils/utils.jsx"
 import "./index.scss"
 import userService from "service/user.jsx";
 
