@@ -205,20 +205,20 @@ class PubBlogView extends React.Component {
                             }
                         />
                     </div>
-                    {
-                        !this.state.show_profile ?
-                            <Popup content={"作者信息"}
-                                   trigger={<Button className={"profile-btn"}  circular icon='heart' color={"pink"} onClick={() => this.onCloseProfile(true)}/>} /> :
-                            <ProfileCard
-                                author={this.state.author} className={"profile-container"} onClose={() => this.onCloseProfile(false)} />
-                    }
+                    {/*{*/}
+                    {/*    !this.state.show_profile ?*/}
+                    {/*        <Popup content={"作者信息"}*/}
+                    {/*               trigger={<Button className={"profile-btn"}  circular icon='heart' color={"pink"} onClick={() => this.onCloseProfile(true)}/>} /> :*/}
+                    {/*        <ProfileCard*/}
+                    {/*            author={this.state.author} className={"profile-container"} onClose={() => this.onCloseProfile(false)} />*/}
+                    {/*}*/}
 
-                    {
-                        this.state.show_nav_btn ?
-                            <Popup content='返回顶部'
-                                   trigger={ <Button className={"back-top-nav"}  circular icon='angle double up' color={"blue"} onClick={() => this.backTop()}/> } />
-                            : ""
-                    }
+                    {/*{*/}
+                    {/*    this.state.show_nav_btn ?*/}
+                    {/*        <Popup content='返回顶部'*/}
+                    {/*               trigger={ <Button className={"back-top-nav"}  circular icon='angle double up' color={"blue"} onClick={() => this.backTop()}/> } />*/}
+                    {/*        : ""*/}
+                    {/*}*/}
 
                     <div className={"advert-container"}>
                         <AuthorCard className={"author-card"} author={this.state.author}/>

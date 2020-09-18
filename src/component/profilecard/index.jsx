@@ -1,5 +1,5 @@
 import React from "react"
-import {Button, Card, Image } from "semantic-ui-react";
+import {Button, Card, Image, TransitionablePortal} from "semantic-ui-react";
 import utils from "utils/utils.jsx";
 import ImagePortal from "component/image-portal/index.jsx";
 
@@ -103,6 +103,11 @@ export default class ProfileCard extends React.Component {
         const wx_image = profile.wx_image
         const zf_image = profile.zf_image
         const head_image = profile.sex === 1 ? "user-man.jpg" : "user-f.jpg"
+
+        const transition = {
+            animation: 'fly up',
+            duration: 800
+        }
 
         return (
             <div className={this.props.className}>

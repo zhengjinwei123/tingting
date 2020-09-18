@@ -12,7 +12,6 @@ import { prism } from "react-syntax-highlighter/dist/esm/styles/prism"
 import "react-syntax-highlighter/dist/esm/languages/prism/markup-templating"
 
 import jsx from "react-syntax-highlighter/dist/esm/languages/prism/jsx.js"
-import java from "react-syntax-highlighter/dist/esm/languages/prism/java.js"
 import php from "react-syntax-highlighter/dist/esm/languages/prism/php.js"
 import c from "react-syntax-highlighter/dist/esm/languages/prism/c.js"
 import cpp from "react-syntax-highlighter/dist/esm/languages/prism/cpp.js"
@@ -26,6 +25,8 @@ import xmlDoc from "react-syntax-highlighter/dist/esm/languages/prism/xml-doc.js
 import sass from "react-syntax-highlighter/dist/esm/languages/prism/sass.js"
 import css from "react-syntax-highlighter/dist/esm/languages/prism/css.js"
 import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql.js"
+import makefile from "react-syntax-highlighter/dist/esm/languages/prism/makefile.js"
+import java from "react-syntax-highlighter/dist/esm/languages/prism/java.js"
 
 import _ from "lodash"
 
@@ -50,6 +51,7 @@ class CodeBlock  extends React.PureComponent {
         SyntaxHighlighter.registerLanguage('css', css)
         SyntaxHighlighter.registerLanguage('sass', sass)
         SyntaxHighlighter.registerLanguage('sql', sql)
+        SyntaxHighlighter.registerLanguage('makefile', makefile)
     }
 
     constructor(props) {
