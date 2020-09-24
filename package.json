@@ -40,6 +40,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-react-transform": "^3.0.0",
+    "classnames": "^2.2.6",
     "css-loader": "0.28.7",
     "draft-js-prism": "^1.0.6",
     "file-loader": "^6.1.0",

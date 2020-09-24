@@ -1,19 +1,22 @@
 import React from "react"
 import NotFoundPage from "page/notfound/index.jsx"
 import blogService from "service/blog.jsx"
-import {Message, Header, Container, Divider, Label, Icon, Button,Popup} from 'semantic-ui-react'
+import {Message, Header, Container, Label, Icon} from 'semantic-ui-react'
 
 import ReactMarkdown from "react-markdown"
 import CodeBlock  from "page/pub/blog/view/codeBlock.jsx";
+import HeadingBlock from "page/pub/blog/view/headingBlock.jsx";
+
+
+import TopAdvert from "page/pub/topadvert/index.jsx";
+
+import {withRouter} from "react-router-dom";
+
+import PubViewRightBar from "page/pub/blog/rightbar/index"
 
 import utils from  "utils/utils.jsx"
 
 import "../index.scss"
-import ProfileCard from "component/profilecard/index.jsx";
-import TopAdvert from "page/pub/topadvert/index.jsx";
-
-import AuthorCard from "page/pub/blog/authorcard/index.jsx";
-import {withRouter} from "react-router-dom";
 
 
 
@@ -34,65 +37,23 @@ class PubBlogView extends React.Component {
             editor: null,
             not_found: false,
 
-            clientInnerWidth: 0,
-            show_profile: true,
-
-            show_nav_btn: false
+            visible_sidebar: false,
         }
 
         this.scrollIntervalTimer = 0;
+
+        setTimeout(() => {
+            this.toggleSideBar()
+        }, 1000)
     }
 
     componentWillUnmount() {
         this.setState = ()=>false;
     }
 
-    handleResize(e) {
-        this.setState({
-            clientInnerWidth: e.target.innerWidth
-        })
-    }
-
-    handleScroll() {
-
-        let scrollt = document.documentElement.scrollTop + document.body.scrollTop;
-
-        if (scrollt > 100) {
-            this.setState({
-                show_nav_btn: true,
-                show_profile: false,
-            })
-        } else {
-            this.setState({
-                show_nav_btn: false,
-                show_profile: true
-            })
-        }
-    }
-
-    backTop() {
-
-        this.scrollIntervalTimer = setInterval(() => {
-            if (document.documentElement.scrollTop > 0) {
-                document.documentElement.scrollTop -= 50
-            } else {
-                clearInterval(this.scrollIntervalTimer)
-                this.setState({
-                    show_profile: true
-                })
-            }
-        }, 10)
-    }
-
-    componentWillMount() {
-        window.addEventListener("scroll", this.handleScroll.bind(this), true)
-    }
 
     componentDidMount() {
-        this.setState({
-            clientInnerWidth : document.documentElement.clientWidth
-        })
-        window.addEventListener('resize', this.handleResize.bind(this)) //监听窗口大小改变
+
 
         blogService.getBlog(this.props.match.params.blog_id).then(res => {
             console.log("blog", res)
@@ -132,10 +93,14 @@ class PubBlogView extends React.Component {
         return this.state.type !== 0
     }
 
-    onCloseProfile(show) {
+    toggleSideBar(status) {
         this.setState({
-            show_profile: show
+            visible_sidebar: status !== undefined ? status : !this.state.visible_sidebar
         })
+    }
+
+    getMarkdownRef() {
+        return this.markdownRef;
     }
 
     render() {
@@ -156,19 +121,21 @@ class PubBlogView extends React.Component {
         } else {
             return (
                 <div>
+                    数据加载中....
                 </div>
             )
         }
 
+        const visible_sidebar = this.state.visible_sidebar
+
+        let article_container_width_cls_name = !visible_sidebar ? "article-container width-100" : "article-container width-70"
+
         return (
+
             <div>
                 <div className={"container-fluid"}>
-
-
-                    <div className={"article-container"}>
-
+                    <div className={article_container_width_cls_name}>
                         <TopAdvert className={"top-advert"} />
-
                         <div className={"article-header"}>
                             <Container textAlign='center'>
                                 <Header as='h1'>
@@ -191,38 +158,25 @@ class PubBlogView extends React.Component {
                             </Container>
                         </div>
 
-                        <Message
-                            success
-                            header=''
-                            content={
-                                <ReactMarkdown
-                                    source={html}
-                                    escapeHtml={false}
-                                    renderers={{
-                                        code: CodeBlock,
-                                    }}
-                                />
-                            }
-                        />
-                    </div>
-                    {/*{*/}
-                    {/*    !this.state.show_profile ?*/}
-                    {/*        <Popup content={"作者信息"}*/}
-                    {/*               trigger={<Button className={"profile-btn"}  circular icon='heart' color={"pink"} onClick={() => this.onCloseProfile(true)}/>} /> :*/}
-                    {/*        <ProfileCard*/}
-                    {/*            author={this.state.author} className={"profile-container"} onClose={() => this.onCloseProfile(false)} />*/}
-                    {/*}*/}
+                        <div  className="markdown-body"  ref={(ref) => {this.markdownRef  = ref}}>
+                            <ReactMarkdown
+                                source={html}
+                                escapeHtml={false}
+                                renderers={{
+                                    code: CodeBlock,
+                                    heading: HeadingBlock
+                                }}
+                            />
+                        </div>
 
-                    {/*{*/}
-                    {/*    this.state.show_nav_btn ?*/}
-                    {/*        <Popup content='返回顶部'*/}
-                    {/*               trigger={ <Button className={"back-top-nav"}  circular icon='angle double up' color={"blue"} onClick={() => this.backTop()}/> } />*/}
-                    {/*        : ""*/}
-                    {/*}*/}
-
-                    <div className={"advert-container"}>
-                        <AuthorCard className={"author-card"} author={this.state.author}/>
                     </div>
+
+                    <PubViewRightBar duration={1000}
+                                     getMarkdownRef={() => this.getMarkdownRef()}
+                                     author={this.state.author}
+                                     visible={this.state.visible_sidebar}
+                                     toggle={() => this.toggleSideBar()}/>
+
                 </div>
             </div>
         )

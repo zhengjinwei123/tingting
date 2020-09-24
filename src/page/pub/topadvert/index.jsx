@@ -33,7 +33,6 @@ export default class TopAdvert extends React.Component {
     render() {
         return (
             <AutoplaySlider
-
                 className={this.props.className}
                 play={true}
                 bullets={false}

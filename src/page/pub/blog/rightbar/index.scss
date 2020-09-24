@@ -1,5 +1,29 @@
-.user-card {
+.advert-container {
   position: fixed;
-  top: 0;
-  right: 10px;
+  right: 0;
+  top: 60px;
+  height: 100%;
+  width: calc(30% - 10px);
+  border-left: 1px solid #eeeeee;
+  border-right: 1px solid #eeeeee;
+  //padding-left: 15px;
+  //padding-right: 15px;
+  .author-card {
+    width: calc(100% - 20px);
+    height: 200px;
+    padding: 10px 10px;
+    border: 1px solid #eee;
+    border-radius: 2px;
+  }
+}
+.guide-container {
+  width: 45px;
+  height: 120px;
+  position: fixed;
+  bottom: 40px;
+  right: 100px;
+}
+
+.my-tree {
+  width: 260px; overflow: auto; position: fixed; z-index: 2147483647; border: 0px none; left: 0px; bottom: 0px;
 }

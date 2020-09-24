@@ -59,7 +59,7 @@ export default class AuthorCard extends React.Component {
                     },
                     {
                         desc: "",
-                        value:   <Popup content={"点击前往博主的github"} trigger={<Button circular color='twitter' icon='github' />} />
+                        value:   <Popup content={"点击前往博主的github"} trigger={<Button  onClick={() => this.linkTo("https://github.com/zhengjinwei123")}  circular color='twitter' icon='github' />} />
                     },
                     {
                         desc: "",
@@ -70,6 +70,11 @@ export default class AuthorCard extends React.Component {
         }
     }
 
+
+    linkTo(url) {
+        utils.redirect(url)
+    }
+
     componentWillUnmount() {
         this.setState = ()=>false;
     }
@@ -77,6 +82,7 @@ export default class AuthorCard extends React.Component {
     openCard(close) {
         this.setState({
             show_profile: close !== undefined ? close : !this.state.show_profile
+        }, () => {
         })
     }
 

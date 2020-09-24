@@ -234,8 +234,13 @@ module.exports = {
                 secure: false,
                 changeOrigin: true
             },
-            '/pub': {
+            '/pub/': {
                 target: 'http://127.0.0.1:8089',
+                changeOrigin: true,
+                secure: false,
+            },
+            '/public/' : {
+                target: 'http://127.0.0.1:9000',
                 changeOrigin: true,
                 secure: false,
             }
