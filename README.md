@@ -23,3 +23,13 @@
 1. 本系统目的在于整合技术，包括React,Mysql, Redis, golang, c++, H5, jenkins, docker, zookeeper 等
 2. 代码可以随便fork,copy
 ```
+
+## 4. 使用
+``` sh
+1. 服务启动关闭
+  sh server_run.sh start
+  sh server_run.sh stop
+
+2. 发布
+  sh deploy.sh
+```
