@@ -26,9 +26,14 @@ all: YUT
 
 $(go_target): export target = $@
 
+
 $(go_target):
     @$(call ECHO, "[build $(go_target) ...]")
     go install $(BUILD_FLAGS) $(target)
+
+clean:
+    -rm bin/YUT
+
 
 clean:
     -rm bin/YUT
