@@ -33,7 +33,3 @@ $(go_target):
 
 clean:
     -rm bin/YUT
-
-
-clean:
-    -rm bin/YUT
