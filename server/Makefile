@@ -3,6 +3,7 @@ define ECHO
     @printf "\033[;31m"; printf $1; printf "\033[0m\n"
 endef
 
+build=release
 export GOPATH=$(PWD)
 export GOBIN=$(PWD)/bin
 export GO111MODULE=off
