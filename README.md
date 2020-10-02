@@ -36,3 +36,9 @@
 3. nginx 代理
   按照nginx.conf 设置即可
 ```
+
+## 5. 编译
+```
+cd server
+make
+```
