@@ -32,4 +32,7 @@
 
 2. 发布
   sh deploy.sh
+  
+3. nginx 代理
+  按照nginx.conf 设置即可
 ```
