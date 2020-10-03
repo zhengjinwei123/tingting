@@ -8,24 +8,30 @@ PROJ_DIR=/data/deploy/projects/tingting
 SERVER_DIR=/data/deploy/projects/tingting/server/src/YUT
 echo -e "stop server"
 cd /data/deploy/projects
-./start.sh stop
+sh start.sh stop
 
 echo -e "pulling code.."
 
-cd $PROJ_DIR
-#git reset --hard
+cd $PROJ_DIR/server
+
+git reset --hard
 git pull
 
-if [ -f "$SERVER_DIR"/YUT ];
+make clean
+make
+
+
+if [ -f $RPOJ_DIR/server/bin/YUT ];
 then
-    rm -rf "$SERVER_DIR"/YUT
+    echo -e "build yut success..."
+else
+    echo -e "build yut fail..."
+    #exit 0
 fi
+
 
 cd $SERVER_DIR
 
-echo -e "start build yut server.."
-
-sh make.sh
 
 cd /data/deploy/projects
 
