@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server/src/github.com/alecthomas/log4go" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server/src/github.com/go-chi/chi" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server/src/github.com/go-sql-driver/mysql" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server/src/github.com/gorilla/securecookie" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server/src/github.com/gorilla/sessions" vcs="Git" />
+  </component>
+</project>
